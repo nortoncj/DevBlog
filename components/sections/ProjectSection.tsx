@@ -208,7 +208,7 @@ export function ProjectsSection({
               </button>
               <a
                 href="/blog"
-                className="btn-secondary dark:border-pink-400 dark:text-pink-400 dark:hover:bg-pink-400 dark:hover:text-gray-900"
+                className="btn-secondary dark:btn-white dark:border-pink-400 dark:text-pink-400 dark:hover:bg-pink-400 dark:hover:text-gray-900"
               >
                 Read Case Studies
               </a>

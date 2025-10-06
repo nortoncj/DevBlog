@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "../globals.css";
-import Provider from "../utils/Provider";
 import { Navigation } from "@/components/layout/Navigation";
 import { cn } from '@/lib/utils'
 import { Footer } from "@/components/layout/Footer";
+import icon from "@images/Logo.jpg"
 
 
 const inter = Inter({
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     siteName: 'Christopher Norton Portfolio',
     images: [
       {
-        url: '/og-image.png',
+        url: '/favicon.ico',
         width: 1200,
         height: 630,
         alt: 'Christopher Norton - System Architect',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Christopher Norton - The System Architect',
     description: 'Build systems that scale. Results with precision.',
-    images: ['/og-image.png'],
+    images: ['/favicon.ico'],
     creator: '@theWebTechNinja',
   },
   
@@ -132,9 +132,9 @@ export default function RootLayout({
         />
         
         {/* Favicon and app icons */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href={"/favicon.ico"} sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         
         {/* Analytics and performance monitoring */}

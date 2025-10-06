@@ -6,19 +6,18 @@ import { useInView } from "react-intersection-observer";
 import { useForm } from "react-hook-form";
 import {
   Mail,
-  Linkedin,
   Calendar,
   Send,
   CheckCircle,
   AlertCircle,
-  MapPin,
-  Phone,
-  Globe,
+  Copy,
+  ExternalLink,
 } from "lucide-react";
 import { ContactFormData } from "@/types";
 import { cn, isValidEmail } from "@/lib/utils";
+import { BsLinkedin, BsTwitterX, BsYoutube } from "react-icons/bs";
 
-const containerVariants : Variants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -29,7 +28,7 @@ const containerVariants : Variants = {
   },
 };
 
-const itemVariants : Variants= {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
@@ -41,28 +40,52 @@ const itemVariants : Variants= {
   },
 };
 
+// Obfuscated email parts - makes it harder for bots to harvest
+const emailParts = {
+  user: "contact",
+  domain: "chrisnortonjr",
+  tld: "com",
+};
+
+const getEmailAddress = () =>
+  `${emailParts.user}@${emailParts.domain}.${emailParts.tld}`;
+
 const contactMethods = [
   {
     icon: Mail,
     label: "Email",
-    value: "chris@systemarchitect.dev",
-    href: "mailto:chris@systemarchitect.dev",
+    value: "Click to reveal email",
     description: "Direct line for project inquiries",
+    action: "email",
   },
   {
-    icon: Linkedin,
+    icon: BsLinkedin,
     label: "LinkedIn",
-    value: "/in/christopher-norton",
-    href: "https://linkedin.com/in/christopher-norton",
+    value: "/in/chrisnortonjr",
+    href: "https://linkedin.com/in/chrisnortonjr",
     description: "Professional network and updates",
   },
   {
-    icon: Calendar,
-    label: "Schedule Call",
-    value: "Strategic Consultation",
-    href: "https://calendly.com/christopher-norton",
-    description: "30-min strategic discussion",
+    icon: BsTwitterX,
+    label: "Twitter",
+    value: "@TheWebTechNinja",
+    href: "https://x.com/TheWebTechNinja",
+    description: "Find me on Twitter",
   },
+  {
+    icon: BsYoutube,
+    label: "YouTube",
+    value: "@chrisnortonjr",
+    href: "https://www.youtube.com/@chrisnortonjr",
+    description: "Find me on YouTube",
+  },
+  // {
+  //   icon: Calendar,
+  //   label: "Schedule Call",
+  //   value: "Strategic Consultation",
+  //   href: "https://calendly.com/christopher-norton",
+  //   description: "30-min strategic discussion",
+  // },
 ];
 
 export function ContactSection() {
@@ -70,6 +93,8 @@ export function ContactSection() {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [emailRevealed, setEmailRevealed] = useState(false);
+  const [showCopySuccess, setShowCopySuccess] = useState(false);
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -83,6 +108,33 @@ export function ContactSection() {
     reset,
     watch,
   } = useForm<ContactFormData>();
+
+  const handleEmailReveal = async () => {
+    if (!emailRevealed) {
+      setEmailRevealed(true);
+    } else {
+      // Copy to clipboard
+      try {
+        await navigator.clipboard.writeText(getEmailAddress());
+        setShowCopySuccess(true);
+        setTimeout(() => setShowCopySuccess(false), 2000);
+      } catch (err) {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = getEmailAddress();
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        setShowCopySuccess(true);
+        setTimeout(() => setShowCopySuccess(false), 2000);
+      }
+    }
+  };
+
+  const handleEmailClick = () => {
+    window.location.href = `mailto:${getEmailAddress()}`;
+  };
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -121,10 +173,11 @@ export function ContactSection() {
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="section-header">
-            <h2 className="section-title text-text-primary dark:text-white">
-              <span className="dark:text-white">Ready to </span> <span className="text-gradient-hero">Build?</span>
+            <h2 className="section-title text-foreground">
+              <span className="dark:text-white">Ready to </span>
+              <span className="text-gradient-hero">Build?</span>
             </h2>
-            <p className="section-subtitle text-text-secondary dark:text-gray-300">
+            <p className="section-subtitle text-muted-foreground">
               Let's architect a system that scales your business
             </p>
           </motion.div>
@@ -134,10 +187,10 @@ export function ContactSection() {
             {/* Contact Information */}
             <motion.div variants={itemVariants} className="space-y-8">
               <div>
-                <h3 className="text-2xl font-semibold text-text-primary dark:text-white mb-4">
+                <h3 className="text-2xl font-semibold text-foreground mb-4">
                   Start Strategic Consultation
                 </h3>
-                <p className="text-lg text-text-secondary dark:text-gray-300 leading-relaxed mb-6">
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                   Every great system starts with understanding your unique
                   challenges. Let's discuss how strategic architecture can
                   transform your business processes.
@@ -148,79 +201,87 @@ export function ContactSection() {
               <div className="space-y-4">
                 {contactMethods.map((method) => {
                   const Icon = method.icon;
+                  const isEmailMethod = method.action === "email";
+
                   return (
-                    <motion.a
+                    <motion.div
                       key={method.label}
-                      href={method.href}
-                      target={
-                        method.href.startsWith("http") ? "_blank" : undefined
-                      }
-                      rel={
-                        method.href.startsWith("http")
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                      className="bg-card dark:bg-gray-800 border border-border dark:border-gray-600 rounded-xl p-6 shadow-card dark:shadow-xl dark:shadow-pink-500/10 flex items-center gap-4 hover:shadow-card-hover dark:hover:shadow-pink-500/20 group transition-all duration-300"
+                      className="bg-card dark:bg-gray-800 border border-border dark:border-gray-600 rounded-xl p-6 shadow-card dark:shadow-xl dark:shadow-pink-500/10 hover:shadow-card-hover dark:hover:shadow-pink-500/20 group transition-all duration-300"
                       whileHover={{ x: 4 }}
                     >
-                      <div className="w-12 h-12 rounded-lg bg-gradient-hero flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-                        <Icon size={24} />
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-hero flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                          <Icon size={24} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-foreground group-hover:text-signature-burgundy dark:group-hover:text-pink-400 transition-colors">
+                            {method.label}
+                          </div>
+                          <div className="text-sm text-signature-burgundy dark:text-pink-400 font-medium">
+                            {isEmailMethod && emailRevealed
+                              ? getEmailAddress()
+                              : method.value}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {method.description}
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-text-primary dark:text-white group-hover:text-signature-burgundy dark:group-hover:text-pink-400 transition-colors">
-                          {method.label}
+
+                      {/* Action buttons for email */}
+                      {isEmailMethod && (
+                        <div className="mt-4 flex gap-2">
+                          <button
+                            onClick={handleEmailReveal}
+                            className="flex items-center gap-2 px-3 py-2 text-sm bg-signature-burgundy dark:bg-pink-400 text-white dark:text-gray-900 rounded-lg hover:opacity-90 transition-opacity"
+                          >
+                            {emailRevealed ? (
+                              <>
+                                <Copy size={16} />
+                                {showCopySuccess ? "Copied!" : "Copy Email"}
+                              </>
+                            ) : (
+                              "Reveal Email"
+                            )}
+                          </button>
+                          {emailRevealed && (
+                            <button
+                              onClick={handleEmailClick}
+                              className="flex items-center gap-2 px-3 py-2 text-sm border border-signature-burgundy dark:border-pink-400 text-signature-burgundy dark:text-pink-400 rounded-lg hover:bg-signature-burgundy/10 dark:hover:bg-pink-400/10 transition-colors"
+                            >
+                              <ExternalLink size={16} />
+                              Open Mail App
+                            </button>
+                          )}
                         </div>
-                        <div className="text-sm text-signature-burgundy dark:text-pink-400 font-medium">
-                          {method.value}
+                      )}
+
+                      {/* Direct links for non-email methods */}
+                      {!isEmailMethod && method.href && (
+                        <div className="mt-4">
+                          <a
+                            href={method.href}
+                            target={
+                              method.href.startsWith("http")
+                                ? "_blank"
+                                : undefined
+                            }
+                            rel={
+                              method.href.startsWith("http")
+                                ? "noopener noreferrer"
+                                : undefined
+                            }
+                            className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-signature-burgundy dark:bg-pink-400 text-white dark:text-gray-900 rounded-lg hover:opacity-90 transition-opacity"
+                          >
+                            <ExternalLink size={16} />
+                            Connect
+                          </a>
                         </div>
-                        <div className="text-xs text-text-muted dark:text-gray-400">
-                          {method.description}
-                        </div>
-                      </div>
-                    </motion.a>
+                      )}
+                    </motion.div>
                   );
                 })}
               </div>
-
-              {/* Additional Info */}
-              {/* <motion.div
-                variants={itemVariants}
-                className="bg-gradient-card dark:bg-gray-800 border-2 border-rose-gold dark:border-pink-400/50 rounded-lg p-6 relative overflow-hidden"
-              >
-                <h4 className="font-semibold text-text-primary dark:text-white mb-3">
-                  <span className="dark:text-black">What to Expect</span> 
-                </h4>
-                <ul className="space-y-2 text-sm text-text-secondary dark:text-gray-800">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle
-                      size={16}
-                      className="text-signature-burgundy dark:text-pink-400 mt-0.5 flex-shrink-0"
-                    />
-                    <span>Initial consultation within 24 hours</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle
-                      size={16}
-                      className="text-signature-burgundy dark:text-pink-400 mt-0.5 flex-shrink-0"
-                    />
-                    <span>Strategic roadmap and architecture proposal</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle
-                      size={16}
-                      className="text-signature-burgundy dark:text-pink-400 mt-0.5 flex-shrink-0"
-                    />
-                    <span>Clear timeline and project milestones</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle
-                      size={16}
-                      className="text-signature-burgundy dark:text-pink-400 mt-0.5 flex-shrink-0"
-                    />
-                    <span>Ongoing support and optimization</span>
-                  </li>
-                </ul>
-              </motion.div> */}
             </motion.div>
 
             {/* Contact Form */}
@@ -232,7 +293,7 @@ export function ContactSection() {
                     <div>
                       <label
                         htmlFor="name"
-                        className="block text-sm font-medium text-text-primary dark:text-white mb-2"
+                        className="block text-sm font-medium text-foreground mb-2 dark:text-white"
                       >
                         Your Name
                       </label>
@@ -241,14 +302,13 @@ export function ContactSection() {
                         type="text"
                         id="name"
                         className={cn(
-                          "w-full px-4 py-3 border-2 rounded-lg bg-bg-primary dark:bg-gray-900 border-bg-accent dark:border-gray-600 text-text-primary dark:text-white placeholder-text-muted dark:placeholder-gray-400 focus:border-primary dark:focus:border-pink-400 focus:outline-none transition-colors",
-                          errors.name &&
-                            "border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400"
+                          "w-full px-4 py-3 border-2 rounded-lg bg-background  border-border dark:border-gray-600 text-foreground placeholder-muted-foreground focus:border-[#8B1538] dark:focus:border-[#E8B4B8] focus:outline-none transition-colors",
+                          errors.name && "border-red-500 focus:border-red-500"
                         )}
                         placeholder="John Doe"
                       />
                       {errors.name && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                        <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
                           <AlertCircle size={14} />
                           {errors.name.message}
                         </p>
@@ -259,7 +319,7 @@ export function ContactSection() {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-text-primary dark:text-white mb-2"
+                        className="block text-sm font-medium text-foreground mb-2 dark:text-white"
                       >
                         Email Address
                       </label>
@@ -272,14 +332,13 @@ export function ContactSection() {
                         type="email"
                         id="email"
                         className={cn(
-                          "w-full px-4 py-3 border-2 rounded-lg bg-bg-primary dark:bg-gray-900 border-bg-accent dark:border-gray-600 text-text-primary dark:text-white placeholder-text-muted dark:placeholder-gray-400 focus:border-primary dark:focus:border-pink-400 focus:outline-none transition-colors",
-                          errors.email &&
-                            "border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400"
+                          "w-full px-4 py-3 border-2 rounded-lg bg-background  border-border dark:border-gray-600 text-foreground placeholder-muted-foreground focus:border-[#8B1538] dark:focus:border-[#E8B4B8] focus:outline-none transition-colors",
+                          errors.email && "border-red-500 focus:border-red-500"
                         )}
                         placeholder="john@company.com"
                       />
                       {errors.email && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                        <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
                           <AlertCircle size={14} />
                           {errors.email.message}
                         </p>
@@ -291,7 +350,7 @@ export function ContactSection() {
                   <div>
                     <label
                       htmlFor="company"
-                      className="block text-sm font-medium text-text-primary dark:text-white mb-2"
+                      className="block text-sm font-medium text-foreground mb-2 dark:text-white"
                     >
                       Company (Optional)
                     </label>
@@ -299,7 +358,7 @@ export function ContactSection() {
                       {...register("company")}
                       type="text"
                       id="company"
-                      className="w-full px-4 py-3 border-2 rounded-lg bg-bg-primary dark:bg-gray-900 border-bg-accent dark:border-gray-600 text-text-primary dark:text-white placeholder-text-muted dark:placeholder-gray-400 focus:border-primary dark:focus:border-pink-400 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 border-2 rounded-lg bg-background  border-border dark:border-gray-600 text-foreground placeholder-muted-foreground focus:border-[#8B1538] dark:focus:border-[#E8B4B8] focus:outline-none transition-colors"
                       placeholder="Your Company Name"
                     />
                   </div>
@@ -308,7 +367,7 @@ export function ContactSection() {
                   <div>
                     <label
                       htmlFor="projectType"
-                      className="block text-sm font-medium text-text-primary dark:text-white mb-2"
+                      className="block text-sm font-medium text-foreground mb-2 dark:text-white"
                     >
                       Project Type
                     </label>
@@ -318,9 +377,9 @@ export function ContactSection() {
                       })}
                       id="projectType"
                       className={cn(
-                        "w-full px-4 py-3 border-2 rounded-lg bg-bg-primary dark:bg-gray-900 border-bg-accent dark:border-gray-600 text-text-primary dark:text-white focus:border-primary dark:focus:border-pink-400 focus:outline-none transition-colors",
+                        "w-full px-4 py-3 border-2 rounded-lg bg-background  border-border dark:border-gray-600 text-foreground focus:border-[#8B1538] dark:focus:border-[#E8B4B8] focus:outline-none transition-colors",
                         errors.projectType &&
-                          "border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400"
+                          "border-red-500 focus:border-red-500"
                       )}
                     >
                       <option value="">Select Project Type</option>
@@ -331,7 +390,7 @@ export function ContactSection() {
                       <option value="other">Other</option>
                     </select>
                     {errors.projectType && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                      <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
                         <AlertCircle size={14} />
                         {errors.projectType.message}
                       </p>
@@ -342,7 +401,7 @@ export function ContactSection() {
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-sm font-medium text-text-primary dark:text-white mb-2"
+                      className="block text-sm font-medium text-foreground mb-2 dark:text-white"
                     >
                       Project Description
                     </label>
@@ -353,14 +412,13 @@ export function ContactSection() {
                       id="message"
                       rows={5}
                       className={cn(
-                        "w-full px-4 py-3 border-2 rounded-lg bg-bg-primary dark:bg-gray-900 border-bg-accent dark:border-gray-600 text-text-primary dark:text-white placeholder-text-muted dark:placeholder-gray-400 focus:border-primary dark:focus:border-pink-400 focus:outline-none transition-colors resize-none min-h-[120px]",
-                        errors.message &&
-                          "border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400"
+                        "w-full px-4 py-3 border-2 rounded-lg bg-background  border-border dark:border-gray-600 text-foreground placeholder-muted-foreground focus:border-[#8B1538] dark:focus:border-[#E8B4B8] focus:outline-none transition-colors resize-none min-h-[120px]",
+                        errors.message && "border-red-500 focus:border-red-500"
                       )}
                       placeholder="Describe your system requirements, challenges, and goals..."
                     />
                     {errors.message && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                      <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
                         <AlertCircle size={14} />
                         {errors.message.message}
                       </p>
@@ -373,11 +431,11 @@ export function ContactSection() {
                       {...register("newsletter")}
                       type="checkbox"
                       id="newsletter"
-                      className="mt-1 h-4 w-4 text-signature-burgundy dark:text-pink-400 focus:ring-signature-burgundy dark:focus:ring-pink-400 border-bg-accent dark:border-gray-600 bg-bg-primary dark:bg-gray-900 rounded"
+                      className="mt-1 h-4 w-4 text-[#8B1538] dark:text-[#eacdcf] focus:ring-[#8B1538] dark:focus:ring-[#E8B4B8] border-border dark:border-gray-600 bg-background dark:bg-gray-900 rounded"
                     />
                     <label
                       htmlFor="newsletter"
-                      className="text-sm text-text-secondary dark:text-gray-300"
+                      className="text-sm text-muted-foreground"
                     >
                       Subscribe to strategic insights and system architecture
                       updates
@@ -416,7 +474,7 @@ export function ContactSection() {
                     ) : (
                       <>
                         <Send size={20} />
-                        Start System Design
+                        Send Message
                       </>
                     )}
                   </motion.button>

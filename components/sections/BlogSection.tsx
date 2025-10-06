@@ -133,10 +133,10 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="section-header">
             <h2 className="section-title text-text-primary dark:text-white">
-              Strategic <span className="text-gradient-hero">Insights</span>
+              <span className="text-gradient-hero">Blogs</span>
             </h2>
             <p className="section-subtitle text-text-secondary dark:text-gray-300">
-              Systematic thinking for scalable solutions
+              <span className="dark:text-gray-300">Systematic thinking for scalable solutions</span>
             </p>
           </motion.div>
 
@@ -213,7 +213,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
                     href="/blog"
-                    className="btn-secondary bg-white text-signature-burgundy border-white hover:bg-bg-secondary dark:hover:bg-gray-100 group"
+                    className="btn-primary bg-white text-signature-burgundy border-white hover:bg-bg-secondary dark:hover:bg-gray-100 group"
                   >
                     Read All Insights
                     <ArrowRight
@@ -227,7 +227,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
                         .getElementById("contact")
                         ?.scrollIntoView({ behavior: "smooth" })
                     }
-                    className="btn-ghost border-white text-white hover:bg-white/10 dark:hover:bg-white/20"
+                    className="btn-white border-white text-white hover:bg-white/10 dark:hover:bg-white/20"
                   >
                     Subscribe to Updates
                   </button>

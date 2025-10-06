@@ -7,7 +7,6 @@ import { cn, scrollUtils } from "@/lib/utils";
 import ThemeSwitch from "../ThemeSwitch";
 import { ThemeToggle } from "../ui/ThemeToggler";
 
-
 interface NavItem {
   label: string;
   href: string;
@@ -15,8 +14,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  {
-    label: "Home", href: "/" },
+  { label: "Home", href: "/" },
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Blogs", href: "/blog" },
@@ -35,7 +33,7 @@ export function Navigation() {
       setIsScrolled(scrollPosition > 50);
 
       // Update active section based on scroll position
-      const sections = ["home", "about", "projects","blog", "contact"];
+      const sections = ["home", "about", "projects", "blog", "contact"];
       const current = sections.find((section) => {
         const element = document.getElementById(section);
         if (element) {
@@ -90,8 +88,8 @@ export function Navigation() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-bg-primary/95 backdrop-blur-lg shadow-card border-b border-bg-accent"
-          : "bg-transparent"
+          ? "bg-background/80 backdrop-blur-lg shadow-lg border-b border-border/20"
+          : "bg-background/60 backdrop-blur-sm"
       )}
     >
       <div className="container-strategic">
@@ -102,16 +100,16 @@ export function Navigation() {
             className="flex flex-col group"
             onClick={() => handleNavClick("#home")}
           >
-            <span className="text-xl font-bold text-text-primary group-hover:text-signature-burgundy transition-colors">
+            <span className="text-xl font-bold text-foreground group-hover:text-[#8B1538] transition-colors">
               Christopher Norton
             </span>
-            <span className="text-md font-medium text-signature-burgundy">
+            <span className="text-sm font-medium text-[#8B1538] ">
               System Architect
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8 ">
+          <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
               const isActive = item.href.substring(1) === activeSection;
               const isExternal =
@@ -124,14 +122,14 @@ export function Navigation() {
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    "relative px-3 py-2 text-lg font-bold transition-all duration-200",
-                    "hover:text-signature-burgundy",
+                    "relative px-3 py-2 text-sm font-semibold transition-all duration-200",
+                    "hover:text-[#8B1538] ",
                     "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0",
-                    "after:bg-gradient-hero after:transition-all after:duration-300",
+                    "after:bg-gradient-to-r after:from-[#8B1538]  after:transition-all after:duration-300",
                     "hover:after:w-full",
                     isActive
-                      ? "text-signature-burgundy after:w-full"
-                      : "text-text-secondary"
+                      ? "text-[#8B1538] after:w-full"
+                      : "text-muted-foreground"
                   )}
                 >
                   {item.label}
@@ -141,28 +139,27 @@ export function Navigation() {
                   key={item.label}
                   onClick={() => handleNavClick(item.href)}
                   className={cn(
-                    "relative px-3 py-2 text-lg font-bold transition-all duration-200",
-                    "hover:text-signature-burgundy",
+                    "relative px-3 py-2 text-sm font-semibold transition-all duration-200",
+                    "hover:text-[#8B1538] ",
                     "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0",
-                    "after:bg-gradient-hero after:transition-all after:duration-300",
+                    "after:bg-gradient-to-r after:from-[#8B1538]  after:transition-all after:duration-300",
                     "hover:after:w-full",
                     isActive
-                      ? "text-signature-burgundy after:w-full"
-                      : "text-text-secondary"
+                      ? "text-[#8B1538]  after:w-full"
+                      : "text-muted-foreground"
                   )}
                 >
                   {item.label}
                 </button>
               );
             })}
-            {/* <ThemeSwitch /> */}
             <ThemeToggle className="ml-4" />
           </div>
 
           {/* Mobile Menu Button */}
           <button
             id="nav-toggle"
-            className="md:hidden p-2 text-text-primary hover:text-signature-burgundy transition-colors"
+            className="md:hidden p-2 text-foreground hover:text-[#8B1538] dark:hover:text-[#E8B4B8] transition-colors"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle navigation menu"
             aria-expanded={isOpen}
@@ -175,8 +172,9 @@ export function Navigation() {
         <div
           id="mobile-nav"
           className={cn(
-            "md:hidden absolute top-full left-0 right-0 bg-bg-primary/95 backdrop-blur-lg",
-            "border-b border-bg-accent shadow-card transition-all duration-300",
+            "md:hidden absolute top-full left-0 right-0",
+            "bg-background/95 backdrop-blur-lg border-b border-border/20 shadow-lg",
+            "transition-all duration-300",
             isOpen
               ? "opacity-100 visible translate-y-0"
               : "opacity-0 invisible -translate-y-4 pointer-events-none"
@@ -193,11 +191,12 @@ export function Navigation() {
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    "block px-4 py-3 text-md font-medium rounded-lg transition-all duration-200",
-                    "hover:bg-signature-burgundy/10 hover:text-signature-burgundy",
+                    "block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+                    "hover:bg-[#8B1538]/10 dark:hover:bg-[#E8B4B8]/10",
+                    "hover:text-[#8B1538] dark:hover:text-[#E8B4B8]",
                     isActive
-                      ? "text-signature-burgundy bg-signature-burgundy/10"
-                      : "text-text-secondary"
+                      ? "text-[#8B1538] dark:text-[#E8B4B8] bg-[#8B1538]/10 dark:bg-[#E8B4B8]/10"
+                      : "text-muted-foreground"
                   )}
                   onClick={() => setIsOpen(false)}
                 >
@@ -208,17 +207,21 @@ export function Navigation() {
                   key={item.label}
                   onClick={() => handleNavClick(item.href)}
                   className={cn(
-                    "w-full text-left px-4 py-3 text-md font-medium rounded-lg transition-all duration-200",
-                    "hover:bg-signature-burgundy/10 hover:text-signature-burgundy",
+                    "w-full text-left px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+                    "hover:bg-[#8B1538]/10 dark:hover:bg-[#E8B4B8]/10",
+                    "hover:text-[#8B1538] dark:hover:text-[#E8B4B8]",
                     isActive
-                      ? "text-signature-burgundy bg-signature-burgundy/10"
-                      : "text-text-secondary"
+                      ? "text-[#8B1538] dark:text-[#E8B4B8] bg-[#8B1538]/10 dark:bg-[#E8B4B8]/10"
+                      : "text-muted-foreground"
                   )}
                 >
                   {item.label}
                 </button>
               );
             })}
+            <div className="pt-4 border-t border-border/20">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>

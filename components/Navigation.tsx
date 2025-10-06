@@ -9,7 +9,7 @@ export default function Navigation() {
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
               <h1 className="main-nav-link text-xl text-white font-serif font-bold text-foreground dark:text-black">
-                Chris Norton
+                <span className="text-white ">Chris Norton</span> 
               </h1>
             </div>
             {/* Desktop Navigation */}
