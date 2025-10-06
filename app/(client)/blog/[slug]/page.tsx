@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ArrowLeft, BookOpen } from "lucide-react";
 import { PortableText } from "@/components/sanity/PortableText";
+import { FeaturedMedia } from "@/components/blog/FeatureMedia";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -35,7 +36,7 @@ export async function generateMetadata({
 
     // Construct absolute URLs
     const baseUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "https://christophernorton.dev";
+      process.env.NEXT_PUBLIC_SITE_URL || "https://chrisnortonjr.com";
     const postUrl = `${baseUrl}/blog/${slug}`;
 
     // Get optimized image URL
@@ -107,8 +108,8 @@ export async function generateMetadata({
       },
       twitter: {
         card: "summary_large_image",
-        site: "@christophernorton", // Replace with your actual Twitter handle
-        creator: "@christophernorton", // Replace with your actual Twitter handle
+        site: "@thewebtechninja", // Replace with your actual Twitter handle
+        creator: "@thewebtechninja", // Replace with your actual Twitter handle
         title: post.title,
         description,
         images: [imageUrl],
@@ -198,19 +199,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     author: {
       "@type": "Person",
       name: post.author?.name || "Christopher Norton",
-      url: process.env.NEXT_PUBLIC_SITE_URL || "https://christophernorton.dev",
+      url: process.env.NEXT_PUBLIC_SITE_URL || "https://chrisnortonjr.com",
     },
     publisher: {
       "@type": "Organization",
       name: "Christopher Norton",
       logo: {
         "@type": "ImageObject",
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://christophernorton.dev"}/icons/icon-512x512.png`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://chrisnortonjr.com"}/icons/icon-512x512.png`,
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://christophernorton.dev"}/blog/${slug}`,
+      "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://chrisnortonjr.com"}/blog/${slug}`,
     },
     articleSection: getCategoryName(post.categories),
     keywords: post.tags?.map((tag: any) => tag.title).join(", ") || "",
@@ -287,24 +288,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
 
             {/* Featured Image */}
-            {post.image && (
-              <div className="mb-12 -mx-6 sm:mx-0 sm:rounded-2xl overflow-hidden">
-                <div className="relative aspect-video bg-bg-accent dark:bg-gray-800">
-                  <Image
-                    src={urlFor(post.image)
-                      .width(1200)
-                      .height(630)
-                      .quality(95)
-                      .url()}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                    priority
-                  />
-                </div>
-              </div>
-            )}
+            <FeaturedMedia
+              video={post.video}
+              image={post.image}
+              title={post.title}
+            />
           </article>
 
           {/* Article Content */}

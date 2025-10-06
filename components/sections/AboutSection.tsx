@@ -5,6 +5,10 @@ import { useInView } from "react-intersection-observer";
 import { Globe, Mail, Cpu, Cloud, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import img from "@/public/assets/img/chrisNorton1.png";
+import software from "@images/software.jpg"
+import iot from "@images/iot.jpg"
+import cloud from "@images/cloud.jpg"
+import email from "@images/email.jpeg"
 
 // Simple skills overview for visitors
 const skills = [
@@ -14,7 +18,7 @@ const skills = [
       "I build complete websites and web applications that work perfectly on all devices and load fast.",
     icon: Globe,
     visual:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop&crop=center",
+      software,
     benefits: [
       "Custom websites that fit your needs",
       "Mobile-friendly and fast loading",
@@ -27,7 +31,7 @@ const skills = [
       "I create smart email systems that automatically send the right messages to grow your business.",
     icon: Mail,
     visual:
-      "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=500&h=300&fit=crop&crop=center",
+      email,
     benefits: [
       "Automated customer journeys",
       "Targeted campaigns that convert",
@@ -40,7 +44,7 @@ const skills = [
       "I make everyday devices smart by connecting them to the internet for remote control and monitoring.",
     icon: Cpu,
     visual:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop&crop=center",
+      iot,
     benefits: [
       "Smart automation systems",
       "Remote device monitoring",
@@ -53,7 +57,7 @@ const skills = [
       "I set up reliable systems that keep your applications running smoothly without you worrying about technical issues.",
     icon: Cloud,
     visual:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop&crop=center",
+      cloud,
     benefits: [
       "Reliable uptime and performance",
       "Automatic backups and security",
