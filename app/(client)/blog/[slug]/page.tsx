@@ -12,32 +12,34 @@ import { Calendar, Clock, ArrowLeft, BookOpen } from "lucide-react";
 import { PortableText } from "@/components/sanity/PortableText";
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
+
 
 // Generate metadata for SEO
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return {
-      title: "Post Not Found | Christopher Norton",
+      title: "Post Not Found | Chris Norton",
     };
   }
 
   return {
-    title: `${post.title} | Christopher Norton`,
+    title: `${post.title} | Chris Norton`,
     description: post.excerpt || "",
     openGraph: {
       title: post.title,
       description: post.excerpt || "",
       type: "article",
       publishedTime: post.publishedAt,
-      authors: ["Christopher Norton"],
+      authors: ["Chris Norton"],
       images: post.image
         ? [
             {
@@ -70,7 +72,8 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();

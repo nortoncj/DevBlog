@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import { ProjectFilters } from "@/components/projects/ProjectFilters";
@@ -9,7 +9,7 @@ import { ProjectModal } from "@/components/projects/ProjectModal";
 import { getProjectsData, getProjectCategories } from "@/data/sanity-data";
 import { Project } from "@/types/sanity";
 
-const containerVariants = {
+const containerVariants : Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -20,7 +20,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants : Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,

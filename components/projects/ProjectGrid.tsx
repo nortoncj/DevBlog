@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { ProjectCard } from "./ProjectCard";
 import { Project } from "@/types";
+import { projectId } from "@/sanity/env";
 
 interface ProjectGridProps {
   projects: Project[];
-  onProjectClick: (project: Project) => void;
+  onProjectClick: (project: Project | any) => void;
 }
 
-const containerVariants = {
+const containerVariants:Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -21,7 +22,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants:Variants = {
   hidden: { opacity: 0, y: 20, scale: 0.95 },
   visible: {
     opacity: 1,
@@ -44,7 +45,18 @@ const itemVariants = {
 };
 
 export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [hoveredProject, setHoveredProject] = useState<string | number | null>(
+    null
+  );
+
+  // Helper function to get a unique project ID
+  const getProjectId = (project: Project): string | number => {
+    return (
+      project._id ||
+      project.id ||
+      `project-${project.title.replace(/\s+/g, "-").toLowerCase()}`
+    );
+  };
 
   if (projects.length === 0) {
     return (
@@ -75,7 +87,7 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
             key={project.id}
             variants={itemVariants}
             layout
-            onHoverStart={() => setHoveredProject(project.id)}
+            onHoverStart={() => setHoveredProject(projectId)}
             onHoverEnd={() => setHoveredProject(null)}
             className="h-full"
           >

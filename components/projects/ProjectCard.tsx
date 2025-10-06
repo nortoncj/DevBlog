@@ -7,54 +7,96 @@ import { cn } from "@/lib/utils";
 import { Project } from "@/types";
 import { urlFor } from "@/lib/sanity";
 
-
-
 interface ProjectCardProps {
   project: Project;
   isHovered: boolean;
   onClick: () => void;
 }
 
+// Type-safe category colors with proper keys
 const categoryColors = {
-  automation:
-    "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-500/30",
-  "web-apps":
-    "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-500/30",
+  automation: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-500/30",
+  "web-apps": "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-500/30",
   data: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-500/30",
-  integrations:
-    "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-500/30",
-};
+  integrations: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-500/30",
+} as const;
 
 const categoryLabels = {
   automation: "Process Automation",
-  "web-apps": "Web Applications",
+  "web-apps": "Web Applications", 
   data: "Data Systems",
   integrations: "API Integrations",
-};
+} as const;
+
+type CategoryKey = keyof typeof categoryColors;
 
 export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
   // Safely access timeline - fallback to a default if not available
-  const getTimeline = () => {
-    if (project.timeline) return project.timeline;
-    if (project.details?.timeline) return project.details.timeline;
-    if (project.duration) return project.duration;
+  const getTimeline = (): string => {
+    // Handle timeline as string
+    if (typeof project.timeline === 'string') return project.timeline;
+    
+    // Handle timeline as object with duration
+    // if (project.timeline && typeof project.timeline === 'object' && 'duration' in project.timeline) {
+    //   return project.timeline.duration;
+    // }
+    
+    // Check details.timeline
+    // if (project.details?.timeline) {
+    //   if (typeof project.details.timeline === 'string') return project.details.timeline;
+    //   if (typeof project.details.timeline === 'object' && 'duration' in project.details.timeline) {
+    //     return project.details?.timeline?.duration;
+    //   }
+    // }
+    
     return "Contact for details"; // Fallback
   };
 
   // Get the category key safely
-  const getCategoryKey = () => {
+  const getCategoryKey = (): CategoryKey => {
+    // Handle direct category string
     if (typeof project.category === "string") {
-      return project.category as keyof typeof categoryColors;
+      return project.category as CategoryKey;
     }
+    
+    // Handle Sanity categories array
     if (project.categories && project.categories.length > 0) {
       const firstCategory = project.categories[0];
-      return (firstCategory.slug?.current ||
-        firstCategory.title?.toLowerCase()) as keyof typeof categoryColors;
+      const categorySlug = firstCategory.slug?.current || firstCategory.title?.toLowerCase().replace(/\s+/g, '-');
+      
+      // Map common category names to our keys
+      const categoryMap: Record<string, CategoryKey> = {
+        'automation': 'automation',
+        'web-apps': 'web-apps',
+        'web-applications': 'web-apps',
+        'data': 'data',
+        'data-systems': 'data',
+        'integrations': 'integrations',
+        'api-integrations': 'integrations'
+      };
+      
+      return categoryMap[categorySlug] || 'automation';
     }
+    
     return "automation"; // Default fallback
   };
 
   const categoryKey = getCategoryKey();
+
+  // Get image source safely
+  const getImageSrc = () => {
+    if (project.image) {
+      // Handle Sanity image
+      return urlFor(project.image).url();
+    }
+    if (project.thumbnail) {
+      // Handle direct URL
+      return project.thumbnail;
+    }
+    return null;
+  };
+
+  const imageSrc = getImageSrc();
 
   return (
     <motion.div
@@ -68,24 +110,19 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
     >
-     
       {/* Project Thumbnail */}
       <div className="relative h-48 lg:h-52 overflow-hidden bg-bg-accent dark:bg-gray-700">
-        {project.image? (
-          
-           <Image
-            src={urlFor(project.image).url()}
+        {imageSrc ? (
+          <Image
+            src={imageSrc}
             alt={project.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            /> 
-         
-          
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-tech text-white">
-              <div className="text-4xl opacity-50">
-                <h1>No Go</h1>
+            <div className="text-4xl opacity-50">
               <ExternalLink size={48} />
             </div>
           </div>
@@ -117,6 +154,7 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
           </div>
         </motion.div>
       </div>
+
       {/* Project Content */}
       <div className="flex flex-col flex-1 p-6">
         {/* Category */}
@@ -124,14 +162,10 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
           <span
             className={cn(
               "inline-block px-3 py-1 rounded-full text-xs font-medium border",
-              categoryColors[categoryKey] ||
-                "bg-bg-accent dark:bg-gray-700 text-text-secondary dark:text-gray-300 border-bg-accent dark:border-gray-600"
+              categoryColors[categoryKey]
             )}
           >
-            {categoryLabels[categoryKey] ||
-              (typeof project.category === "string"
-                ? project.category
-                : project.categories?.[0]?.title || "Project")}
+            {categoryLabels[categoryKey]}
           </span>
         </div>
 
@@ -151,10 +185,10 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
             .slice(0, 4)
             .map((tech, index) => (
               <span
-                key={typeof tech === "string" ? tech : tech.name || index}
+                key={typeof tech === "string" ? tech : `tech-${index}`}
                 className="badge-tech text-xs"
               >
-                {typeof tech === "string" ? tech : tech.name}
+                {typeof tech === "string" ? tech : String(tech)}
               </span>
             ))}
           {(project.technologies || project.techStack || []).length > 4 && (

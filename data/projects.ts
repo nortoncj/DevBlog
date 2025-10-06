@@ -24,6 +24,20 @@ export const projectsData: Project[] = [
       "Docker",
     ],
     featured: true,
+    tags: [
+      "E-commerce",
+      "Automation",
+      "Scalability",
+      "Integration",
+      "Analytics",
+    ],
+    timeline: {
+      duration: "6 weeks",
+      startDate: "10-3-24",
+      endDate: "11-4-24",
+    },
+    liveUrl: "https://example.com/ecommerce-demo",
+    githubUrl: "https://github.com/christopher/ecommerce-automation",
     details: {
       overview:
         "Built a comprehensive automation system that handles the entire e-commerce workflow from order processing to customer follow-up. The system integrates with multiple sales channels and provides real-time analytics for business intelligence.",
@@ -43,7 +57,11 @@ export const projectsData: Project[] = [
         "Dynamic pricing optimization",
         "Automated supplier communications",
       ],
-      timeline: "6 weeks",
+      timeline: {
+        duration: "6 weeks",
+        startDate: "10-3-24",
+        endDate: "11-4-24",
+      },
       client: "Mid-size retail company (50M+ annual revenue)",
     },
   },
@@ -65,6 +83,20 @@ export const projectsData: Project[] = [
       "TensorFlow",
     ],
     featured: true,
+    tags: [
+      "Analytics",
+      "Machine Learning",
+      "Real-time",
+      "Dashboards",
+      "Business Intelligence",
+    ],
+    timeline: {
+      duration: "8 weeks",
+      startDate: "09-1-24",
+      endDate: "10-26-24",
+    },
+    liveUrl: "https://example.com/analytics-demo",
+    githubUrl: "https://github.com/christopher/smart-analytics",
     details: {
       overview:
         "Developed a comprehensive analytics platform that transforms raw business data into actionable insights with predictive capabilities. The system processes data from multiple sources and provides real-time dashboards for strategic decision-making.",
@@ -84,7 +116,11 @@ export const projectsData: Project[] = [
         "Role-based access control and permissions",
         "Scheduled data exports and API access",
       ],
-      timeline: "8 weeks",
+      timeline: {
+        duration: "8 weeks",
+        startDate: "09-1-24",
+        endDate: "10-26-24",
+      },
       client: "Fortune 500 company",
     },
   },
@@ -106,6 +142,19 @@ export const projectsData: Project[] = [
       "MongoDB",
     ],
     featured: false,
+    tags: [
+      "API Gateway",
+      "Microservices",
+      "Integration",
+      "GraphQL",
+      "Monitoring",
+    ],
+    timeline: {
+      duration: "10 weeks",
+      startDate: "07-15-24",
+      endDate: "09-23-24",
+    },
+    githubUrl: "https://github.com/christopher/api-integration-platform",
     details: {
       overview:
         "Created a centralized integration platform that seamlessly connects multiple business systems and external APIs. The platform provides unified access to diverse services while handling authentication, rate limiting, and error recovery.",
@@ -125,7 +174,11 @@ export const projectsData: Project[] = [
         "Developer portal with API documentation",
         "Webhook management and event streaming",
       ],
-      timeline: "10 weeks",
+      timeline: {
+        duration: "10 weeks",
+        startDate: "07-15-24",
+        endDate: "09-23-24",
+      },
       client: "Technology startup",
     },
   },
@@ -147,6 +200,20 @@ export const projectsData: Project[] = [
       "OpenAI",
     ],
     featured: true,
+    tags: [
+      "Artificial Intelligence",
+      "NLP",
+      "Customer Support",
+      "Automation",
+      "Machine Learning",
+    ],
+    timeline: {
+      duration: "12 weeks",
+      startDate: "05-1-24",
+      endDate: "07-26-24",
+    },
+    liveUrl: "https://example.com/ai-support-demo",
+    githubUrl: "https://github.com/christopher/ai-customer-support",
     details: {
       overview:
         "Developed intelligent customer support system that automates responses while seamlessly escalating complex issues to human agents. The system understands context and maintains conversation history across multiple channels.",
@@ -166,7 +233,11 @@ export const projectsData: Project[] = [
         "Knowledge base integration and management",
         "Automated follow-up and satisfaction surveys",
       ],
-      timeline: "12 weeks",
+      timeline: {
+        duration: "12 weeks",
+        startDate: "05-1-24",
+        endDate: "07-26-24",
+      },
       client: "SaaS company (10,000+ customers)",
     },
   },
@@ -188,6 +259,20 @@ export const projectsData: Project[] = [
       "AWS",
     ],
     featured: true,
+    tags: [
+      "Big Data",
+      "ETL",
+      "Data Pipeline",
+      "Real-time Processing",
+      "Quality Assurance",
+    ],
+    timeline: {
+      duration: "14 weeks",
+      startDate: "02-1-24",
+      endDate: "05-10-24",
+    },
+    githubUrl: "https://github.com/christopher/enterprise-data-pipeline",
+    caseStudyUrl: "https://example.com/data-pipeline-case-study",
     details: {
       overview:
         "Built enterprise-grade data pipeline that processes massive datasets with automated quality assurance and real-time monitoring. The system handles diverse data sources and provides clean, validated data for analytics and machine learning.",
@@ -207,7 +292,11 @@ export const projectsData: Project[] = [
         "Elasticsearch integration for fast querying",
         "Automated data cataloging and documentation",
       ],
-      timeline: "14 weeks",
+      timeline: {
+        duration: "14 weeks",
+        startDate: "02-1-24",
+        endDate: "05-10-24",
+      },
       client: "Financial services firm",
     },
   },
@@ -229,6 +318,19 @@ export const projectsData: Project[] = [
       "React",
     ],
     featured: false,
+    tags: [
+      "Infrastructure as Code",
+      "DevOps",
+      "Cloud Management",
+      "Cost Optimization",
+      "Security",
+    ],
+    timeline: {
+      duration: "16 weeks",
+      startDate: "10-1-23",
+      endDate: "01-19-24",
+    },
+    githubUrl: "https://github.com/christopher/cloud-infrastructure-manager",
     details: {
       overview:
         "Created comprehensive cloud infrastructure management system that automates deployment, monitoring, and cost optimization. The platform provides self-service infrastructure provisioning with built-in security and compliance.",
@@ -248,7 +350,11 @@ export const projectsData: Project[] = [
         "Comprehensive monitoring with Prometheus/Grafana",
         "Automated backup and disaster recovery",
       ],
-      timeline: "16 weeks",
+      timeline: {
+        duration: "16 weeks",
+        startDate: "10-1-23",
+        endDate: "01-19-24",
+      },
       client: "Enterprise corporation (500+ developers)",
     },
   },
@@ -270,6 +376,18 @@ export const projectsData: Project[] = [
       "Kubernetes",
     ],
     featured: false,
+    tags: [
+      "High-Frequency Trading",
+      "Financial Technology",
+      "Low Latency",
+      "Risk Management",
+      "Algorithmic Trading",
+    ],
+    timeline: {
+      duration: "20 weeks",
+      startDate: "05-1-23",
+      endDate: "09-22-23",
+    },
     details: {
       overview:
         "Built sophisticated trading system that analyzes market conditions in real-time and executes trades based on algorithmic strategies. The system includes comprehensive risk management and performance tracking.",
@@ -289,7 +407,11 @@ export const projectsData: Project[] = [
         "Multi-asset class support (stocks, forex, crypto)",
         "Integration with multiple brokers and exchanges",
       ],
-      timeline: "20 weeks",
+      timeline: {
+        duration: "20 weeks",
+        startDate: "05-1-23",
+        endDate: "09-22-23",
+      },
       client: "Hedge fund",
     },
   },
@@ -311,6 +433,20 @@ export const projectsData: Project[] = [
       "Docker",
     ],
     featured: false,
+    tags: [
+      "Healthcare",
+      "HIPAA Compliance",
+      "Telemedicine",
+      "Patient Management",
+      "Security",
+    ],
+    timeline: {
+      duration: "18 weeks",
+      startDate: "01-15-23",
+      endDate: "05-19-23",
+    },
+    liveUrl: "https://example.com/healthcare-demo",
+    githubUrl: "https://github.com/christopher/healthcare-platform",
     details: {
       overview:
         "Developed comprehensive healthcare management platform that streamlines patient care, scheduling, and billing processes. The system includes secure telemedicine capabilities and integrates with existing healthcare systems.",
@@ -330,7 +466,11 @@ export const projectsData: Project[] = [
         "Analytics dashboard for practice insights",
         "EHR integration and data synchronization",
       ],
-      timeline: "18 weeks",
+      timeline: {
+        duration: "18 weeks",
+        startDate: "01-15-23",
+        endDate: "05-19-23",
+      },
       client: "Healthcare practice group",
     },
   },
@@ -417,12 +557,16 @@ export function getRelatedProjects(projectId: number, limit: number = 3) {
         return bSameCategory - aSameCategory;
       }
 
-      // Then by shared technologies
-      const aSharedTech = a.technologies.filter((tech) =>
-        project.technologies.includes(tech)
+      // Then by shared technologies (handle undefined technologies arrays)
+      const projectTech = project.technologies || [];
+      const aTech = a.technologies || [];
+      const bTech = b.technologies || [];
+
+      const aSharedTech = aTech.filter((tech) =>
+        projectTech.includes(tech)
       ).length;
-      const bSharedTech = b.technologies.filter((tech) =>
-        project.technologies.includes(tech)
+      const bSharedTech = bTech.filter((tech) =>
+        projectTech.includes(tech)
       ).length;
 
       return bSharedTech - aSharedTech;

@@ -36,7 +36,7 @@ export default async function Home() {
         <AboutSection />
 
         {/* Projects Showcase - Pass preloaded data */}
-        <ProjectsSection initialProjects={projects} />
+        {/* <ProjectsSection initialProjects={projects} /> */}
 
         {/* Blog Insights - Pass preloaded data */}
         <BlogSection initialPosts={featuredPosts} />

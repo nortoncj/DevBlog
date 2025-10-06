@@ -15,7 +15,8 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: "Home", href: "/home" },
+  {
+    label: "Home", href: "/" },
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Blogs", href: "/blog" },
@@ -114,7 +115,9 @@ export function Navigation() {
             {navItems.map((item) => {
               const isActive = item.href.substring(1) === activeSection;
               const isExternal =
-                item.href.startsWith("http") || item.href.startsWith("/blog");
+                item.href.startsWith("http") ||
+                item.href.startsWith("/blog") ||
+                item.href.startsWith("/");
 
               return isExternal ? (
                 <Link

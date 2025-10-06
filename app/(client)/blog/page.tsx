@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BlogCard } from "@/components/blog/BlogCard";
-import { blogPosts, getFeaturedBlogPosts } from "@/data/blog";
+// import { blogPosts, getFeaturedBlogPosts } from "@/data/blog";
 import {
   getPosts,
   getFeaturedPosts,
@@ -22,6 +22,7 @@ import {
   calculateReadingTimeFromBlocks,
   urlFor,
 } from "@/lib/sanity";
+
 
 
 // Adapter function to convert Sanity blog data to BlogCard format
@@ -44,15 +45,15 @@ function adaptSanityPost(post: any) {
   }
 }
 
-const categories = [
-  "All Posts",
-  "System Design",
-  "Data Engineering",
-  "Automation",
-  "Technical Leadership",
-  "Development",
-  "Strategy",
-];
+// const categories = [
+//   "All Posts",
+//   "System Design",
+//   "Data Engineering",
+//   "Automation",
+//   "Technical Leadership",
+//   "Development",
+//   "Strategy",
+// ];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -138,7 +139,7 @@ export default function BlogIndexPage() {
     });
 
     // Calculate stats
-    const totalViews = 15000; // You can calculate this from your actual data if available
+    const totalViews = 150; // You can calculate this from your actual data if available
     const totalPosts = allPosts.length;
 
     // Loading state

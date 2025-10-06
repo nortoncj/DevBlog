@@ -24,22 +24,35 @@ export interface ProjectDetails {
 }
 
 export interface Project {
-  id: number;
+  id?: number | string;
+  _id?: string;
   title: string;
-  category: ProjectCategory;
-  description: string;
-  thumbnail: string;
-  technologies: string[];
-  timeline: {
-    duration: string;
-    startDate: string;
-    endDate: string;
+  category?: string | { title: string; slug?: { current: string } };
+  categories?: Array<{ title: string; slug?: { current: string } }>;
+  description?: string;
+  excerpt?: string;
+  thumbnail?: string;
+  image?: any;
+  technologies?: string[];
+  techStack?: string[];
+  timeline?: {
+    duration?: string;
+    startDate?: string;
+    endDate?: string;
   };
-  details: ProjectDetails;
+  details?: {
+    timeline?: {
+      duration?: string;
+      startDate?: string;
+      endDate?: string;
+    };
+    [key: string]: any;
+  };
   featured?: boolean;
   githubUrl?: string;
   liveUrl?: string;
   caseStudyUrl?: string;
+  [key: string]: any;
 }
 
 // ================================

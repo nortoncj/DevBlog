@@ -19,6 +19,7 @@ import {
   filterProjectsByCategory,
 } from "@/lib/sanity-transform";
 import { BlogPost, Project } from "@/types/sanity";
+import { Project as StaticProject } from "@/types";
 
 // Fallback to static data if Sanity is not configured
 import { blogPosts as staticBlogPostsRaw } from "./blog";
@@ -46,6 +47,50 @@ const staticBlogPosts: BlogPost[] = staticBlogPostsRaw.map(
 );
 
 import { projectsData as staticProjects } from "./projects";
+
+// Transform static projects to match Sanity Project structure
+function transformStaticProjectsToSanity(projects: StaticProject[]): Project[] {
+  return projects.map(
+    (project): Project => ({
+      id: String(project.id),
+      title: project.title,
+      description: project.description || "No description available",
+      image: undefined, // Static projects use thumbnail, handle in component
+      video: undefined,
+      technologies: project.technologies || [],
+      liveUrl: project.liveUrl,
+      githubUrl: project.githubUrl,
+      categories: [
+        {
+          _id: `cat-${String(project.category)}`,
+          _type: "category" as const,
+          _createdAt: new Date().toISOString(),
+          _updatedAt: new Date().toISOString(),
+          _rev: "rev",
+          title: String(project.category),
+          slug: { _type: "slug" as const, current: String(project.category) },
+          description: `${String(project.category)} category`,
+        },
+      ],
+      tags: (project.tags || []).map((tag: any, index: any) => ({
+        _id: `tag-${String(project.id)}-${index}`,
+        _type: "tag" as const,
+        _createdAt: new Date().toISOString(),
+        _updatedAt: new Date().toISOString(),
+        _rev: "rev",
+        title: tag,
+        slug: {
+          _type: "slug" as const,
+          current: tag.toLowerCase().replace(/\s+/g, "-"),
+        },
+        description: `${tag} tag`,
+      })),
+      featured: project.featured,
+      content: undefined,
+      
+    })
+  );
+}
 
 // ================================
 // Blog Data Functions
@@ -197,7 +242,7 @@ export async function getBlogCategories() {
 export async function getProjectsData(): Promise<Project[]> {
   if (!validateSanityConfig()) {
     console.warn("Sanity not configured, using static project data");
-    return staticProjects;
+    return transformStaticProjectsToSanity(staticProjects);
   }
 
   try {
@@ -208,7 +253,7 @@ export async function getProjectsData(): Promise<Project[]> {
       "Failed to fetch projects from Sanity, using static data:",
       error
     );
-    return staticProjects;
+    return transformStaticProjectsToSanity(staticProjects);
   }
 }
 

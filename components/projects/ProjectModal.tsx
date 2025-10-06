@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
 import {
   X,
@@ -34,7 +34,7 @@ const overlayVariants = {
   },
 };
 
-const modalVariants = {
+const modalVariants:Variants = {
   hidden: {
     opacity: 0,
     scale: 0.95,
@@ -68,12 +68,12 @@ const categoryLabels = {
 };
 
 // Safe property access functions
-const getTimeline = (project: Project): string => {
-  if (project.timeline) return project.timeline;
-  if (project.details?.timeline) return project.details.timeline;
-  if (project.duration) return project.duration;
-  return "Contact for details";
-};
+// const getTimeline = (project: Project): string => {
+//   if (project.timeline) return project.timeline;
+//   if (project.details?.timeline) return project.details.timeline;
+//   if (project.duration) return project.duration;
+//   return "Contact for details";
+// };
 
 const getClient = (project: Project): string => {
   if (project.details?.client) return project.details.client;
@@ -108,8 +108,12 @@ const getFeatures = (project: Project): string[] => {
   if (project.details?.features && Array.isArray(project.details.features)) {
     return project.details.features;
   }
-  if (project.technologies && Array.isArray(project.technologies)) {
-    return project.technologies.map((tech) => `${tech} implementation`);
+  const technologies = project.technologies || project.techStack || [];
+  if (technologies && Array.isArray(technologies) && technologies.length > 0) {
+    return technologies.map(
+      (tech) =>
+        `${typeof tech === "string" ? tech : String(tech)} implementation`
+    );
   }
   return [
     "Modern responsive design",
@@ -184,7 +188,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
             <div className="h-64 lg:h-80 relative bg-bg-accent dark:bg-gray-800">
               {project.image ? (
                 <Image
-                  src={urlFor(project.image).url() }
+                  src={urlFor(project.image).url()}
                   alt={project.title}
                   fill
                   className="object-cover"
@@ -203,8 +207,13 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="badge-premium dark:bg-signature-burgundy/20 dark:text-rose-gold dark:border-rose-gold/30 mb-3">
-                    {categoryLabels[getCategoryKey(project.category)] ||
-                      project.category}
+                    {categoryLabels[
+                      getCategoryKey(
+                        typeof project.category === "string"
+                          ? project.category
+                          : project.categories?.[0]?.title || "automation"
+                      )
+                    ] || "Web Applications"}
                   </div>
                   <h1 className="text-3xl lg:text-4xl font-bold mb-2">
                     {project.title}
@@ -229,7 +238,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                     Timeline
                   </div>
                   <div className="font-medium text-text-primary dark:text-white">
-                    {getTimeline(project)}
+                    {project.timeline?.duration}
                   </div>
                 </div>
               </div>
@@ -269,14 +278,16 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                 Technology Stack
               </h3>
               <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="badge-tech dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-                  >
-                    {tech}
-                  </span>
-                ))}
+                {(project.technologies || project.techStack || []).map(
+                  (tech, index) => (
+                    <span
+                      key={typeof tech === "string" ? tech : `tech-${index}`}
+                      className="badge-tech dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+                    >
+                      {typeof tech === "string" ? tech : String(tech)}
+                    </span>
+                  )
+                )}
               </div>
             </div>
 

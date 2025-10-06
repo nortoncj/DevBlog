@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 import { urlFor } from "@/lib/sanity";
 
 interface BlogPost {
-  _id: string;
+  _id?: string | number;
+  id?: string | number;
   title: string;
   slug: string;
   excerpt: string;

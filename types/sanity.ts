@@ -109,7 +109,7 @@ export interface SanityProject extends SanityDocument {
 // ================================
 
 export interface BlogPost {
-  id: string;
+  id?: string | number;
   title: string;
   slug: string;
   publishedAt: string;

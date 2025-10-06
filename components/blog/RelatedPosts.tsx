@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { urlFor } from "@/lib/sanity";
-import { getRelatedPosts } from "@/lib/sanity";
+// import { getRelatedPosts } from "@/lib/sanity";
 
 interface RelatedPostsProps {
   currentPost: any;
@@ -46,12 +46,13 @@ export function RelatedPosts({ currentPost, className }: RelatedPostsProps) {
   useEffect(() => {
     async function fetchRelatedPosts() {
       try {
+        console.log("realated Posts");
         // Try to get related posts from Sanity
-        const posts = await getRelatedPosts(
-          currentPost._id,
-          currentPost.categories
-        );
-        setRelatedPosts(posts);
+        // const posts = await getRelatedPosts(
+        //   currentPost._id,
+        //   currentPost.categories
+        // );
+        // setRelatedPosts(posts);
       } catch (error) {
         console.error("Error fetching related posts:", error);
         // Fallback to empty array if there's an error
@@ -170,7 +171,7 @@ export function RelatedPosts({ currentPost, className }: RelatedPostsProps) {
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-signature-burgundy dark:text-rose-gold text-xs font-medium rounded-full">
-                      {getCategoryName(post.categories)}
+                      {/* {getCategoryName(post.categories)} */}
                     </span>
                   </div>
                 </div>

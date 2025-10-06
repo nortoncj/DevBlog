@@ -193,7 +193,12 @@ export function getOptimizedImageUrl(
 
   const { width = 800, height, quality = 80, format = "auto" } = options;
 
-  let builder = urlFor(image).width(width).quality(quality).format(format);
+  let builder = urlFor(image).width(width).quality(quality);
+
+  // Only apply format if it's not 'auto' (let Sanity decide)
+  if (format && format !== "auto") {
+    builder = builder.format(format as any);
+  }
 
   if (height) {
     builder = builder.height(height).fit("crop");
@@ -201,7 +206,6 @@ export function getOptimizedImageUrl(
 
   return builder.url();
 }
-
 /**
  * Generate responsive image srcSet from Sanity image
  */

@@ -1,15 +1,65 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { getFeaturedBlogPosts } from "@/data/sanity-data";
-import { BlogPost } from "@/types/sanity";
+// import { BlogPost } from "@/types/sanity";
 import { ArrowRight, BookOpen } from "lucide-react";
 
-const containerVariants = {
+interface FlexibleBlogPost {
+  _id?: string;
+  id?: string | number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  image?: any; // Flexible image handling
+  publishedAt: string;
+  readTime: string;
+  categories: { title: string }[] | any[];
+  tags: { _id?: string; title: string }[] | any[];
+  author: { name: string } | any;
+  featured?: boolean;
+  thumbnail?: string;
+}
+
+// Helper function to ensure blog post has required _id for BlogCard and handles image format
+const ensureBlogPostCompatibility = (post: any): any => {
+  return {
+    ...post,
+    _id:
+      post._id ||
+      post.id ||
+      `blog-${post.title?.replace(/\\s+/g, "-").toLowerCase()}`,
+    // Convert Sanity image format to BlogCard compatible format
+    image: post.image
+      ? {
+          asset: post.image.asset
+            ? {
+                url: post.image.asset.url || undefined,
+                _ref: post.image.asset._ref,
+                _type: post.image.asset._type,
+              }
+            : { url: typeof post.image === "string" ? post.image : undefined },
+        }
+      : undefined,
+    // Ensure required fields exist with proper types for BlogCard
+    categories: (post.categories || []).map((cat: any, index: number) => ({
+      title: typeof cat === "string" ? cat : cat?.title || "General",
+      _id: cat?._id || `cat-${index}`,
+    })),
+    tags: (post.tags || []).map((tag: any, index: number) => ({
+      _id: tag?._id || `tag-${index}`,
+      title: typeof tag === "string" ? tag : tag?.title || "General",
+    })),
+    author: post.author || { name: "Christopher Norton" },
+    readTime: post.readTime || "5 min read",
+  };
+};
+
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -20,7 +70,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
@@ -33,11 +83,11 @@ const itemVariants = {
 };
 
 interface BlogSectionProps {
-  initialPosts?: BlogPost[];
+  initialPosts?: FlexibleBlogPost[];
 }
 
 export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
-  const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
+  const [posts, setPosts] = useState<FlexibleBlogPost[]>(initialPosts);
   const [loading, setLoading] = useState(!initialPosts.length);
 
   const [ref, inView] = useInView({
@@ -51,7 +101,11 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
       if (!initialPosts.length) {
         try {
           const featuredPosts = await getFeaturedBlogPosts(4);
-          setPosts(featuredPosts);
+          // Convert Sanity posts to compatible format
+          const compatiblePosts = featuredPosts.map(
+            ensureBlogPostCompatibility
+          );
+          setPosts(compatiblePosts);
         } catch (error) {
           console.error("Failed to load blog posts:", error);
         } finally {
@@ -79,11 +133,10 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="section-header">
             <h2 className="section-title text-text-primary dark:text-white">
-               <span className="text-gradient-hero">Blogs</span>
+              Strategic <span className="text-gradient-hero">Insights</span>
             </h2>
             <p className="section-subtitle text-text-secondary dark:text-gray-300">
-              <span className=" dark:text-gray-300">Systematic thinking for scalable solutions</span>
-              
+              Systematic thinking for scalable solutions
             </p>
           </motion.div>
 
@@ -104,11 +157,11 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8">
                 {posts.map((post, index) => (
                   <motion.div
-                    key={post.id}
+                    key={post._id || post.id || index}
                     variants={itemVariants}
                     custom={index}
                   >
-                    <BlogCard post={post} />
+                    <BlogCard post={ensureBlogPostCompatibility(post)} />
                   </motion.div>
                 ))}
               </div>
@@ -160,7 +213,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
                     href="/blog"
-                    className="btn-primary bg-white text-signature-burgundy border-white hover:bg-bg-secondary dark:hover:bg-gray-100 group"
+                    className="btn-secondary bg-white text-signature-burgundy border-white hover:bg-bg-secondary dark:hover:bg-gray-100 group"
                   >
                     Read All Insights
                     <ArrowRight
@@ -174,7 +227,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
                         .getElementById("contact")
                         ?.scrollIntoView({ behavior: "smooth" })
                     }
-                    className="btn-white border-white text-white hover:bg-white/10 dark:hover:bg-white/20"
+                    className="btn-ghost border-white text-white hover:bg-white/10 dark:hover:bg-white/20"
                   >
                     Subscribe to Updates
                   </button>

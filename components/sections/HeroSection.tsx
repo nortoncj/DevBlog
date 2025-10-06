@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Code2, Target, Zap } from "lucide-react";
 import { cn, scrollUtils } from "@/lib/utils";
 import heroImage from "@/public/assets/img/chrisNorton1.png";
@@ -13,7 +13,7 @@ const badges = [
   { icon: Zap, label: "Architect" },
 ];
 
-const heroVariants = {
+const heroVariants : Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
@@ -26,7 +26,7 @@ const heroVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants : Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
@@ -35,7 +35,7 @@ const itemVariants = {
   },
 };
 
-const imageVariants = {
+const imageVariants : Variants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
