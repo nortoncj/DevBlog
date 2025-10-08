@@ -141,7 +141,13 @@ export const projectType = defineType({
       of: [{ type: "reference", to: { type: "tag" } }],
       validation: (Rule) => Rule.max(8),
     }),
-   defineField( {
+    defineField({
+      name: "modal",
+      title: "Use Modal",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
       name: "featured",
       title: "Featured Project",
       type: "boolean",
@@ -266,6 +272,3 @@ export const projectType = defineType({
     },
   },
 });
-
-
-

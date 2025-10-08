@@ -54,7 +54,7 @@ const ensureBlogPostCompatibility = (post: any): any => {
       _id: tag?._id || `tag-${index}`,
       title: typeof tag === "string" ? tag : tag?.title || "General",
     })),
-    author: post.author || { name: "Christopher Norton" },
+    author: post.author || { name: "Chris Norton Jr" },
     readTime: post.readTime || "5 min read",
   };
 };

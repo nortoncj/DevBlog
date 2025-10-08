@@ -15,17 +15,23 @@ interface ProjectCardProps {
 
 // Type-safe category colors with proper keys
 const categoryColors = {
-  automation: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-500/30",
-  "web-apps": "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-500/30",
+  automation:
+    "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-500/30",
+  "web-apps":
+    "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-500/30",
   data: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-500/30",
-  integrations: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-500/30",
+  integrations:
+    "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-500/30",
+  blue: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-500/30",
+  red: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-500/30",
 } as const;
 
 const categoryLabels = {
   automation: "Process Automation",
-  "web-apps": "Web Applications", 
+  "web-apps": "Web Applications" ,
   data: "Data Systems",
   integrations: "API Integrations",
+  red: "email"
 } as const;
 
 type CategoryKey = keyof typeof categoryColors;
@@ -34,13 +40,13 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
   // Safely access timeline - fallback to a default if not available
   const getTimeline = (): string => {
     // Handle timeline as string
-    if (typeof project.timeline === 'string') return project.timeline;
-    
+    if (typeof project.timeline === "string") return project.timeline;
+
     // Handle timeline as object with duration
     // if (project.timeline && typeof project.timeline === 'object' && 'duration' in project.timeline) {
     //   return project.timeline.duration;
     // }
-    
+
     // Check details.timeline
     // if (project.details?.timeline) {
     //   if (typeof project.details.timeline === 'string') return project.details.timeline;
@@ -48,7 +54,7 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
     //     return project.details?.timeline?.duration;
     //   }
     // }
-    
+
     return "Contact for details"; // Fallback
   };
 
@@ -58,30 +64,49 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
     if (typeof project.category === "string") {
       return project.category as CategoryKey;
     }
-    
+
     // Handle Sanity categories array
     if (project.categories && project.categories.length > 0) {
       const firstCategory = project.categories[0];
-      const categorySlug = firstCategory.slug?.current || firstCategory.title?.toLowerCase().replace(/\s+/g, '-');
-      
+      const categorySlug =
+        firstCategory.slug?.current ||
+        firstCategory.title?.toLowerCase().replace(/\s+/g, "-");
+
       // Map common category names to our keys
       const categoryMap: Record<string, CategoryKey> = {
-        'automation': 'automation',
-        'web-apps': 'web-apps',
-        'web-applications': 'web-apps',
-        'data': 'data',
-        'data-systems': 'data',
-        'integrations': 'integrations',
-        'api-integrations': 'integrations'
+        automation: "automation",
+        "web-apps": "web-apps",
+        "web-applications": "web-apps",
+        data: "data",
+        "data-systems": "data",
+        integrations: "integrations",
+        "api-integrations": "integrations",
       };
-      
-      return categoryMap[categorySlug] || 'automation';
+
+      return categoryMap[categorySlug] || "automation";
     }
-    
+
     return "automation"; // Default fallback
   };
 
   const categoryKey = getCategoryKey();
+
+  // Helper function to get category name
+  const getProjectCategoryName = (categories: { title: string }[]): string => {
+    return categories?.[0]?.title || "General";
+  };
+
+  // Helper function to get category name
+  const getProjectCategoryColor = (categories: { color: string }[]): string => {
+    return categories?.[0]?.color || "blue";
+  };
+  const categoryName = project.categories
+    ? getProjectCategoryName(project.categories)
+    : "General";
+  const categoryColor = project.categories ? getProjectCategoryName(project.categories) : "blue"
+  
+
+ 
 
   // Get image source safely
   const getImageSrc = () => {
@@ -165,7 +190,8 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
               categoryColors[categoryKey]
             )}
           >
-            {categoryLabels[categoryKey]}
+            {/* {categoryLabels[categoryKey]} */}
+            {categoryName}
           </span>
         </div>
 

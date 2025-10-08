@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Calendar, Clock, ArrowLeft, BookOpen } from "lucide-react";
 import { PortableText } from "@/components/sanity/PortableText";
 import { FeaturedMedia } from "@/components/blog/FeatureMedia";
+import avi from "@images/Avatar.jpeg"
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -29,7 +30,7 @@ export async function generateMetadata({
 
     if (!post) {
       return {
-        title: "Post Not Found | Christopher Norton",
+        title: "Post Not Found | Chris Norton Jr",
         description: "The requested blog post could not be found.",
       };
     }
@@ -47,21 +48,21 @@ export async function generateMetadata({
     // Clean description (remove HTML and limit length)
     const description = post.excerpt
       ? post.excerpt.substring(0, 160).trim()
-      : `Read "${post.title}" by Christopher Norton - Strategic insights on system architecture, automation, and technology leadership.`;
+      : `Read "${post.title}" by Chris Norton Jr - Strategic insights on system architecture, automation, and technology leadership.`;
 
     // Get author information
-    const author = post.author?.name || "Christopher Norton";
+    const author = post.author?.name || "Chris Norton Jr";
 
     // Get category for keywords
     const category = post.categories?.[0]?.title || "Technology";
     const tags = post.tags?.map((tag: any) => tag.title).join(", ") || "";
 
     return {
-      title: `${post.title} | Christopher Norton`,
+      title: `${post.title} | Chris Norton Jr`,
       description,
       keywords: [
         post.title,
-        "Christopher Norton",
+        "Chris Norton Jr",
         "System Architecture",
         "Technology Leadership",
         "Automation",
@@ -70,7 +71,7 @@ export async function generateMetadata({
       ].join(", "),
       authors: [{ name: author }],
       creator: author,
-      publisher: "Christopher Norton",
+      publisher: "Chris Norton Jr",
       alternates: {
         canonical: postUrl,
       },
@@ -79,7 +80,7 @@ export async function generateMetadata({
         title: post.title,
         description,
         url: postUrl,
-        siteName: "Christopher Norton - System Architect",
+        siteName: "Chris Norton Jr - System Architect",
         locale: "en_US",
         publishedTime: post.publishedAt,
         modifiedTime: post._updatedAt || post.publishedAt,
@@ -137,7 +138,7 @@ export async function generateMetadata({
   } catch (error) {
     console.error("Error generating metadata:", error);
     return {
-      title: "Blog Post | Christopher Norton",
+      title: "Blog Post | Chris Norton Jr",
       description:
         "Strategic insights on system architecture and technology leadership.",
     };
@@ -198,12 +199,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     dateModified: post._updatedAt || post.publishedAt,
     author: {
       "@type": "Person",
-      name: post.author?.name || "Christopher Norton",
+      name: post.author?.name || "Chris Norton Jr",
       url: process.env.NEXT_PUBLIC_SITE_URL || "https://chrisnortonjr.com",
     },
     publisher: {
       "@type": "Organization",
-      name: "Christopher Norton",
+      name: "Chris Norton Jr",
       logo: {
         "@type": "ImageObject",
         url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://chrisnortonjr.com"}/icons/icon-512x512.png`,
@@ -253,7 +254,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="flex flex-wrap items-center gap-6 text-text-muted dark:text-gray-400 mb-12">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-gradient-hero dark:bg-signature-burgundy flex items-center justify-center text-white font-semibold">
-                  CN
+                  <Image
+                                    src={avi}
+                                    alt={post.author?.name}
+                                    className="object-cover  duration-300 group-hover:scale-105 rounded-2xl"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                  />
                 </div>
                 <div>
                   <div className="text-text-primary dark:text-white font-medium">

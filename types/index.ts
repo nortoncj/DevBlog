@@ -49,6 +49,7 @@ export interface Project {
     [key: string]: any;
   };
   featured?: boolean;
+  modal?: boolean;
   githubUrl?: string;
   liveUrl?: string;
   caseStudyUrl?: string;

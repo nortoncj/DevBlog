@@ -26,53 +26,54 @@ export const metadata: Metadata = {
     default: "Chris Norton - Software Engineer",
     template: "%s | Chris Norton",
   },
-  description: "System Architect Chris Norton | Scalable software engineering, web development & automation solutions. Build once. Scale forever. Portfolio & insights.",
+  description:
+    "System Architect Chris Norton | Scalable software engineering, web development & automation solutions. Build once. Scale forever. Portfolio & insights.",
   keywords: [
-    'system architect',
-    'automation',
-    'software engineering',
-    'devops',
-    'web development',
-    'scalable systems',
-    'process automation',
-    'strategic consulting',
-    'christopher norton',
-    'chris norton jr',
-    'fullstack developer',
-    'system design',
-    'technical leadership'
+    "system architect",
+    "automation",
+    "software engineering",
+    "devops",
+    "web development",
+    "scalable systems",
+    "process automation",
+    "strategic consulting",
+    "christopher norton",
+    "chris norton jr",
+    "fullstack developer",
+    "system design",
+    "technical leadership",
   ],
-  authors: [{ name: 'Christopher Norton', url: 'https://chrisnortonjr.com' }],
-  creator: 'Christopher Norton',
-  publisher: 'Christopher Norton',
-  
+  authors: [{ name: "Chris Norton Jr", url: "https://chrisnortonjr.com" }],
+  creator: "Chris Norton Jr",
+  publisher: "Chris Norton Jr",
+
   // Open Graph for social sharing
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://chrisnortonjr.com',
-    title: 'Christopher Norton - The System Architect',
-    description: 'Build systems that scale. Results with precision.',
-    siteName: 'Christopher Norton Portfolio',
+    type: "website",
+    locale: "en_US",
+    url: "https://chrisnortonjr.com",
+    title: "Chris Norton Jr - The System Architect",
+    description: "Build systems that scale. Results with precision.",
+    siteName: "Chris Norton Jr Portfolio",
     images: [
       {
-        url: '/favicon.ico',
+        url: "/favicon.ico",
         width: 1200,
         height: 630,
-        alt: 'Christopher Norton - System Architect',
+        alt: "Chris Norton Jr - System Architect",
       },
     ],
   },
-  
+
   // Twitter Card
   twitter: {
-    card: 'summary_large_image',
-    title: 'Christopher Norton - The System Architect',
-    description: 'Build systems that scale. Results with precision.',
-    images: ['/favicon.ico'],
-    creator: '@theWebTechNinja',
+    card: "summary_large_image",
+    title: "Chris Norton Jr - The System Architect",
+    description: "Build systems that scale. Results with precision.",
+    images: ["/favicon.ico"],
+    creator: "@theWebTechNinja",
   },
-  
+
   // Additional metadata
   robots: {
     index: true,
@@ -80,20 +81,20 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
-  
+
   verification: {
-    google: 'your-google-verification-code',
+    google: "your-google-verification-code",
   },
-  
+
   alternates: {
-    canonical: 'https://chrisnortonjr.com',
+    canonical: "https://chrisnortonjr.com",
   },
-}
+};
 
 // Viewport configuration for modern devices
 export const viewport = {

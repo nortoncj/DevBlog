@@ -39,9 +39,9 @@ export function ShareButtons({
   const currentUrl =
     typeof window !== "undefined"
       ? window.location.href
-      : `https://christophernorton.dev/blog/${post.slug?.current}`;
+      : `https://chrisnortonjr.com/blog/${post.slug?.current}`;
 
-  const shareText = `Check out "${post.title}" by Christopher Norton`;
+  const shareText = `Check out "${post.title}" by Chris Norton Jr`;
   const encodedUrl = encodeURIComponent(currentUrl);
   const encodedText = encodeURIComponent(shareText);
 

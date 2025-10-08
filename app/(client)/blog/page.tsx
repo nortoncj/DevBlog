@@ -31,18 +31,24 @@ function adaptSanityPost(post: any) {
     _id: post._id,
     title: post.title,
     slug: post.slug?.current || post.slug,
-    excerpt: post.excerpt || '',
+    excerpt: post.excerpt || "",
     publishedAt: post.publishedAt,
-    readTime: post.body ? calculateReadingTimeFromBlocks(post.body) : '5 min read',
+    readTime: post.body
+      ? calculateReadingTimeFromBlocks(post.body)
+      : "5 min read",
     featured: post.featured || false,
     categories: post.categories || [],
     tags: post.tags || [],
-    author: { name: 'Christopher Norton' },
-    thumbnail: post.image ? urlFor(post.image).width(800).height(400).quality(90).url() : undefined,
-    image: post.image ? { asset: { url: urlFor(post.image).url() } } : undefined,
+    author: { name: "Chris Norton Jr" },
+    thumbnail: post.image
+      ? urlFor(post.image).width(800).height(400).quality(90).url()
+      : undefined,
+    image: post.image
+      ? { asset: { url: urlFor(post.image).url() } }
+      : undefined,
     views: 0, // You can add view tracking later
-    likes: 0  // You can add like tracking later
-  }
+    likes: 0, // You can add like tracking later
+  };
 }
 
 // const categories = [

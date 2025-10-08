@@ -101,7 +101,7 @@ export function Navigation() {
             onClick={() => handleNavClick("#home")}
           >
             <span className="text-xl font-bold text-foreground group-hover:text-[#8B1538] transition-colors">
-              Christopher Norton
+              Chris Norton Jr
             </span>
             <span className="text-sm font-medium text-[#8B1538] ">
               System Architect

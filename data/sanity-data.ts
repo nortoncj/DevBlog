@@ -25,6 +25,9 @@ import { Project as StaticProject } from "@/types";
 import { blogPosts as staticBlogPostsRaw } from "./blog";
 import { BlogPost as StaticBlogPost } from "@/types";
 
+// Debugging
+import { debugSanityConfiguration } from "@/utils/debug-sanity-config";
+
 // Transform static blog posts to match Sanity BlogPost structure
 const staticBlogPosts: BlogPost[] = staticBlogPostsRaw.map(
   (post: StaticBlogPost) => ({
@@ -86,7 +89,8 @@ function transformStaticProjectsToSanity(projects: StaticProject[]): Project[] {
         description: `${tag} tag`,
       })),
       featured: project.featured,
-      content: undefined,
+      modal: project.modal,
+      content: undefined
       
     })
   );
@@ -240,20 +244,36 @@ export async function getBlogCategories() {
  * Get all projects from Sanity CMS with fallback
  */
 export async function getProjectsData(): Promise<Project[]> {
+  // console.log('🚀 === PROJECTS DATA FETCHING START ===');
+  // console.log('🔧 Sanity validation result:', validateSanityConfig());
+  
   if (!validateSanityConfig()) {
-    console.warn("Sanity not configured, using static project data");
-    return transformStaticProjectsToSanity(staticProjects);
+    console.warn("❌ Sanity not configured, using static project data");
+    const transformedStatic = transformStaticProjectsToSanity(staticProjects);
+    console.log('📋 Returning transformed static projects:', transformedStatic.length);
+    return transformedStatic;
   }
 
   try {
+    // console.log('🔄 Attempting to fetch from Sanity CMS...');
     const sanityProjects = await getProjects();
-    return transformSanityProjects(sanityProjects);
+    // console.log('✅ Sanity fetch successful, raw projects:', sanityProjects.length);
+    // console.log('🔍 First raw Sanity project sample:', sanityProjects[0]);
+    
+    const transformed = transformSanityProjects(sanityProjects);
+    // console.log('✅ Transformation complete, final projects:', transformed.length);
+    // console.log('🔍 First transformed project sample:', transformed[0]);
+    // console.log('🏁 === PROJECTS DATA FETCHING END ===');
+    
+    return transformed;
   } catch (error) {
     console.error(
-      "Failed to fetch projects from Sanity, using static data:",
+      "💥 Failed to fetch projects from Sanity, using static data:",
       error
     );
-    return transformStaticProjectsToSanity(staticProjects);
+    const fallbackStatic = transformStaticProjectsToSanity(staticProjects);
+    console.log('📋 Returning fallback static projects:', fallbackStatic.length);
+    return fallbackStatic;
   }
 }
 
@@ -292,54 +312,281 @@ export async function getFeaturedProjects(limit?: number): Promise<Project[]> {
  * Get project categories from Sanity CMS
  */
 export async function getProjectCategories() {
-  if (!validateSanityConfig()) {
-    return [
-      {
-        id: "all",
-        label: "All Systems",
-        description: "Complete portfolio of strategic solutions",
-      },
-      {
-        id: "automation",
-        label: "Process Automation",
-        description: "Intelligent systems that work while you sleep",
-      },
-      {
-        id: "web-apps",
-        label: "Web Applications",
-        description: "Scalable platforms for business growth",
-      },
-      {
-        id: "data",
-        label: "Data Systems",
-        description: "Analytics and intelligence platforms",
-      },
-      {
-        id: "integrations",
-        label: "API Integrations",
-        description: "Unified connectivity solutions",
-      },
-    ];
-  }
+  // console.log("🚀 === PROJECT CATEGORIES EXTRACTION START ===");
+
+  // Debug Sanity configuration first
+  // const sanityConfigured = debugSanityConfiguration();
+  // console.log("🔧 Sanity configured:", sanityConfigured);
 
   try {
     const projects = await getProjectsData();
-    const categories = getUniqueCategoriesFromProjects(projects);
+    // console.log("📊 Loaded projects count:", projects.length);
+    // console.log(
+    //   "🔍 Data source check - Sanity configured:",
+    //   validateSanityConfig()
+    // );
 
-    return [
-      { id: "all", label: "All Systems", description: "Complete portfolio" },
-      ...categories.map((cat) => ({
-        id: cat.slug,
-        label: cat.title,
-        description: `${cat.title} solutions`,
-        count: cat.count,
-      })),
-    ];
+    if (projects.length === 0) {
+      console.log("⚠️ No projects found, returning default categories");
+      return getDefaultProjectCategories();
+    }
+
+    // Check if we're getting real Sanity data or transformed static data
+    const firstProject = projects[0];
+    const isRealSanityData = firstProject?.categories?.[0]?._id?.length > 20; // Real Sanity IDs are longer
+    // console.log("📋 Data type analysis:");
+    // console.log("  - First project ID format:", firstProject?.id);
+    // console.log(
+    //   "  - First category ID format:",
+    //   firstProject?.categories?.[0]?._id
+    // );
+    // console.log("  - Appears to be real Sanity data:", isRealSanityData);
+    // Enhanced debugging - analyze all projects
+    // console.log("🔍 === ANALYZING PROJECT STRUCTURES ===");
+    // projects.forEach((project, index) => {
+    //   console.log(`📁 Project ${index + 1}: "${project.title}"`);
+    //   console.log(`   🏷️ Has categories: ${"categories" in project}`);
+    //   console.log(
+    //     `   📋 Categories type: ${typeof (project as any).categories}`
+    //   );
+    //   console.log(
+    //     `   🔢 Categories array: ${Array.isArray((project as any).categories)}`
+    //   );
+    //   console.log(
+    //     `   📏 Categories length: ${Array.isArray((project as any).categories) ? (project as any).categories.length : "N/A"}`
+    //   );
+    //   console.log(`   🔤 Has category string: ${"category" in project}`);
+    //   console.log(`   💾 Raw categories:`, (project as any).categories);
+
+    //   if (index < 2) {
+    //     // Show full structure for first 2 projects
+    //     console.log(`   🏗️ Full structure:`, JSON.stringify(project, null, 2));
+    //   }
+    // });
+
+    // Check for projects with category arrays
+    const projectsWithArrays = projects.filter(
+      (project) =>
+        "categories" in project &&
+        Array.isArray((project as any).categories) &&
+        (project as any).categories.length > 0
+    );
+
+    // console.log("📈 Projects with category arrays:", projectsWithArrays.length);
+
+    // Force detailed logging of what we found
+    // console.log("🔍 Detailed project analysis:");
+    // projects.forEach((project, i) => {
+    //   console.log(`  Project ${i + 1}: "${project.title}"`);
+    //   console.log(`    Has categories prop: ${"categories" in project}`);
+    //   console.log(
+    //     `    Categories is array: ${Array.isArray((project as any).categories)}`
+    //   );
+    //   console.log(
+    //     `    Categories length: ${(project as any).categories?.length || 0}`
+    //   );
+    //   if ((project as any).categories?.length > 0) {
+    //     console.log(
+    //       `    Category titles: ${(project as any).categories.map((c: any) => c.title).join(", ")}`
+    //     );
+    //   }
+    // });
+
+    if (projectsWithArrays.length > 0) {
+      // console.log("✅ Processing projects with category arrays");
+
+      // // Log exactly what we're sending to the extraction function
+      // console.log("📋 Sample project categories before extraction:");
+      // projectsWithArrays.slice(0, 2).forEach((project, i) => {
+      //   console.log(`  Project ${i + 1}: "${project.title}"`);
+      //   console.log(`  Categories:`, project.categories);
+      //   project.categories?.forEach((cat: any, j: number) => {
+      //     console.log(`    Category ${j + 1}:`, {
+      //       _id: cat._id,
+      //       title: cat.title,
+      //       slug: cat.slug?.current,
+      //       type: typeof cat.title,
+      //     });
+      //   });
+      // });
+
+      // console.log("🔄 Calling getUniqueCategoriesFromProjects...");
+      const extractedCategories = getUniqueCategoriesFromProjects(projects);
+      // console.log("🎯 Extracted categories result:", extractedCategories);
+      // console.log("📊 Extracted categories count:", extractedCategories.length);
+
+      // Force return extracted categories even if it seems like there are none
+      // This will help us see if the issue is in the extraction or later processing
+      const formattedCategories = [
+        {
+          id: "all",
+          label: "All",
+          description: "Complete portfolio",
+          count: projects.length,
+        },
+        ...extractedCategories.map((cat) => ({
+          id: cat.slug || cat.id,
+          label: cat.title,
+          description: `${cat.title} solutions`,
+          count: cat.count,
+        })),
+      ];
+
+      // console.log("🔄 Formatted categories for return:", formattedCategories);
+      // console.log(
+      //   "✅ SUCCESS: Returning extracted categories:",
+      //   formattedCategories
+      // );
+      return formattedCategories;
+    }
+
+    // Check for static projects with category strings
+    const projectsWithStrings = projects.filter(
+      (project) =>
+        "category" in project && typeof (project as any).category === "string"
+    );
+
+    console.log(
+      "📝 Projects with category strings:",
+      projectsWithStrings.length
+    );
+
+    if (projectsWithStrings.length > 0) {
+      console.log("✅ Processing static projects with category strings");
+      const staticCategories = new Map();
+
+      projects.forEach((project) => {
+        const category = (project as any).category || "uncategorized";
+        const categoryTitle =
+          category.charAt(0).toUpperCase() +
+          category.slice(1).replace(/-/g, " ");
+
+        if (!staticCategories.has(category)) {
+          staticCategories.set(category, {
+            id: category,
+            title: categoryTitle,
+            slug: category,
+            count: 1,
+          });
+        } else {
+          staticCategories.get(category).count++;
+        }
+      });
+
+      const extractedCategories = Array.from(staticCategories.values());
+      console.log("📋 Extracted static categories:", extractedCategories);
+
+      const formattedCategories = [
+        {
+          id: "all",
+          label: "All",
+          description: "Complete portfolio",
+          count: projects.length,
+        },
+        ...extractedCategories.map((cat) => ({
+          id: cat.slug,
+          label: cat.title,
+          description: `${cat.title} solutions`,
+          count: cat.count,
+        })),
+      ];
+
+      console.log(
+        "✅ SUCCESS: Returning static categories:",
+        formattedCategories
+      );
+      return formattedCategories;
+    }
+
+    // If no recognizable category structure found
+    console.log("❌ No recognizable category structure found in any projects");
+    console.log(
+      "🔄 Falling back to intelligent defaults based on project titles/descriptions"
+    );
+
+    return createIntelligentDefaultCategories(projects);
   } catch (error) {
-    console.error("Failed to fetch project categories:", error);
-    return [];
+    console.error("💥 Failed to fetch project categories:", error);
+    return getDefaultProjectCategories();
   }
+
+  console.log("🏁 === PROJECT CATEGORIES EXTRACTION END ===");
 }
+
+/**
+ * Get default project categories as fallback
+ */
+function getDefaultProjectCategories() {
+  return [
+    { id: "all", label: "All", description: "Complete portfolio" },
+    {
+      id: "automation",
+      label: "Process Automation", 
+      description: "Intelligent systems that work while you sleep",
+    },
+    {
+      id: "web-apps",
+      label: "Web Applications",
+      description: "Scalable platforms for business growth",
+    },
+    {
+      id: "data",
+      label: "Data Systems",
+      description: "Analytics and intelligence platforms",
+    },
+    {
+      id: "integrations",
+      label: "API Integrations",
+      description: "Unified connectivity solutions",
+    },
+  ];
+}
+
+/**
+ * Create intelligent default categories based on project analysis
+ */
+function createIntelligentDefaultCategories(projects: Project[]) {
+  console.log('🧠 Creating intelligent categories from project analysis...');
+  
+  const categories = [
+    { id: "all", label: "All ", description: "Complete portfolio", count: projects.length }
+  ];
+  
+  // Analyze project titles and descriptions to create relevant categories
+  const keywordMap = {
+    automation: ['automation', 'automate', 'workflow', 'process'],
+    'web-apps': ['web', 'app', 'application', 'site', 'platform'],
+    data: ['data', 'analytics', 'dashboard', 'report', 'intelligence'],
+    integrations: ['integration', 'api', 'connect', 'sync', 'webhook']
+  };
+  
+  Object.entries(keywordMap).forEach(([categoryId, keywords]) => {
+    const count = projects.filter(project => {
+      const searchText = `${project.title} ${project.description}`.toLowerCase();
+      return keywords.some(keyword => searchText.includes(keyword));
+    }).length;
+    
+    if (count > 0) {
+      const labels = {
+        automation: 'Process Automation',
+        'web-apps': 'Web Applications', 
+        data: 'Data Systems',
+        integrations: 'API Integrations'
+      };
+      
+      categories.push({
+        id: categoryId,
+        label: labels[categoryId as keyof typeof labels],
+        description: `${labels[categoryId as keyof typeof labels]} solutions`,
+        count
+      });
+    }
+  });
+  
+  console.log('🎯 Intelligent categories created:', categories);
+  return categories;
+}
+
 
 /**
  * Get project by ID from Sanity CMS

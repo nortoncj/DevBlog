@@ -102,15 +102,22 @@ export const queries = {
       video,
       description,
       techStack,
+      modal,
+      featured,
       categories[]-> {
         _id,
+        _type,
         title,
-        slug
+        slug,
+        color,
+        description
       },
       tags[]-> {
         _id,
+        _type,
         title,
-        slug
+        slug,
+        description
       }
     }
   `,
@@ -126,15 +133,22 @@ export const queries = {
       video,
       description,
       techStack,
+      modal,
+      featured,
       categories[]-> {
         _id,
+        _type,
         title,
-        slug
+        slug,
+        color,
+        description
       },
       tags[]-> {
         _id,
+        _type,
         title,
-        slug
+        slug,
+        description
       }
     }
   `,
@@ -270,17 +284,25 @@ export function getImageDimensions(image: any) {
 
 // Environment variable validation
 export function validateSanityConfig() {
-  const requiredVars = [
-    "NEXT_PUBLIC_SANITY_PROJECT_ID",
-    "NEXT_PUBLIC_SANITY_DATASET",
-  ];
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 
-  const missing = requiredVars.filter((varName) => !process.env[varName]);
+  // console.log("🔍 Sanity validation check:");
+  // console.log("  PROJECT_ID value:", projectId ? `"${projectId}"` : "MISSING");
+  // console.log("  DATASET value:", dataset ? `"${dataset}"` : "MISSING");
+  // console.log("  PROJECT_ID length:", projectId?.length || 0);
+  // console.log("  DATASET length:", dataset?.length || 0);
 
-  if (missing.length > 0) {
-    console.warn(`Missing Sanity environment variables: ${missing.join(", ")}`);
+  if (!projectId || projectId.trim() === "") {
+    console.warn("❌ NEXT_PUBLIC_SANITY_PROJECT_ID is missing or empty");
     return false;
   }
 
+  if (!dataset || dataset.trim() === "") {
+    console.warn("❌ NEXT_PUBLIC_SANITY_DATASET is missing or empty");
+    return false;
+  }
+
+  console.log("✅  configuration is valid");
   return true;
 }

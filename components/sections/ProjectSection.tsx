@@ -8,6 +8,11 @@ import { ProjectFilters } from "@/components/projects/ProjectFilters";
 import { ProjectModal } from "@/components/projects/ProjectModal";
 import { getProjectsData, getProjectCategories } from "@/data/sanity-data";
 import { Project } from "@/types/sanity";
+import { ProjectCategoriesDebug } from "../test/ProjectCategoriesDebug"; 
+import { SanityDataTest } from "../test/debug-categories-component";
+import { ForceCategoryRefresh } from "../test/ForceCategoryRefresh";
+
+
 
 const containerVariants : Variants = {
   hidden: { opacity: 0 },
@@ -85,13 +90,73 @@ export function ProjectsSection({
   const filteredProjects =
     activeFilter === "all"
       ? projects
-      : projects.filter((project) =>
-          project.categories.some((cat) => cat.slug?.current === activeFilter)
-        );
+      : projects.filter((project) => {
+          // Debug logging for filtering
+          if (process.env.NODE_ENV === "development") {
+            console.log(
+              `🔍 Filtering project "${project.title}" against filter "${activeFilter}"`
+            );
+          }
+
+          // Handle Sanity projects (with categories array)
+          if ("categories" in project && Array.isArray(project.categories)) {
+            const hasMatch = project.categories.some((cat) => {
+              const slugMatch = cat.slug?.current === activeFilter;
+              const idMatch = cat._id === activeFilter;
+              const titleMatch =
+                cat.title?.toLowerCase().replace(/\s+/g, "-") === activeFilter;
+
+              if (process.env.NODE_ENV === "development") {
+                console.log(
+                  `  📋 Category "${cat.title}": slug="${cat.slug?.current}", id="${cat._id}", matches="${slugMatch || idMatch || titleMatch}"`
+                );
+              }
+
+              return slugMatch || idMatch || titleMatch;
+            });
+
+            if (process.env.NODE_ENV === "development") {
+              console.log(`  ✅ Sanity project match result: ${hasMatch}`);
+            }
+
+            return hasMatch;
+          }
+
+          // Handle static projects (with category string)
+          if ("category" in project) {
+            const staticProject = project as any;
+            const categoryMatch = staticProject.category === activeFilter;
+            const slugMatch =
+              staticProject.category?.toLowerCase().replace(/\s+/g, "-") ===
+              activeFilter;
+
+            if (process.env.NODE_ENV === "development") {
+              console.log(
+                `  📝 Static category "${staticProject.category}": matches="${categoryMatch || slugMatch}"`
+              );
+            }
+
+            return categoryMatch || slugMatch;
+          }
+
+          // No recognizable category structure
+          if (process.env.NODE_ENV === "development") {
+            console.log(`  ❌ No category structure found in project`);
+          }
+
+          return false;
+        });
 
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
-    setIsModalOpen(true);
+    // console.log(project)
+    if (project.modal === true) {
+      setIsModalOpen(true);
+    } else if (project.modal === false) {
+      // Open external URL in new tab
+      window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+    }
+    
   };
 
   const handleModalClose = () => {
@@ -118,9 +183,16 @@ export function ProjectsSection({
               <span className="text-gradient-hero">Projects</span>
             </h2>
             <p className="section-subtitle text-text-secondary dark:text-gray-300">
-            <span className="dark:text-gray-300">Engineered solutions that scale without the stress</span>  
+              <span className="dark:text-gray-300">
+                Engineered solutions that scale without the stress
+              </span>
             </p>
           </motion.div>
+
+          {/* Debug Component - Only shown in development */}
+          {/* <ForceCategoryRefresh onCategoriesUpdate={setCategories} />
+          <SanityDataTest />
+          <ProjectCategoriesDebug projects={projects} categories={categories} /> */}
 
           {/* Project Filters */}
           <motion.div variants={itemVariants}>
@@ -132,7 +204,6 @@ export function ProjectsSection({
               />
             )}
           </motion.div>
-
           {/* Projects Grid */}
           <motion.div variants={itemVariants}>
             {loading ? (
@@ -152,7 +223,6 @@ export function ProjectsSection({
               />
             )}
           </motion.div>
-
           {/* Bottom Stats - Commented out in original */}
           {/* <motion.div
             variants={itemVariants}
@@ -181,7 +251,6 @@ export function ProjectsSection({
               <div className="text-text-secondary dark:text-gray-400">System Uptime Achieved</div>
             </div>
           </motion.div> */}
-
           {/* Call to Action */}
           <motion.div
             variants={itemVariants}
@@ -230,3 +299,4 @@ export function ProjectsSection({
     </section>
   );
 }
+

@@ -69,7 +69,7 @@ Remember: Perfect architecture doesn't exist. Good architecture evolves with you
     featured: true,
     published: true,
     author: {
-      name: "Christopher Norton",
+      name: "Chris Norton Jr",
       bio: "System Architect specializing in scalable solutions",
     },
     seo: {
@@ -182,7 +182,7 @@ Remember: Automation isn't about eliminating humans—it's about eliminating hum
     featured: true,
     published: true,
     author: {
-      name: "Christopher Norton",
+      name: "Chris Norton Jr",
       bio: "System Architect specializing in process automation",
     },
   },
@@ -342,7 +342,7 @@ The companies that win long-term are those that treat technical quality as a str
     featured: true,
     published: true,
     author: {
-      name: "Christopher Norton",
+      name: "Chris Norton Jr",
       bio: "System Architect focused on sustainable growth strategies",
     },
   },
@@ -533,7 +533,7 @@ Remember: Your API is a product. Treat your developers like customers, and desig
     featured: false,
     published: true,
     author: {
-      name: "Christopher Norton",
+      name: "Chris Norton Jr",
       bio: "System Architect with expertise in API design and developer experience",
     },
   },
@@ -784,7 +784,7 @@ Remember: Your data pipeline is critical infrastructure. Treat it with the same 
     featured: true,
     published: true,
     author: {
-      name: "Christopher Norton",
+      name: "Chris Norton Jr",
       bio: "System Architect with expertise in large-scale data processing",
     },
   },

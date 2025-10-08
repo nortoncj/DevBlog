@@ -4,21 +4,19 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Mail,
-  Linkedin,
-  Github,
-  Twitter,
   ArrowUp,
   Code2,
   Heart,
 } from "lucide-react";
 import { scrollUtils } from "@/lib/utils";
+import { BsGithub, BsLinkedin, BsTwitterX, BsYoutube } from "react-icons/bs";
 
 const footerLinks = {
   services: [
-    { label: "System Architecture", href: "#projects" },
-    { label: "Process Automation", href: "#projects" },
-    { label: "Strategic Consulting", href: "#projects" },
-    { label: "Technical Leadership", href: "#contact" },
+    { label: "Projects", href: "#projects" },
+    // { label: "Process Automation", href: "#projects" },
+    // { label: "Strategic Consulting", href: "#projects" },
+    // { label: "Technical Leadership", href: "#contact" },
   ],
   resources: [
     { label: "Technical Insights", href: "/blog" },
@@ -28,37 +26,46 @@ const footerLinks = {
   ],
   connect: [
     { label: "Start Project", href: "#contact" },
-    { label: "Schedule Call", href: "https://calendly.com/christopher-norton" },
-    { label: "Email Direct", href: "mailto:chris@systemarchitect.dev" },
-    { label: "Download Resume", href: "/resume.pdf" },
+    // { label: "Schedule Call", href: "https://calendly.com/christopher-norton" },
+    // { label: "Email Direct", href: "mailto:contact@chrisnortonjr.com" },
+    {
+      label: "Download Resume",
+      href: "https://docs.google.com/document/d/16Cp_Q5bbbjoZqqiHHOPIa31t2y3S4b2StQtIFcnjrFY/edit?usp=sharing",
+    },
   ],
 };
 
 const socialLinks = [
   {
     name: "LinkedIn",
-    icon: Linkedin,
-    href: "https://linkedin.com/in/christopher-norton",
-    username: "@christopher-norton",
+    icon: BsLinkedin,
+    href: "https://linkedin.com/in/chrisnortonjr",
+    username: "@chrisnortonjr",
   },
   {
     name: "GitHub",
-    icon: Github,
-    href: "https://github.com/christopher-norton",
-    username: "@christopher-norton",
+    icon: BsGithub,
+    href: "https://github.com/nortoncj",
+    username: "@chrisnortonjr",
   },
   {
     name: "Twitter",
-    icon: Twitter,
-    href: "https://twitter.com/chris_architect",
-    username: "@chris_architect",
+    icon: BsTwitterX,
+    href: "https://twitter.com/thewebtechninja",
+    username: "@thewebtechninja",
   },
   {
-    name: "Email",
-    icon: Mail,
-    href: "mailto:chris@systemarchitect.dev",
-    username: "chris@systemarchitect.dev",
+    name: "Youtube",
+    icon: BsYoutube,
+    href: "https://www.youtube.com/@chrisnortonjr/",
+    username: "@chrisnortonjr",
   },
+  // {
+  //   name: "Email",
+  //   icon: Mail,
+  //   href: "mailto:contact@chrisnortonjr.com",
+  //   username: "chris@systemarchitect.dev",
+  // },
 ];
 
 export function Footer() {
@@ -88,7 +95,7 @@ export function Footer() {
             <div className="lg:col-span-1 space-y-6">
               <div>
                 <h3 className="text-2xl font-bold mb-2 text-white">
-                  Christopher Norton
+                  Chris Norton Jr
                 </h3>
                 <p className="text-rose-gold dark:text-pink-400 font-medium mb-3">
                   The System Architect
@@ -227,7 +234,7 @@ export function Footer() {
         </div>
 
         {/* Newsletter Section */}
-        <div className="border-t border-silver-accent/20 dark:border-gray-600 py-8">
+        {/* <div className="border-t border-silver-accent/20 dark:border-gray-600 py-8">
           <div className="text-center">
             <h4 className="text-xl font-semibold text-white mb-3">
               Strategic Updates
@@ -247,14 +254,14 @@ export function Footer() {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Bottom Bar */}
         <div className="border-t border-silver-accent/20 dark:border-gray-600 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-4 text-sm text-silver-accent dark:text-gray-400">
               <p>
-                © {currentYear} Christopher Norton. Strategic systems that
+                © {currentYear} Chris Norton Jr. Strategic systems that
                 scale.
               </p>
               <span className="hidden md:block">•</span>
@@ -288,7 +295,7 @@ export function Footer() {
         {/* Legal Links */}
         <div className="border-t border-silver-accent/20 dark:border-gray-600 py-4">
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6 text-xs text-silver-accent dark:text-gray-400">
-            <Link
+            {/* <Link
               href="/privacy"
               className="hover:text-rose-gold dark:hover:text-pink-400 transition-colors"
             >
@@ -311,7 +318,7 @@ export function Footer() {
               className="hover:text-rose-gold dark:hover:text-pink-400 transition-colors"
             >
               Sitemap
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

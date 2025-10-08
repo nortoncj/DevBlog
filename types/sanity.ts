@@ -83,6 +83,7 @@ export interface SanityPost extends SanityDocument {
   video?: string;
   image?: SanityImage;
   body?: PortableTextBlock[];
+  featured: boolean;
   categories?: SanityCategory[];
   tags?: SanityTag[];
 }
@@ -102,6 +103,8 @@ export interface SanityProject extends SanityDocument {
   techStack: string[];
   categories?: SanityCategory[];
   tags?: SanityTag[];
+  featured?: boolean;
+  modal?: boolean;
 }
 
 // ================================
@@ -139,6 +142,7 @@ export interface Project {
   githubUrl?: string;
   categories: SanityCategory[];
   tags: SanityTag[];
+  modal?: boolean;
   featured?: boolean;
   content?: PortableTextBlock[];
 }

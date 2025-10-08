@@ -474,7 +474,8 @@ export function ContactSection() {
                     ) : (
                       <>
                         <Send size={20} />
-                        Send Message
+                              {/* Send Message */}
+                              Coming Soon
                       </>
                     )}
                   </motion.button>

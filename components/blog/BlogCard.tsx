@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Calendar, Clock, Star, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { urlFor } from "@/lib/sanity";
+import avi from "@images/Avatar.jpeg"
 
 interface BlogPost {
   _id?: string | number;
@@ -209,7 +210,12 @@ export function BlogCard({
           <div className="flex items-center justify-between pt-3 border-t border-bg-accent dark:border-gray-700">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gradient-hero dark:bg-signature-burgundy flex items-center justify-center text-white text-xs font-semibold">
-                CN
+                <Image
+                  src={avi}
+                  alt={post.author.name}
+                  className="object-cover  duration-300 group-hover:scale-105 rounded-2xl"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
               </div>
               <div className="text-xs">
                 <div className="text-text-primary dark:text-white font-medium">
