@@ -34,8 +34,8 @@ export const postType = defineType({
       title: "Excerpt",
       type: "text",
       rows: 4,
-      validation: (Rule) => Rule.required().min(50).max(300),
-      description: "Brief summary of the post (50-300 characters)",
+      validation: (Rule) => Rule.required().min(50).max(160),
+      description: "Brief summary of the post (50-160 characters)",
     }),
      defineField({
       name: "image",
