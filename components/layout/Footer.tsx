@@ -83,7 +83,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-charcoal-gray dark:bg-black text-white relative">
+    <footer className="bg-charcoal-gray dark:bcharcoal-gray text-white relative">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-blueprint opacity-5 dark:opacity-10" />
 
@@ -261,8 +261,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-4 text-sm text-silver-accent dark:text-gray-400">
               <p>
-                © {currentYear} Chris Norton Jr. Strategic systems that
-                scale.
+                © {currentYear} Chris Norton Jr. Strategic systems that scale.
               </p>
               <span className="hidden md:block">•</span>
               <div className="flex items-center gap-1">

@@ -34,7 +34,7 @@ export default async function Home() {
         <SkillsEducation />
           {/* <SkillsEducationSection /> */}
         {/* About Section */}
-        <AboutSection />
+        {/* <AboutSection /> */}
 
         {/* Projects Showcase - Pass preloaded data */}
         <ProjectsSection initialProjects={projects} />

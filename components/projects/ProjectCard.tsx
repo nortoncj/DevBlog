@@ -126,7 +126,7 @@ export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
   return (
     <motion.div
       className={cn(
-        "group cursor-pointer h-full flex flex-col bg-bg-primary dark:bg-gray-800 rounded-xl overflow-hidden",
+        "group cursor-pointer h-full flex flex-col bg-bg-primary dark:bg-[#2a2a2a] rounded-xl overflow-hidden",
         "border border-bg-accent dark:border-gray-600 hover:border-signature-burgundy/30 dark:hover:border-pink-400/50",
         "shadow-card dark:shadow-xl dark:shadow-pink-500/5 hover:shadow-card-hover dark:hover:shadow-pink-500/20 transition-all duration-300",
         "transform hover:-translate-y-1"

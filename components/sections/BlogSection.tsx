@@ -120,7 +120,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
   return (
     <section
       id="blog"
-      className="section-padding bg-bg-secondary dark:bg-gray-800"
+      className="section-padding bg-bg-secondary dark:bg-[#2a2a2a]"
       ref={ref}
     >
       <div className="container-strategic">
@@ -136,7 +136,9 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
               <span className="text-gradient-hero">Blogs</span>
             </h2>
             <p className="section-subtitle text-text-secondary dark:text-gray-300">
-              <span className="dark:text-gray-300">Systematic thinking for scalable solutions</span>
+              <span className="dark:text-gray-300">
+                Systematic thinking for scalable solutions
+              </span>
             </p>
           </motion.div>
 
@@ -238,7 +240,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
             {/* Featured Topics */}
             <motion.div
               variants={itemVariants}
-              className="bg-bg-primary dark:bg-gray-900 border border-transparent dark:border-gray-700 rounded-xl p-6 lg:p-8"
+              className="bg-bg-primary dark:bg-[#1a1a1a] border border-transparent dark:border-gray-700 rounded-xl p-6 lg:p-8"
             >
               <h3 className="text-xl font-semibold text-text-primary dark:text-white mb-6 text-center">
                 Popular Topics
@@ -257,7 +259,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
                   <Link
                     key={topic}
                     href="/blog"
-                    className="text-center p-4 rounded-lg bg-bg-secondary dark:bg-gray-800 text-text-primary dark:text-gray-300 hover:bg-signature-burgundy/10 dark:hover:bg-pink-400/10 hover:text-signature-burgundy dark:hover:text-pink-400 transition-colors group border border-transparent dark:border-gray-600 dark:hover:border-pink-400/50"
+                    className="text-center p-4 rounded-lg bg-bg-secondary dark:bg-[#2a2a2a] text-text-primary dark:text-gray-300 hover:bg-signature-burgundy/10 dark:hover:bg-pink-400/10 hover:text-signature-burgundy dark:hover:text-pink-400 transition-colors group border border-transparent dark:border-gray-600 dark:hover:border-pink-400/50"
                   >
                     <div className="text-sm font-medium">{topic}</div>
                   </Link>

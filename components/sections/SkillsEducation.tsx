@@ -114,7 +114,7 @@ const SkillsEducation = () => {
   ];
 
   return (
-    <section className="section-padding bg-gradient-to-br from-background via-muted/30 to-background dark:from-gray-900 dark:via-gray-800/30 dark:to-gray-900">
+    <section className="section-padding bg-gradient-to-br from-background via-muted/30 dark:via-muted/10 to-background dark:bg-[#1a1a1a] dark:from-[#1a1a1a] dark:to-[#2a2a2a]">
       <div className="container-strategic pb-4">
         {/* Tab Navigation */}
         <div className="flex justify-center mb-12 gap-4 pb-4">
@@ -123,7 +123,7 @@ const SkillsEducation = () => {
             className={`px-12 py-4 rounded-full text-lg font-semibold transition-all duration-300 ${
               activeTab === "skills"
                 ? "bg-gradient-to-r from-signature-burgundy to-deep-magenta text-white shadow-button-glow"
-                : "bg-background dark:bg-gray-800 text-foreground dark:text-white border-2 border-border dark:border-gray-600 hover:border-primary dark:hover:border-pink-400"
+                : "bg-background dark:bg-[#1a1a1a] text-foreground dark:text-white border-2 border-border dark:border-gray-600 hover:border-primary dark:hover:border-pink-400"
             }`}
           >
             SKILLS
@@ -133,7 +133,7 @@ const SkillsEducation = () => {
             className={`px-12 py-4 rounded-full text-lg font-semibold transition-all duration-300 ${
               activeTab === "education"
                 ? "bg-gradient-to-r from-signature-burgundy to-deep-magenta text-white shadow-button-glow"
-                : "bg-background dark:bg-gray-800 text-foreground dark:text-white border-2 border-border dark:border-gray-600 hover:border-primary dark:hover:border-pink-400"
+                : "bg-background dark:bg-[#1a1a1a] text-foreground dark:text-white border-2 border-border dark:border-gray-600 hover:border-primary dark:hover:border-pink-400"
             }`}
           >
             EDUCATION
@@ -149,7 +149,7 @@ const SkillsEducation = () => {
                 {skills.map((skill, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-center gap-4 p-6 rounded-xl bg-card dark:bg-gray-800 hover:shadow-card-hover dark:hover:shadow-xl dark:hover:shadow-pink-500/20 transition-all duration-300 hover:-translate-y-1 border border-transparent dark:border-gray-700"
+                    className="flex flex-col items-center gap-4 p-6 rounded-xl bg-card dark:bg-[#1a1a1a] hover:shadow-card-hover dark:hover:shadow-xl dark:hover:shadow-pink-500/20 transition-all duration-300 hover:-translate-y-1 border border-transparent dark:border-gray-700"
                   >
                     <div
                       className={`w-20 h-20 ${skill.color} rounded-full flex items-center justify-center text-3xl shadow-lg dark:shadow-xl`}
@@ -177,7 +177,7 @@ const SkillsEducation = () => {
                     </div>
 
                     {/* Content */}
-                    <div className="ml-6 md:ml-0 bg-card dark:bg-gray-800 border border-border dark:border-gray-600 rounded-xl p-6 shadow-card dark:shadow-xl h-full flex flex-col">
+                    <div className="ml-6 md:ml-0 bg-card dark:bg-[#1a1a1a] border border-border dark:border-gray-600 rounded-xl p-6 shadow-card dark:shadow-xl h-full flex flex-col">
                       <h3 className="text-lg font-bold text-card-foreground dark:text-white mb-2 line-clamp-2">
                         {item.degree}
                       </h3>

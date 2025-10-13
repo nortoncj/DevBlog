@@ -167,7 +167,7 @@ export function ProjectsSection({
   return (
     <section
       id="projects"
-      className="section-padding bg-bg-primary dark:bg-gray-900"
+      className="section-padding bg-bg-primary dark:bg-[#1a1a1a]"
       ref={ref}
     >
       <div className="container-strategic">
@@ -210,7 +210,7 @@ export function ProjectsSection({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {[...Array(6)].map((_, i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="h-48 bg-bg-secondary dark:bg-gray-700 rounded-lg mb-4" />
+                    <div className="h-48 bg-bg-secondary dark:bg-[gray-700 ]rounded-lg mb-4" />
                     <div className="h-4 bg-bg-secondary dark:bg-gray-700 rounded mb-2" />
                     <div className="h-4 bg-bg-secondary dark:bg-gray-700 rounded w-3/4" />
                   </div>
@@ -254,7 +254,7 @@ export function ProjectsSection({
           {/* Call to Action */}
           <motion.div
             variants={itemVariants}
-            className="text-center bg-bg-secondary dark:bg-gray-800 border border-transparent dark:border-gray-600 rounded-2xl p-8 lg:p-12"
+            className="text-center bg-bg-secondary dark:bg-[#2a2a2a] border border-transparent dark:border-gray-600 rounded-2xl p-8 lg:p-12"
           >
             <h3 className="text-2xl lg:text-3xl font-bold text-text-primary dark:text-white mb-4">
               Need a Custom System Architecture?

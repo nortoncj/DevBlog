@@ -576,7 +576,7 @@ a:focus-visible {
 /* Dark Mode Support */
 @media (prefers-color-scheme: light) {
   :root {
-    --color-bg-primary: #2c2c2c;
+    --color-bg-primary: #1a1a1a;
     --color-bg-secondary: #3a3a3a;
     --color-bg-accent: #4a4a4a;
     --color-text-primary: #fefcfc;

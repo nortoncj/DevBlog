@@ -3,17 +3,18 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
-import { ArrowRight, Code2, Target, Zap } from "lucide-react";
+import { ArrowRight, Code2, Target, Zap, MailIcon, Cloud } from "lucide-react";
 import { cn, scrollUtils } from "@/lib/utils";
 import heroImage from "@/public/assets/img/chrisNorton1.png";
 
 const badges = [
   { icon: Code2, label: "Engineer" },
-  { icon: Target, label: "Strategist" },
-  { icon: Zap, label: "Architect" },
+  { icon: Target, label: "DevOps" },
+  { icon: MailIcon, label: "Email" },
+  { icon: Cloud, label: "Cloud" },
 ];
 
-const heroVariants : Variants = {
+const heroVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
@@ -26,7 +27,7 @@ const heroVariants : Variants = {
   },
 };
 
-const itemVariants : Variants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
@@ -35,7 +36,7 @@ const itemVariants : Variants = {
   },
 };
 
-const imageVariants : Variants = {
+const imageVariants: Variants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
@@ -54,8 +55,9 @@ export function HeroSection() {
   const handleResumeButton = () => {
     // scrollUtils.scrollToElement("projects", 80);
     window.open(
-      "https://docs.google.com/document/d/16Cp_Q5bbbjoZqqiHHOPIa31t2y3S4b2StQtIFcnjrFY/edit?usp=sharing","_blank")
-    
+      "https://docs.google.com/document/d/16Cp_Q5bbbjoZqqiHHOPIa31t2y3S4b2StQtIFcnjrFY/edit?usp=sharing",
+      "_blank"
+    );
   };
 
   const handleScrollToContact = () => {
@@ -66,7 +68,7 @@ export function HeroSection() {
     return (
       <section
         id="home"
-        className="min-h-screen flex items-center relative overflow-hidden bg-bg-primary dark:bg-gray-900 pt-20"
+        className="min-h-screen flex items-center relative overflow-hidden bg-bg-primary dark:bg-[#1a1a1a] pt-20"
       >
         <div className="absolute inset-0 bg-blueprint opacity-5 dark:opacity-10 animate-blueprint-float" />
         <div className="container-strategic relative z-10">
@@ -92,13 +94,13 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center relative overflow-hidden bg-bg-primary dark:bg-gray-900 pt-20"
+      className="min-h-screen flex items-center relative overflow-hidden bg-bg-primary dark:bg-[#1a1a1a] pt-20"
     >
       {/* Blueprint Background Pattern */}
       <div className="absolute inset-0 bg-blueprint opacity-5 dark:opacity-10 animate-blueprint-float" />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-overlay dark:bg-gradient-to-br dark:from-gray-900/50 dark:to-gray-800/30" />
+      <div className="absolute inset-0 bg-gradient-overlay dark:bg-gradient-to-br dark:from-[#1a1a1a]/50 dark:to-[#2a2a2a]/30" />
 
       <div className="container-strategic relative z-10">
         <motion.div
@@ -137,8 +139,8 @@ export function HeroSection() {
                     key={badge.label}
                     className="badge-system flex items-center gap-2 dark:bg-gray-800 dark:border-gray-600 dark:text-pink-400"
                   >
-                    <Icon size={16} />
-                    <span>{badge.label}</span>
+                    <Icon className="dark:text-pink-400" size={16} />
+                    <span className="dark:text-pink-400">{badge.label}</span>
                   </div>
                 );
               })}

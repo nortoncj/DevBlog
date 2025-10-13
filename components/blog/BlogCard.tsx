@@ -95,7 +95,7 @@ export function BlogCard({
     <Link href={`/blog/${post.slug}`}>
       <motion.article
         className={cn(
-          "group h-full flex flex-col bg-bg-primary dark:bg-gray-900 rounded-xl overflow-hidden",
+          "group h-full flex flex-col bg-bg-primary dark:bg-[#1a1a1a] rounded-xl overflow-hidden",
           "border border-bg-accent dark:border-gray-700 hover:border-signature-burgundy/30 dark:hover:border-rose-gold/40",
           "shadow-card dark:shadow-2xl hover:shadow-card-hover dark:hover:shadow-signature-burgundy/20 transition-all duration-300",
           "transform hover:-translate-y-1 cursor-pointer"
@@ -140,7 +140,7 @@ export function BlogCard({
               className={cn(
                 "inline-block px-3 py-1 rounded-full text-xs font-medium border backdrop-blur-sm",
                 categoryColors[categoryName] ||
-                  "bg-bg-primary/90 dark:bg-gray-800/90 text-text-secondary dark:text-gray-300 border-bg-accent dark:border-gray-600"
+                  "bg-bg-primary/90 dark:bg-[#1a1a1a]/90 text-text-secondary dark:text-gray-300 border-bg-accent dark:border-gray-600"
               )}
             >
               {categoryName}

@@ -161,7 +161,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="section-padding bg-bg-primary dark:bg-gray-900"
+      className="section-padding bg-bg-primary dark:bg-[#1a1a1a]"
       ref={ref}
     >
       <div className="container-strategic">
@@ -206,7 +206,7 @@ export function ContactSection() {
                   return (
                     <motion.div
                       key={method.label}
-                      className="bg-card dark:bg-gray-800 border border-border dark:border-gray-600 rounded-xl p-6 shadow-card dark:shadow-xl dark:shadow-pink-500/10 hover:shadow-card-hover dark:hover:shadow-pink-500/20 group transition-all duration-300"
+                      className="bg-card dark:bg-[#2a2a2a] border border-border dark:border-gray-600 rounded-xl p-6 shadow-card dark:shadow-xl dark:shadow-pink-500/10 hover:shadow-card-hover dark:hover:shadow-pink-500/20 group transition-all duration-300"
                       whileHover={{ x: 4 }}
                     >
                       <div className="flex items-center gap-4">
@@ -214,10 +214,15 @@ export function ContactSection() {
                           <Icon size={24} />
                         </div>
                         <div className="flex-1">
-                          <div className="font-semibold text-foreground group-hover:text-signature-burgundy dark:group-hover:text-pink-400 transition-colors">
+                          <div
+                            className="font-semibold text-foreground 
+                          dark:text-warm-white
+                          group-hover:text-signature-burgundy 
+                          dark:group-hover:text-rose-gold transition-colors"
+                          >
                             {method.label}
                           </div>
-                          <div className="text-sm text-signature-burgundy dark:text-pink-400 font-medium">
+                          <div className="text-sm text-signature-burgundy dark:text-rose-gold font-medium">
                             {isEmailMethod && emailRevealed
                               ? getEmailAddress()
                               : method.value}
@@ -286,7 +291,7 @@ export function ContactSection() {
 
             {/* Contact Form */}
             <motion.div variants={itemVariants}>
-              <div className="bg-card dark:bg-gray-800 border border-border dark:border-gray-600 rounded-xl p-6 shadow-card dark:shadow-xl">
+              <div className="bg-card dark:bg-[#2a2a2a] border border-border dark:border-gray-600 rounded-xl p-6 shadow-card dark:shadow-xl">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Name Field */}
@@ -474,8 +479,8 @@ export function ContactSection() {
                     ) : (
                       <>
                         <Send size={20} />
-                              {/* Send Message */}
-                              Coming Soon
+                        {/* Send Message */}
+                        Coming Soon
                       </>
                     )}
                   </motion.button>
