@@ -18,7 +18,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    const initialTheme = stored || (prefersDark ? "dark" : "light");
+    const initialTheme = stored || (prefersDark ? "light" : "dark");
 
     setTheme(initialTheme);
     document.documentElement.setAttribute("data-theme", initialTheme);
@@ -96,7 +96,7 @@ export const themeUtils = {
   onSystemThemeChange(callback: (isDark: boolean) => void) {
     if (typeof window === "undefined") return;
 
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
     const handler = (e: MediaQueryListEvent) => callback(e.matches);
 
     mediaQuery.addEventListener("change", handler);

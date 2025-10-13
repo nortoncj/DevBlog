@@ -20,7 +20,7 @@ const ThemeSwitch = () => {
       className="text-black border border-[#8b1538] rounded-2xl p-1 hover:bg-[#FEFCFC] hover:opacity-50 dark:hover:bg-opacity-30 dark:hover:bg-[#E8B4B8]"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
-      {theme === "dark" ? (
+      {theme === "light" ? (
         <SunIcon height={24} width={24} />
       ) : (
         //  <Image src="./sun.svg" alt="Sun Icon" width={24} height={24} />
