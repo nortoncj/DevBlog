@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
@@ -11,6 +11,8 @@ import { Project } from "@/types/sanity";
 import { ProjectCategoriesDebug } from "../test/ProjectCategoriesDebug";
 import { SanityDataTest } from "../test/debug-categories-component";
 import { ForceCategoryRefresh } from "../test/ForceCategoryRefresh";
+import { ProjectDataAnalysis } from "../test/ProjectData";
+import { getProjects } from "@/lib/sanity";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -85,65 +87,103 @@ export function ProjectsSection({
   }, [initialProjects]);
 
   // Filter projects based on active filter
-  const filteredProjects =
-    activeFilter === "all"
-      ? projects
-      : projects.filter((project) => {
-          // Debug logging for filtering
-          if (process.env.NODE_ENV === "development") {
-            console.log(
-              `🔍 Filtering project "${project.title}" against filter "${activeFilter}"`
-            );
-          }
+  // Enhanced project filtering with featured/all logic
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === "all") {
+      // For "All" category: show only featured projects (limit 6)
+      const featuredProjects = projects.filter(
+        (project) => project.featured === true
+      );
 
-          // Handle Sanity projects (with categories array)
-          if ("categories" in project && Array.isArray(project.categories)) {
-            const hasMatch = project.categories.some((cat) => {
-              const slugMatch = cat.slug?.current === activeFilter;
-              const idMatch = cat._id === activeFilter;
-              const titleMatch =
-                cat.title?.toLowerCase().replace(/\s+/g, "-") === activeFilter;
+      if (process.env.NODE_ENV === "development") {
+        // console.log(
+        //   `🌟 "All" filter: Found ${featuredProjects.length} featured projects out of ${projects.length} total`
+        // );
+        // console.log("🔍 All projects with featured status:");
+        // projects.forEach((p, i) => {
+        //   console.log(
+        //     `  ${i + 1}. "${p.title}" - featured: ${p.featured} (type: ${typeof p.featured})`
+        //   );
+        // });
+        // console.log(
+        //   "✅ Featured projects:",
+        //   projects.map((p) => `"${p.title}"`).join(", ") || "None found"
+        // );
+      }
 
-              if (process.env.NODE_ENV === "development") {
-                console.log(
-                  `  📋 Category "${cat.title}": slug="${cat.slug?.current}", id="${cat._id}", matches="${slugMatch || idMatch || titleMatch}"`
-                );
-              }
+      return featuredProjects; // Ensure max 6 featured projects
+    } else {
+      // For specific categories: show ALL projects in that category (featured + non-featured)
+      const categoryProjects = projects.filter((project) => {
+        // Debug logging for filtering
+        // if (process.env.NODE_ENV === "development") {
+        //   console.log(
+        //     `🔍 Filtering project "${project.title}" against filter "${activeFilter}"`
+        //   );
+        // }
 
-              return slugMatch || idMatch || titleMatch;
-            });
+        // Handle Sanity projects (with categories array)
+        if ("categories" in project && Array.isArray(project.categories)) {
+          const hasMatch = project.categories.some((cat) => {
+            const slugMatch = cat.slug?.current === activeFilter;
+            const idMatch = cat._id === activeFilter;
+            const titleMatch =
+              cat.title?.toLowerCase().replace(/\s+/g, "-") === activeFilter;
 
-            if (process.env.NODE_ENV === "development") {
-              console.log(`  ✅ Sanity project match result: ${hasMatch}`);
-            }
+            // if (process.env.NODE_ENV === "development") {
+            //   console.log(
+            //     `  📋 Category "${cat.title}": slug="${cat.slug?.current}", id="${cat._id}", matches="${slugMatch || idMatch || titleMatch}"`
+            //   );
+            // }
 
-            return hasMatch;
-          }
+            return slugMatch || idMatch || titleMatch;
+          });
 
-          // Handle static projects (with category string)
-          if ("category" in project) {
-            const staticProject = project as any;
-            const categoryMatch = staticProject.category === activeFilter;
-            const slugMatch =
-              staticProject.category?.toLowerCase().replace(/\s+/g, "-") ===
-              activeFilter;
+          // if (process.env.NODE_ENV === "development") {
+          //   console.log(`  ✅ Sanity project match result: ${hasMatch}`);
+          // }
 
-            if (process.env.NODE_ENV === "development") {
-              console.log(
-                `  📝 Static category "${staticProject.category}": matches="${categoryMatch || slugMatch}"`
-              );
-            }
+          return hasMatch;
+        }
 
-            return categoryMatch || slugMatch;
-          }
+        // Handle static projects (with category string)
+        if ("category" in project) {
+          const staticProject = project as any;
+          const categoryMatch = staticProject.category === activeFilter;
+          const slugMatch =
+            staticProject.category?.toLowerCase().replace(/\s+/g, "-") ===
+            activeFilter;
 
-          // No recognizable category structure
-          if (process.env.NODE_ENV === "development") {
-            console.log(`  ❌ No category structure found in project`);
-          }
+          // if (process.env.NODE_ENV === "development") {
+          //   console.log(
+          //     `  📝 Static category "${staticProject.category}": matches="${categoryMatch || slugMatch}"`
+          //   );
+          // }
 
-          return false;
-        });
+          return categoryMatch || slugMatch;
+        }
+
+        // No recognizable category structure
+        if (process.env.NODE_ENV === "development") {
+          console.log(`  ❌ No category structure found in project`);
+        }
+
+        return false;
+      });
+
+      // if (process.env.NODE_ENV === "development") {
+      //   console.log(
+      //     `🏷️ Category "${activeFilter}": Found ${categoryProjects.length} projects`
+      //   );
+      //   console.log(
+      //     "Category projects:",
+      //     categoryProjects.map((p) => `"${p.title}" (featured: ${p.featured})`)
+      //   );
+      // }
+
+      return categoryProjects; // Return all projects in category, no limit
+    }
+  }, [projects, activeFilter]);
 
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
@@ -190,6 +230,7 @@ export function ProjectsSection({
           {/* <ForceCategoryRefresh onCategoriesUpdate={setCategories} />
           <SanityDataTest />
           <ProjectCategoriesDebug projects={projects} categories={categories} /> */}
+          {/* <ProjectDataAnalysis /> */}
 
           {/* Project Filters */}
           <motion.div variants={itemVariants}>
@@ -205,7 +246,7 @@ export function ProjectsSection({
           <motion.div variants={itemVariants}>
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                {[...Array(6)].map((_, i) => (
+                {[...Array()].map((_, i) => (
                   <div key={i} className="animate-pulse">
                     <div className="h-48 bg-bg-secondary dark:bg-[gray-700 ]rounded-lg mb-4" />
                     <div className="h-4 bg-bg-secondary dark:bg-gray-700 rounded mb-2" />

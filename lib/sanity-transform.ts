@@ -77,10 +77,17 @@ export function getBlogCategoryName(categories: any[]): string {
  * Transform Sanity project to frontend Project format
  */
 export function transformSanityProject(sanityProject: any): Project {
-  // console.log('🔄 Transforming Sanity project:', sanityProject.title);
-  // console.log('  📋 Raw categories:', sanityProject.categories);
-  // console.log('  📏 Categories count:', sanityProject.categories?.length);
-  
+  // console.log("🔄 Transforming Sanity project:", sanityProject.title);
+  // console.log("  📋 Raw categories:", sanityProject.categories);
+  // console.log("  📏 Categories count:", sanityProject.categories?.length);
+  // console.log(
+  //   "  ⭐ Raw featured value:",
+  //   sanityProject.featured,
+  //   "(type:",
+  //   typeof sanityProject.featured,
+  //   ")"
+  // );
+
   const transformed = {
     id: sanityProject._id,
     title: sanityProject.title,
@@ -92,12 +99,13 @@ export function transformSanityProject(sanityProject: any): Project {
     githubUrl: sanityProject.github,
     categories: sanityProject.categories || [],
     tags: sanityProject.tags || [],
-    featured: sanityProject.featured || false,
+    featured: sanityProject.featured === true,
     modal: sanityProject.modal,
-    content: sanityProject.description
+    content: sanityProject.description,
   };
-  
+
   // console.log('  ✅ Transformed categories:', transformed.categories);
+  // console.log("  ⭐ Transformed featured:", transformed.featured);
   return transformed;
 }
 
@@ -312,9 +320,9 @@ export function getUniqueCategoriesFromPosts(posts: BlogPost[]) {
 export function getUniqueCategoriesFromProjects(projects: any[]) {
   // console.log('🏷️ === CATEGORY EXTRACTION START ===');
   // console.log('📊 Input projects count:', projects.length);
-  
+
   if (!projects || projects.length === 0) {
-    console.log('❌ No projects provided to extract categories from');
+    console.log("❌ No projects provided to extract categories from");
     return [];
   }
 
@@ -322,7 +330,7 @@ export function getUniqueCategoriesFromProjects(projects: any[]) {
   let processedCount = 0;
   let skippedCount = 0;
   let categoriesFound = 0;
-  
+
   projects.forEach((project, index) => {
     // console.log(`\n📁 === PROJECT ${index + 1}/${projects.length} ===`);
     // console.log(`📝 Title: "${project.title}"`);
@@ -330,39 +338,41 @@ export function getUniqueCategoriesFromProjects(projects: any[]) {
     // console.log(`📋 Categories type: ${typeof project.categories}`);
     // console.log(`🔢 Is array: ${Array.isArray(project.categories)}`);
     // console.log(`📏 Length: ${Array.isArray(project.categories) ? project.categories.length : 'N/A'}`);
-    
+
     // Enhanced validation
     if (!project.categories) {
-      console.log('  ❌ Categories is null/undefined');
+      console.log("  ❌ Categories is null/undefined");
       skippedCount++;
       return;
     }
-    
+
     if (!Array.isArray(project.categories)) {
-      console.log('  ❌ Categories is not an array:', typeof project.categories);
+      console.log(
+        "  ❌ Categories is not an array:",
+        typeof project.categories
+      );
       skippedCount++;
       return;
     }
 
     if (project.categories.length === 0) {
-      console.log('  ⚠️ Categories array is empty');
+      console.log("  ⚠️ Categories array is empty");
       skippedCount++;
       return;
     }
 
     // console.log(`  ✅ Valid categories array with ${project.categories.length} items`);
     processedCount++;
-   
 
-    project.categories.forEach((category:any, catIndex:any) => {
+    project.categories.forEach((category: any, catIndex: any) => {
       // console.log(`\n  🏷️ === CATEGORY ${catIndex + 1}/${project.categories.length} ===`);
       // console.log(`  🔍 Raw category:`, category);
       // console.log(`  📋 Category type: ${typeof category}`);
-      
+
       let categoryId: string;
       let categoryTitle: string;
       let categorySlug: string;
-      
+
       try {
         if (typeof category === "string") {
           // Simple string category
@@ -444,12 +454,14 @@ export function getUniqueCategoriesFromProjects(projects: any[]) {
         console.error(`    💥 Error processing category:`, error);
       }
     });
-    
+
     // console.log(`  📊 Project processed. Categories in this project: ${project.categories.length}`);
   });
-  
-  const categories = Array.from(categoryMap.values()).sort((a, b) => a.title.localeCompare(b.title));
-  
+
+  const categories = Array.from(categoryMap.values()).sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+
   // console.log('\n🎯 === EXTRACTION RESULTS ===');
   // console.log(`📊 Total projects: ${projects.length}`);
   // console.log(`✅ Processed projects: ${processedCount}`);
@@ -458,7 +470,7 @@ export function getUniqueCategoriesFromProjects(projects: any[]) {
   // console.log(`📋 Final unique categories: ${categories.length}`);
   // console.log('🔍 Final categories:', categories.map(c => `"${c.title}" (${c.slug}, count: ${c.count})`).join(', '));
   // console.log('🏁 === CATEGORY EXTRACTION END ===\n');
-  
+
   return categories;
 }
 

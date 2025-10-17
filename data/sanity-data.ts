@@ -420,9 +420,9 @@ export async function getProjectCategories() {
       const formattedCategories = [
         {
           id: "all",
-          label: "All",
+          label: "Featured",
           description: "Complete portfolio",
-          count: projects.length,
+          count: getProjects
         },
         ...extractedCategories.map((cat) => ({
           id: cat.slug || cat.id,
@@ -481,10 +481,10 @@ export async function getProjectCategories() {
           id: "all",
           label: "All",
           description: "Complete portfolio",
-          count: projects.length,
+          count: getProjects,
         },
         ...extractedCategories.map((cat) => ({
-          id: cat.slug,
+          id: cat.slug || cat.id,
           label: cat.title,
           description: `${cat.title} solutions`,
           count: cat.count,
@@ -583,7 +583,7 @@ function createIntelligentDefaultCategories(projects: Project[]) {
     }
   });
   
-  console.log('🎯 Intelligent categories created:', categories);
+  // console.log('🎯 Intelligent categories created:', categories);
   return categories;
 }
 
@@ -741,7 +741,7 @@ export async function preloadHomepageData() {
 
   return {
     featuredPosts,
-    projects: projects.slice(0, 6), // Limit for homepage
+    projects: projects, // Limit for homepage
   };
 }
 
