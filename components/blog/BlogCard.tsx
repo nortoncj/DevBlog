@@ -222,7 +222,7 @@ export function BlogCard({
                   {post.author.name}
                 </div>
                 <div className="text-text-muted dark:text-gray-400">
-                  System Architect
+                  Engineer
                 </div>
               </div>
             </div>

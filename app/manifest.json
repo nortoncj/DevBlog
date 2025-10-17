@@ -1,5 +1,5 @@
 {
-  "name": "Chris Norton - System Architect & Developer",
+  "name": "Chris Norton - Engineer & Developer",
   "short_name": "Chris Norton",
   "description": "Strategic system architecture, automation solutions, and full-stack development by Chris Norton. Transform your business with scalable technology solutions.",
   "start_url": "/",
@@ -93,7 +93,7 @@
     {
       "name": "View Projects",
       "short_name": "Projects",
-      "description": "Browse my portfolio of system architecture projects",
+      "description": "Browse my portfolio of projects",
       "url": "/#projects",
       "icons": [
         {
@@ -106,7 +106,7 @@
     {
       "name": "Read Blog",
       "short_name": "Blog",
-      "description": "Strategic insights and system architecture articles",
+      "description": "Strategic insights and Informative  articles",
       "url": "/blog",
       "icons": [
         {

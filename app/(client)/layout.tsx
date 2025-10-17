@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     template: "%s | Chris Norton",
   },
   description:
-    "System Architect Chris Norton | Scalable software engineering, web development & automation solutions. Build once. Scale forever. Portfolio & insights.",
+    "Engineer Chris Norton | Scalable software engineering, web development & automation solutions. Build once. Scale forever. Portfolio & insights.",
   keywords: [
-    "system architect",
+    "embedded systems",
     "automation",
     "software engineering",
     "devops",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://chrisnortonjr.com",
-    title: "Chris Norton Jr - The System Architect",
+    title: "Chris Norton Jr - The Engineer",
     description: "Build systems that scale. Results with precision.",
     siteName: "Chris Norton Jr Portfolio",
     images: [
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
         url: "/favicon.ico",
         width: 1200,
         height: 630,
-        alt: "Chris Norton Jr - System Architect",
+        alt: "Chris Norton Jr - Engineer",
       },
     ],
   },
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "Chris Norton Jr - The System Architect",
+    title: "Chris Norton Jr - The Engineer",
     description: "Build systems that scale. Results with precision.",
     images: ["/favicon.ico"],
     creator: "@theWebTechNinja",

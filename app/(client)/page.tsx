@@ -15,9 +15,9 @@ import SkillsEducation from "@/components/sections/SkillsEducation";
 import { ThemeTest } from "@/components/test/ThemeTest";
 
 export const metadata: Metadata = {
-  title: "Chris Norton Jr - The System Architect",
+  title: "Chris Norton Jr - The Engineer",
   description:
-    "Build systems that scale. Results with precision. Strategic system architect designing scalable tools, automations, and products for businesses.",
+    "Build systems that scale. Results with precision. Strategic systems designing scalable tools, automations, and products for businesses.",
 };
 
 export default async function Home() {

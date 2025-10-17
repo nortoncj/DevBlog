@@ -104,7 +104,7 @@ export function Navigation() {
               Chris Norton Jr
             </span>
             <span className="text-sm font-medium text-[#8B1538] ">
-              System Architect
+              Engineer
             </span>
           </Link>
 

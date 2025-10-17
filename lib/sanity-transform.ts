@@ -33,7 +33,7 @@ export function transformSanityPost(sanityPost: SanityPost): BlogPost {
     featured: sanityPost.featured, // You can add this field to your Sanity schema
     author: {
       name: "Chris Norton",
-      bio: "System Architect specializing in scalable solutions",
+      bio: "Engineer specializing in scalable solutions",
     },
   };
 }

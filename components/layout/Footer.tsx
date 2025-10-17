@@ -98,7 +98,7 @@ export function Footer() {
                   Chris Norton Jr
                 </h3>
                 <p className="text-rose-gold dark:text-pink-400 font-medium mb-3">
-                  The System Architect
+                  The Engineer
                 </p>
                 <p className="text-silver-accent dark:text-gray-300 italic text-lg">
                   "Build systems that scale. Results with precision."
@@ -108,7 +108,7 @@ export function Footer() {
               {/* Mission Statement */}
               <div className="p-4 bg-signature-burgundy/10 dark:bg-pink-500/10 rounded-lg border border-rose-gold/20 dark:border-pink-400/30">
                 <p className="text-sm text-silver-accent dark:text-gray-300 leading-relaxed">
-                  Strategic system architect specializing in scalable tools,
+                  Engineer specializing in scalable tools,
                   automations, and products for businesses without the endless
                   grind.
                 </p>

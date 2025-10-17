@@ -6,6 +6,7 @@ import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Code2, Target, Zap, MailIcon, Cloud } from "lucide-react";
 import { cn, scrollUtils } from "@/lib/utils";
 import heroImage from "@/public/assets/img/chrisNorton1.png";
+import PlayButton from "../ui/PlayButton";
 
 const badges = [
   { icon: Code2, label: "Engineer" },
@@ -122,7 +123,7 @@ export function HeroSection() {
                 Results with precision.
               </p>
               <p className="text-lg lg:text-xl text-text-secondary dark:text-gray-300 leading-relaxed max-w-2xl">
-                Strategic system architect designing scalable tools,
+                Strategic Engineer designing scalable tools,
                 automations, and products for businesses without the endless
                 grind.
               </p>
@@ -162,6 +163,7 @@ export function HeroSection() {
                   />
                 </span>
               </button>
+              {/* <PlayButton videoUrl="https://www.youtube.com/embed/1Z6E46F5H-o?autoplay=1&si=XEiy8KrYRVovAGIV" /> */}
               {/* <button
                 onClick={handleScrollToContact}
                 className="btn-secondary dark:border-pink-400 dark:text-pink-400 dark:hover:bg-pink-400 dark:hover:text-gray-900"
@@ -186,7 +188,7 @@ export function HeroSection() {
                 <div className="relative w-full h-full rounded-2xl overflow-hidden border-4 border-rose-gold dark:border-pink-400 shadow-premium dark:shadow-2xl dark:shadow-pink-500/20">
                   <Image
                     src={heroImage}
-                    alt="Christopher Norton - System Architect"
+                    alt="Christopher Norton - Engineer"
                     fill
                     className="object-cover"
                     priority

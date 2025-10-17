@@ -63,7 +63,7 @@ export async function generateMetadata({
       keywords: [
         post.title,
         "Chris Norton Jr",
-        "System Architecture",
+        "Engineer",
         "Technology Leadership",
         "Automation",
         category,
@@ -80,7 +80,7 @@ export async function generateMetadata({
         title: post.title,
         description,
         url: postUrl,
-        siteName: "Chris Norton Jr - System Architect",
+        siteName: "Chris Norton Jr - Engineer",
         locale: "en_US",
         publishedTime: post.publishedAt,
         modifiedTime: post._updatedAt || post.publishedAt,
@@ -266,7 +266,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {post.author?.name || "Chris Norton"}
                   </div>
                   <div className="text-sm text-text-muted dark:text-gray-400">
-                    System Architect
+                    Engineer
                   </div>
                 </div>
               </div>

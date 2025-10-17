@@ -141,7 +141,7 @@ const education: Education[] = [
     institution: "University of Technology",
     year: "2018",
     description:
-      "Specialized in Software Engineering and System Architecture with focus on scalable solutions.",
+      "Specialized in Software Engineering, Devops, and Hardware solutions with focus on scalable solutions.",
     type: "degree",
   },
   {

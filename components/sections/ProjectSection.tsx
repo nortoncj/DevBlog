@@ -8,13 +8,11 @@ import { ProjectFilters } from "@/components/projects/ProjectFilters";
 import { ProjectModal } from "@/components/projects/ProjectModal";
 import { getProjectsData, getProjectCategories } from "@/data/sanity-data";
 import { Project } from "@/types/sanity";
-import { ProjectCategoriesDebug } from "../test/ProjectCategoriesDebug"; 
+import { ProjectCategoriesDebug } from "../test/ProjectCategoriesDebug";
 import { SanityDataTest } from "../test/debug-categories-component";
 import { ForceCategoryRefresh } from "../test/ForceCategoryRefresh";
 
-
-
-const containerVariants : Variants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -25,7 +23,7 @@ const containerVariants : Variants = {
   },
 };
 
-const itemVariants : Variants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
@@ -156,7 +154,6 @@ export function ProjectsSection({
       // Open external URL in new tab
       window.open(project.liveUrl, "_blank", "noopener,noreferrer");
     }
-    
   };
 
   const handleModalClose = () => {
@@ -257,7 +254,7 @@ export function ProjectsSection({
             className="text-center bg-bg-secondary dark:bg-[#2a2a2a] border border-transparent dark:border-gray-600 rounded-2xl p-8 lg:p-12"
           >
             <h3 className="text-2xl lg:text-3xl font-bold text-text-primary dark:text-white mb-4">
-              Need a Custom System Architecture?
+              Need a Custom Project?
             </h3>
             <p className="text-lg text-text-secondary dark:text-gray-300 mb-6 max-w-2xl mx-auto">
               Every business has unique challenges. Let's design a systematic
@@ -299,4 +296,3 @@ export function ProjectsSection({
     </section>
   );
 }
-
