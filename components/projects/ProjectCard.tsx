@@ -22,8 +22,12 @@ const categoryColors = {
   data: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-500/30",
   integrations:
     "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-500/30",
-  blue: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-500/30",
-  red: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-500/30",
+  business:
+    "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-500/30",
+  email:
+    "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-500/30",
+  electrical:
+    "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-500/30",
 } as const;
 
 const categoryLabels = {
@@ -31,7 +35,9 @@ const categoryLabels = {
   "web-apps": "Web Applications" ,
   data: "Data Systems",
   integrations: "API Integrations",
-  red: "email"
+  business: "Business",
+  email: "email",
+  electrical: "IOT"
 } as const;
 
 type CategoryKey = keyof typeof categoryColors;

@@ -238,7 +238,7 @@ export function ContactSection() {
                         <div className="mt-4 flex gap-2">
                           <button
                             onClick={handleEmailReveal}
-                            className="flex items-center gap-2 px-3 py-2 text-sm bg-signature-burgundy dark:bg-pink-400 text-white dark:text-gray-900 rounded-lg hover:opacity-90 transition-opacity"
+                            className="flex items-center gap-2 px-3 py-2 text-sm bg-signature-burgundy  text-white  rounded-lg hover:opacity-90 transition-opacity"
                           >
                             {emailRevealed ? (
                               <>
@@ -276,7 +276,7 @@ export function ContactSection() {
                                 ? "noopener noreferrer"
                                 : undefined
                             }
-                            className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-signature-burgundy dark:bg-pink-400 text-white dark:text-gray-900 rounded-lg hover:opacity-90 transition-opacity"
+                            className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-signature-burgundy  text-white rounded-lg hover:opacity-90 transition-opacity"
                           >
                             <ExternalLink size={16} />
                             Connect

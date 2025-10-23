@@ -2,11 +2,7 @@
 @import "tw-animate-css";
 @plugin '@tailwindcss/typography';
 
-
-@variant dark ([data-theme="light"] &);
-
-
-
+@variant dark ([data-theme="dark"] &);
 
 @theme {
   /* Christopher Norton Brand Colors */
@@ -18,17 +14,18 @@
   --color-light-gray: #f8f6f7;
   --color-charcoal-gray: #2c2c2c;
   --color-silver-accent: #a8a8a8;
-  
+
   /* High Contrast Text Colors for Accessibility */
   --color-text-primary: #1a1a1a;
   --color-text-secondary: #4a4a4a;
   --color-text-muted: #6a6a6a;
-  
+
   /* Background Colors */
-  --color-bg-primary: #fefcfc;
+  --color-bg-primary-dark: #fefcfc;
+  --color-bg-primary: #FAF9F6;
   --color-bg-secondary: #f8f6f7;
   --color-bg-accent: #e8b4b8;
-  
+
   /* Default Tailwind Colors (for compatibility) */
   --color-background: #fefcfc;
   --color-foreground: #1a1a1a;
@@ -49,12 +46,13 @@
   --color-border: #e8b4b8;
   --color-input: #f8f6f7;
   --color-ring: #b8336a;
-  
+
   /* Fonts */
   --font-sans: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", Monaco, Consolas, monospace;
+  --font-mono:
+    var(--font-jetbrains-mono), "JetBrains Mono", Monaco, Consolas, monospace;
   --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
-  
+
   /* Border Radius */
   --radius: 0.5rem;
 }
@@ -63,16 +61,19 @@
 :root {
   /* Shadows */
   --shadow-card: 0 4px 20px rgb(139 21 56 / 0.1), 0 1px 3px rgb(0 0 0 / 0.1);
-  --shadow-card-hover: 0 8px 30px rgb(139 21 56 / 0.15), 0 4px 6px rgb(0 0 0 / 0.1);
-  --shadow-premium: 0 8px 32px rgb(232 180 184 / 0.2), 0 2px 8px rgb(139 21 56 / 0.1);
-  --shadow-premium-hover: 0 12px 40px rgb(232 180 184 / 0.25), 0 4px 12px rgb(139 21 56 / 0.15);
+  --shadow-card-hover:
+    0 8px 30px rgb(139 21 56 / 0.15), 0 4px 6px rgb(0 0 0 / 0.1);
+  --shadow-premium:
+    0 8px 32px rgb(232 180 184 / 0.2), 0 2px 8px rgb(139 21 56 / 0.1);
+  --shadow-premium-hover:
+    0 12px 40px rgb(232 180 184 / 0.25), 0 4px 12px rgb(139 21 56 / 0.15);
   --shadow-button-glow: 0 8px 25px rgb(139 21 56 / 0.3);
-  
+
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #8B1538 0%, #B8336A 100%);
-  --gradient-hero: linear-gradient(135deg, #8B1538 0%, #B8336A 100%);
-  --gradient-accent: linear-gradient(135deg, #7B4B94 0%, #E8B4B8 100%);
-  --gradient-card: linear-gradient(135deg, #FEFCFC 0%, #F8F6F7 100%);
+  --gradient-primary: linear-gradient(135deg, #8b1538 0%, #b8336a 100%);
+  --gradient-hero: linear-gradient(135deg, #8b1538 0%, #b8336a 100%);
+  --gradient-accent: linear-gradient(135deg, #7b4b94 0%, #e8b4b8 100%);
+  --gradient-card: linear-gradient(135deg, #fefcfc 0%, #f8f6f7 100%);
 }
 
 /* Minimal base styles - only essential overrides */
@@ -87,7 +88,10 @@ body {
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  font-feature-settings:
+    "kern" 1,
+    "liga" 1,
+    "calt" 1;
 }
 
 ::selection {
@@ -102,7 +106,9 @@ textarea:focus-visible,
 select:focus-visible,
 a:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-ring), 0 0 0 4px rgb(var(--color-ring) / 0.2);
+  box-shadow:
+    0 0 0 2px var(--color-ring),
+    0 0 0 4px rgb(var(--color-ring) / 0.2);
 }
 
 /* Navigation Styles */
@@ -479,7 +485,7 @@ a:focus-visible {
 
 /* Background Patterns */
 .bg-blueprint {
-  background-image: 
+  background-image:
     linear-gradient(rgba(139, 21, 56, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(139, 21, 56, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
@@ -496,9 +502,17 @@ a:focus-visible {
 }
 
 .bg-circuit {
-  background-image: 
-    radial-gradient(circle at 25% 25%, rgba(184, 51, 106, 0.1) 0%, transparent 25%),
-    radial-gradient(circle at 75% 75%, rgba(232, 180, 184, 0.1) 0%, transparent 25%);
+  background-image:
+    radial-gradient(
+      circle at 25% 25%,
+      rgba(184, 51, 106, 0.1) 0%,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(232, 180, 184, 0.1) 0%,
+      transparent 25%
+    );
 }
 
 /* Shadow Utilities */
@@ -574,7 +588,7 @@ a:focus-visible {
 }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
     --color-bg-primary: #1a1a1a;
     --color-bg-secondary: #3a3a3a;
@@ -649,7 +663,9 @@ a:focus-visible {
 
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -677,7 +693,7 @@ a:focus-visible {
   .print-hidden {
     display: none !important;
   }
-  
+
   .print-visible {
     display: block !important;
   }

@@ -130,7 +130,7 @@ export const themeUtils = {
     const stored = localStorage.getItem("theme") as "light" | "dark" | null;
     const contrast = localStorage.getItem("contrast");
     const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
+      "(prefers-color-scheme: light)"
     ).matches;
 
     const theme = stored || (prefersDark ? "dark" : "light");

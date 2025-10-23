@@ -93,7 +93,7 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-bg-primary);
+  /* background-color: var(--color-bg-primary); */
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -310,7 +310,7 @@ a:focus-visible {
   font-size: 0.75rem;
   font-family: var(--font-mono);
   background-color: rgb(var(--color-secondary) / 0.1);
-  color: var(--color-secondary);
+  color: var(--color-primary);
   border: 1px solid rgb(var(--color-secondary) / 0.2);
 }
 
@@ -584,7 +584,7 @@ a:focus-visible {
 }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
     --color-bg-primary: #2c2c2c;
     --color-bg-secondary: #3a3a3a;
