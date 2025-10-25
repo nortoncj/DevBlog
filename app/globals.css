@@ -584,7 +584,7 @@ a:focus-visible {
 }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --color-bg-primary: #2c2c2c;
     --color-bg-secondary: #3a3a3a;
@@ -601,7 +601,7 @@ a:focus-visible {
     --color-border: #5a5a5a;
     --color-input: #4a4a4a;
   }
-}
+} */
 
 /* Dark Mode Utility Classes */
 .dark-mode-toggle {
