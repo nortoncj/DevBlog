@@ -133,7 +133,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="section-header">
             <h2 className="section-title text-text-primary dark:text-white">
-              <span className="text-gradient-hero">Blogs</span>
+              <span className="text-gradient-hero">Insights</span>
             </h2>
             <p className="section-subtitle text-text-secondary dark:text-gray-300">
               <span className="dark:text-gray-300">

@@ -123,9 +123,8 @@ export function HeroSection() {
                 Results with precision.
               </p>
               <p className="text-lg lg:text-xl text-text-secondary dark:text-gray-300 leading-relaxed max-w-2xl">
-                Strategic Engineer designing scalable tools,
-                automations, and products for businesses without the endless
-                grind.
+                Strategic Engineer designing scalable tools, automations, and
+                products for businesses without the endless grind.
               </p>
             </motion.div>
             {/* Professional Badges */}
@@ -192,7 +191,8 @@ export function HeroSection() {
                     fill
                     className="object-cover"
                     priority
-                    sizes="(max-width: 768px) 320px, 384px"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    quality={90}
                   />
 
                   {/* Gradient Overlay */}

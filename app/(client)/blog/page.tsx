@@ -189,7 +189,7 @@ export default function BlogIndexPage() {
                 className="inline-flex items-center gap-2 bg-gradient-hero dark:bg-signature-burgundy text-white px-4 py-2 rounded-full text-sm font-medium mb-6"
               >
                 <BookOpen size={16} />
-                Technical Blog
+                Technical Articles & Insights
               </motion.div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary dark:text-white mb-6">
