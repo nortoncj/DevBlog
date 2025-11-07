@@ -176,7 +176,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
               <div className="space-y-2">
                 <div className="text-3xl font-bold text-signature-burgundy dark:text-pink-400">
-                  15+
+                  10+
                 </div>
                 <div className="text-text-secondary dark:text-gray-400">
                   Technical Articles

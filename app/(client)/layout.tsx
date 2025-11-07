@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "../globals.css";
-import { Navigation } from "@/components/layout/Navigation";
+import { Navigation } from "@/components/layout/Navigation2";
 import { cn } from '@/lib/utils'
-import { Footer } from "@/components/layout/Footer";
+import { Footer } from "@/components/layout/FooterNew";
 import icon from "@images/Logo.jpg"
 
 

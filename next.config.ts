@@ -1,6 +1,29 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.tailwindcss.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
+              "img-src 'self' data: https: blob:",
+              "font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net",
+              "connect-src 'self' https: wss:",
+              "frame-src 'self' https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com",
+              "media-src 'self' https:",
+              "worker-src 'self' blob:",
+            ].join("; "),
+          },
+        ],
+      },
+    ];
+  },
   /* config options here */
   experimental: {
     // Enable optimized package imports
