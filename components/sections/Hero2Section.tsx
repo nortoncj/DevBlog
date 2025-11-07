@@ -64,13 +64,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     { label: "Embedded Systems", icon: FaMicrochip, color: "orange" },
   ],
   socialLinks = {
-    github: "#",
-    linkedin: "#",
-    twitter: "#",
-    email: "#",
+    github: "https://github.com/nortoncj",
+    linkedin: "https://www.linkedin.com/in/chrisnortonjr/",
+    twitter: "https://x.com/chrisnortonjr",
+    email: "contact@gmail.com",
   },
   stats = {
-    projects: 40,
+    projects: 10,
     degree: "B.S.",
   },
   videoUrl = "your-intro-video.mp4",
@@ -322,7 +322,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   className="ml-2 group-hover:translate-x-2 transition-transform duration-300"
                 />
               </a>
-              <button
+              {/* <button
                 onClick={openVideoModal}
                 className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-pink-600 via-rose-600 to-red-600 text-white rounded-xl font-bold hover:shadow-2xl transition-all duration-300 hover:scale-110 animate-pulse-glow"
               >
@@ -332,7 +332,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   </span>
                   <span className="text-lg">Watch My Intro</span>
                 </span>
-              </button>
+              </button> */}
             </div>
 
             {/* Social Links */}
@@ -469,7 +469,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               className="absolute top-4 right-4 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all hover:scale-110"
             >
               <FaTimes size={24} />
-              
             </button>
 
             {/* Video Container */}

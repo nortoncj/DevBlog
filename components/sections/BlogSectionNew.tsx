@@ -243,9 +243,9 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
 
   // Stats data
   const stats = [
-    { icon: FiBookOpen, value: "50+", label: "Technical Articles", delay: 0.1 },
-    { icon: FiUsers, value: "100K+", label: "Readers Reached", delay: 0.2 },
-    { icon: FiStar, value: "40+", label: "Case Studies", delay: 0.3 },
+    { icon: FiBookOpen, value: "10+", label: "Technical Articles", delay: 0.1 },
+    { icon: FiUsers, value: "160+", label: "Readers Reached", delay: 0.2 },
+    { icon: FiStar, value: "5+", label: "Case Studies", delay: 0.3 },
     {
       icon: FiTrendingUp,
       value: "95%",
@@ -256,14 +256,14 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
 
   // Topics data
   const topics = [
-    { name: "Web Development", count: 24 },
-    { name: "React & Next.js", count: 18 },
-    { name: "TypeScript", count: 15 },
-    { name: "UI/UX Design", count: 12 },
-    { name: "Performance", count: 10 },
-    { name: "Best Practices", count: 20 },
-    { name: "Case Studies", count: 8 },
-    { name: "Tutorials", count: 16 },
+    { name: "Web Development", count: 2 },
+    { name: "DevOps", count: 2 },
+    { name: "Hardware", count: 2 },
+    { name: "UI/UX Design", count: 2 },
+    { name: "Email Automation", count: 1 },
+    { name: "Best Practices", count: 2 },
+    { name: "Case Studies", count: 2 },
+    { name: "Tutorials", count: 1 },
   ];
 
   return (
@@ -445,12 +445,12 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
                 <span>Browse All Posts</span>
                 <FiArrowRight className="w-5 h-5" />
               </Link>
-              <Link
+              {/* <Link
                 href="/newsletter"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-xl text-white font-semibold text-lg border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transition-all duration-300"
               >
                 <span>Subscribe to Newsletter</span>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </motion.div>
