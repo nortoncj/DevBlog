@@ -41,7 +41,7 @@ const categoryLabels = {
 } as const;
 
 type CategoryKey = keyof typeof categoryColors;
-
+export const revalidate = 3600;
 export function ProjectCard({ project, isHovered, onClick }: ProjectCardProps) {
   // Safely access timeline - fallback to a default if not available
   const getTimeline = (): string => {

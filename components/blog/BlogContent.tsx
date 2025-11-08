@@ -263,7 +263,7 @@ function ScrollToTopButton() {
 interface BlogPostContentProps {
   post: any;
 }
-
+export const revalidate = 3600;
 export default function BlogPostContent({ post }: BlogPostContentProps) {
   const [mounted, setMounted] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);

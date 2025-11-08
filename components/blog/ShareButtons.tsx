@@ -26,7 +26,7 @@ interface ShareButton {
   color: string;
   hoverColor: string;
 }
-
+export const revalidate = 3600;
 export function ShareButtons({
   post,
   showLabels = false,

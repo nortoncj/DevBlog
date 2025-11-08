@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     "Build systems that scale. Results with precision. Strategic systems designing scalable tools, automations, and products for businesses.",
 };
-
+export const revalidate = 3600;
 export default async function Home() {
   const { featuredPosts, projects } = await preloadHomepageData();
 

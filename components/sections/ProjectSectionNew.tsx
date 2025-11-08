@@ -37,7 +37,7 @@ interface ProjectsSectionProps {
   initialProjects?: Project[];
   initialCategories?: SanityCategory[];
 }
-
+export const revalidate = 3600;
 export function ProjectsSection({
   initialProjects = []
 }: ProjectsSectionProps) {

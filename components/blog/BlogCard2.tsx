@@ -56,7 +56,7 @@ const formatDisplayDate = (dateString: string): string => {
     year: "numeric",
   });
 };
-
+export const revalidate = 3600;
 export function BlogCard({ post, index = 0 }: BlogCardProps) {
   const { name: categoryName } = getCategoryInfo(post.categories);
 

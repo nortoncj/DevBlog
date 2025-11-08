@@ -122,7 +122,7 @@ const itemVariants :Variants = {
     },
   },
 };
-
+export const revalidate = 3600;
 export default function BlogIndexPage() {
   const [selectedCategory, setSelectedCategory] = useState("All Posts");
   const [searchQuery, setSearchQuery] = useState("");
@@ -131,7 +131,7 @@ export default function BlogIndexPage() {
   const [featuredPosts, setFeaturedPosts] = useState<any[]>([]);
   const [categories, setCategories] = useState<string[]>(["All Posts"]);
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-
+    
   // Fetch data from Sanity
   useEffect(() => {
     async function fetchData() {

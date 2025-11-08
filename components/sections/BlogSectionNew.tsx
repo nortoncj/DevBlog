@@ -189,7 +189,7 @@ const TopicTag = ({
     </motion.div>
   );
 };
-
+export const revalidate = 3600;
 export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
   const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
   const [loading, setLoading] = useState(!initialPosts.length);

@@ -93,54 +93,70 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
     //   description:
     //     "Marketing automation platform for email campaigns and lead nurturing",
     //   tags: ["Automation", "Workflows", "CRM"],
-        // },
-        {
-            name: "HTML",
-          icon: FaHtml5,
-          description: "Standard markup language for creating web pages",
-            tags: ["Web", "Markup", "Frontend"],
-        },
-        {
-            name: "CSS",
-            icon: FaCss3,
-            description: "Style sheet language for designing web pages",
-            tags: ["Design", "Styling", "Responsive"],
-        },
-        {
-            name: "Liquid",
-            icon: LuWaves,
-            description: "Template language for dynamic content rendering",
-            tags: ["Templates", "E-commerce", "Dynamic"],
+    // },
+    {
+      name: "HTML",
+      icon: FaHtml5,
+      description: "Standard markup language for creating web pages",
+      tags: ["Web", "Markup", "Frontend"],
+      badgeColor:
+        "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300",
+    },
+    {
+      name: "CSS",
+      icon: FaCss3,
+      description: "Style sheet language for designing web pages",
+      tags: ["Design", "Styling", "Responsive"],
+      badgeColor:
+        "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+    },
+    {
+      name: "Liquid",
+      icon: LuWaves,
+      description: "Template language for dynamic content rendering",
+      tags: ["Templates", "E-commerce", "Dynamic"],
+      badgeColor:
+        "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300",
     },
     {
       name: "HubSpot",
       icon: FaHubspot,
       description: "All-in-one marketing, sales, and service platform",
       tags: ["Marketing", "Sales", "Analytics"],
+      badgeColor:
+        "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300",
     },
     {
       name: "Mailchimp",
       icon: FaMailchimp,
       description: "Email marketing and automation service",
       tags: ["Campaigns", "Templates", "Analytics"],
+      badgeColor:
+        "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
     },
     {
       name: "Zapier",
       icon: FaRobot,
       description: "Workflow automation connecting apps and services",
       tags: ["Automation", "Integration", "No-code"],
+      badgeColor:
+        "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300",
     },
     {
       name: "Make",
       icon: FaProjectDiagram,
       description: "Visual platform for workflow automation",
       tags: ["Workflows", "API", "Integration"],
+      badgeColor:
+        "bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300",
     },
     {
       name: "Salesforce",
       icon: FaDatabase,
       description: "Cloud-based CRM and customer success platform",
       tags: ["CRM", "Sales", "Enterprise"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
     },
     // {
     //   name: "SendGrid",
@@ -153,6 +169,8 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       icon: FaCodeBranch,
       description: "Amazon Simple Email Service for scalable sending",
       tags: ["AWS", "Cloud", "Scalable"],
+      badgeColor:
+        "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
     },
     // {
     //   name: "Postmark",
@@ -165,18 +183,24 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       icon: FaPlug,
       description: "Open-source workflow automation tool",
       tags: ["Open-source", "Self-hosted", "Workflows"],
-        },
-        {
-            name: "Figma",
-            icon: FaFigma,
-            description: "Collaborative interface design tool",
-            tags: ["Design", "Prototyping", "Collaboration"],
-        },
-        {
-            name: "Klaviyo",
-            icon: HiFlag,
-            description: "Marketing automation platform for e-commerce",
-            tags: ["E-commerce", "Segmentation", "Automation"],
+      badgeColor:
+        "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+    },
+    {
+      name: "Figma",
+      icon: FaFigma,
+      description: "Collaborative interface design tool",
+      tags: ["Design", "Prototyping", "Collaboration"],
+      badgeColor:
+        "bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300",
+    },
+    {
+      name: "Klaviyo",
+      icon: HiFlag,
+      description: "Marketing automation platform for e-commerce",
+      tags: ["E-commerce", "Segmentation", "Automation"],
+      badgeColor:
+        "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
     },
     // {
     //   name: "Webhooks",
@@ -189,6 +213,8 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       icon: FaChartBar,
       description: "Email campaign tracking and performance metrics",
       tags: ["Metrics", "Reporting", "ROI"],
+      badgeColor:
+        "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
     },
   ],
   webSkills = [
@@ -197,134 +223,178 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       icon: FaReact,
       description: "JavaScript library for building user interfaces",
       tags: ["Frontend", "Components", "Hooks"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
     },
     {
       name: "Next.js",
       icon: FaCode,
       description: "React framework with SSR and static generation",
       tags: ["React", "SSR", "Full-stack"],
+      badgeColor: "bg-black/10 dark:bg-white/10 text-gray-900 dark:text-white",
     },
     {
       name: "Node.js",
       icon: FaNode,
       description: "JavaScript runtime for backend development",
       tags: ["Backend", "JavaScript", "API"],
+      badgeColor:
+        "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
     },
     {
       name: "Python",
       icon: FaPython,
       description: "High-level programming for web and data science",
       tags: ["Backend", "Data", "ML"],
-      },
-      {
-          name: "MySQL",
-          icon: TbBrandMysql,
-          description: "Popular open-source relational database",
-            tags: ["SQL", "Database", "Relational"],
+      badgeColor:
+        "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
+    },
+    {
+      name: "MySQL",
+      icon: TbBrandMysql,
+      description: "Popular open-source relational database",
+      tags: ["SQL", "Database", "Relational"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
     },
     {
       name: "PostgreSQL",
       icon: FaDatabase,
       description: "Advanced open-source relational database",
       tags: ["SQL", "Database", "ACID"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
     },
     {
       name: "MongoDB",
       icon: FaLeaf,
       description: "NoSQL document database for modern apps",
       tags: ["NoSQL", "JSON", "Scalable"],
-      },
-      {
-          name: "PHP",
-          icon: SiPhp,
-          description: "Server-side scripting language for web development",
-            tags: ["Backend", "Web", "Scripting"],
-      },
-      {
-          name: "C/C++",
-          icon: SiCplusplus,
-          description: "Powerful programming languages for system/software development",
-            tags: ["Systems", "Performance", "Low-level"],
-      },
-      {
-          name: "C#",
-          icon: TbBrandCSharp,
-          description: "Modern programming language for .NET applications",
-            tags: [".NET", "Windows", "Applications"],
-      },
+      badgeColor:
+        "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
+    },
+    {
+      name: "PHP",
+      icon: SiPhp,
+      description: "Server-side scripting language for web development",
+      tags: ["Backend", "Web", "Scripting"],
+      badgeColor:
+        "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+    },
+    {
+      name: "C/C++",
+      icon: SiCplusplus,
+      description:
+        "Powerful programming languages for system/software development",
+      tags: ["Systems", "Performance", "Low-level"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+    },
+    {
+      name: "C#",
+      icon: TbBrandCSharp,
+      description: "Modern programming language for .NET applications",
+      tags: [".NET", "Windows", "Applications"],
+      badgeColor:
+        "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+    },
     {
       name: "AWS",
       icon: FaAws,
       description: "Amazon Web Services cloud platform",
       tags: ["Cloud", "Infrastructure", "DevOps"],
+      badgeColor:
+        "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
     },
     {
       name: "Docker",
       icon: FaDocker,
       description: "Containerization platform for applications",
       tags: ["Containers", "DevOps", "Deployment"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
     },
     {
       name: "Git",
       icon: FaGit,
       description: "Distributed version control system",
       tags: ["Version Control", "Collaboration", "GitHub"],
+      badgeColor:
+        "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300",
     },
     {
       name: "Tailwind CSS",
       icon: FaWind,
       description: "Utility-first CSS framework",
       tags: ["CSS", "Responsive", "Design"],
+      badgeColor:
+        "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300",
     },
     {
       name: "TypeScript",
       icon: FaJs,
       description: "Typed superset of JavaScript",
       tags: ["JavaScript", "Types", "DX"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
     },
     {
       name: "REST APIs",
       icon: FaServer,
       description: "RESTful API design and development",
       tags: ["API", "HTTP", "Backend"],
+      badgeColor:
+        "bg-stone-100 dark:bg-stone-900/30 text-stone-700 dark:text-stone-300",
     },
   ],
   engineeringSkills = [
     {
       name: "Microcontrollers",
       icon: FaMicrochip,
-          description:"lightweight computers that run code rather than OS",
-      tags: ["Arduino","ESP32","PIC","ARM"]
+      description: "lightweight computers that run code rather than OS",
+      tags: ["Arduino", "ESP32", "PIC", "ARM"],
+      badgeColor:
+        "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300",
     },
     {
       name: "Wireless Communications",
       icon: FaWifi,
       description: "Wi-Fi and Bluetooth connectivity for devices",
       tags: ["IoT", "Wireless", "Low-power"],
+      badgeColor:
+        "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
     },
     {
       name: "MatLab",
       icon: FaChartLine,
       description: "Numerical computing and simulation software",
-      tags: ["Simulation", "Modeling", "Data Analysis","Simulink"],
+      tags: ["Simulation", "Modeling", "Data Analysis", "Simulink"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
     },
     {
       name: "MQTT",
       icon: FaNetworkWired,
       description: "Lightweight messaging protocol for IoT",
       tags: ["IoT", "Messaging", "Pub/Sub"],
+      badgeColor:
+        "bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-300",
     },
     {
       name: "Circuit Design",
       icon: FaBolt,
       description: "Electronic circuit design and analysis",
-      tags: ["Hardware", "PCB", "Analog","AC","DC"],
+      tags: ["Hardware", "PCB", "Analog", "AC", "DC"],
+      badgeColor:
+        "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
     },
     {
       name: "CAD",
       icon: FaCube,
       description: "Computer-aided design for mechanical parts",
-      tags: ["3D Modeling", "Design", "Manufacturing","Fusion 360"],
+      tags: ["3D Modeling", "Design", "Manufacturing", "Fusion 360"],
+      badgeColor:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
     },
     // {
     //   name: "TensorFlow",
@@ -338,12 +408,12 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
     //   description: "Computer vision and image processing library",
     //   tags: ["Vision", "Image Processing", "ML"],
     // },
-    {
-      name: "PID Control",
-      icon: FaCogs,
-      description: "Proportional-Integral-Derivative control systems",
-      tags: ["Control", "Automation", "Feedback"],
-    },
+    // {
+    //   name: "PID Control",
+    //   icon: FaCogs,
+    //   description: "Proportional-Integral-Derivative control systems",
+    //   tags: ["Control", "Automation", "Feedback"],
+    // },
     // {
     //   name: "LoRa",
     //   icon: FaSignal,
@@ -361,19 +431,25 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       icon: FaToolbox,
       description: "C programming for embedded systems",
       tags: ["Programming", "Low-level", "Firmware"],
-      },
-      {
-          name: "VHDL/Verifilog",
-          icon: FaBrain,
-          description: "Hardware description languages for FPGA/ASIC design",
-            tags: ["FPGA", "ASIC", "Digital Design"],
-      },
-      {
-          name: "PLC",
-          icon: FaCodeBranch,
-          description: "Programmable Logic Controllers for industrial automation",
-            tags: ["Siemens", "LadderLogic", "Control"],
-      }
+      badgeColor:
+        "bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300",
+    },
+    {
+      name: "VHDL/Verifilog",
+      icon: FaBrain,
+      description: "Hardware description languages for FPGA/ASIC design",
+      tags: ["FPGA", "ASIC", "Digital Design"],
+      badgeColor:
+        "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300",
+    },
+    {
+      name: "PLC",
+      icon: FaCodeBranch,
+      description: "Programmable Logic Controllers for industrial automation",
+      tags: ["Siemens", "LadderLogic", "Control"],
+      badgeColor:
+        "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+    },
   ],
   education = [
     {

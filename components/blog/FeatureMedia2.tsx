@@ -37,6 +37,7 @@ interface FeaturedMediaProps {
  * <FeaturedMedia post={post} heroInView={heroInView} />
  * ```
  */
+export const revalidate = 3600;
 export default function FeaturedMedia({
   post,
   heroInView,

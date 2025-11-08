@@ -38,7 +38,7 @@ const staggerChildren = {
     },
   },
 };
-
+export const revalidate = 3600;
 export function RelatedPosts({ currentPost, className }: RelatedPostsProps) {
   const [relatedPosts, setRelatedPosts] = useState<RelatedPost[]>([]);
   const [loading, setLoading] = useState(true);

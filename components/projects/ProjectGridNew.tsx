@@ -9,7 +9,7 @@ interface ProjectGridProps {
   projects: Project[];
   onProjectClick: (project: Project) => void;
 }
-
+export const revalidate = 3600;
 export const ProjectGrid: React.FC<ProjectGridProps> = ({
   projects,
   onProjectClick,

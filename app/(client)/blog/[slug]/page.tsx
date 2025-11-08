@@ -7,7 +7,8 @@ import { Metadata } from "next";
      	type PageProps = {
      	  params: Promise<{ slug: string }>;
      	};
-    	
+		export const revalidate = 3600; // Revalidate every hour
+		
     	// Generate static params for all blog posts
     	export async function generateStaticParams() {
     	  const posts = await getPosts();
