@@ -487,24 +487,24 @@ export const projectCategories = [
   },
   {
     id: "automation",
-    label: "Process Automation",
+    label: "Email",
     description: "Intelligent systems that work while you sleep",
   },
   {
     id: "web-apps",
-    label: "Web Applications",
+    label: "Web ",
     description: "Scalable platforms for business growth",
   },
   {
     id: "data",
-    label: "Data Systems",
+    label: "Dashboards",
     description: "Analytics and intelligence platforms",
   },
-  {
-    id: "integrations",
-    label: "API Integrations",
-    description: "Unified connectivity solutions",
-  },
+  // {
+  //   id: "integrations",
+  //   label: "API Integrations",
+  //   description: "Unified connectivity solutions",
+  // },
 ] as const;
 
 /**

@@ -521,26 +521,28 @@ function getDefaultProjectCategories() {
     { id: "all", label: "All", description: "Complete portfolio" },
     {
       id: "automation",
-      label: "Process Automation", 
+      label: "Email", 
       description: "Intelligent systems that work while you sleep",
     },
     {
       id: "web-apps",
-      label: "Web Applications",
+      label: "Web ",
       description: "Scalable platforms for business growth",
     },
     {
       id: "data",
-      label: "Data Systems",
+      label: "Dashboards",
       description: "Analytics and intelligence platforms",
     },
     {
       id: "integrations",
-      label: "API Integrations",
+      label: "Hardware",
       description: "Unified connectivity solutions",
     },
   ];
 }
+
+
 
 /**
  * Create intelligent default categories based on project analysis

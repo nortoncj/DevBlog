@@ -61,10 +61,10 @@ const modalVariants:Variants = {
 };
 
 const categoryLabels = {
-  automation: "Process Automation",
-  "web-apps": "Web Applications",
-  data: "Data Systems",
-  integrations: "API Integrations",
+  automation: "Web",
+  "web-apps": "Email",
+  data: "Dashboards",
+  integrations: "API Hardware",
 };
 
 // Safe property access functions

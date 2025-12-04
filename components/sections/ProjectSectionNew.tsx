@@ -21,7 +21,7 @@ const containerVariants: Variants = {
   },
 };
 
-const itemVariants : Variants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
@@ -35,17 +35,18 @@ const itemVariants : Variants = {
 
 interface ProjectsSectionProps {
   initialProjects?: Project[];
-  initialCategories?: SanityCategory[];
+  initialCategories?: any[];
 }
-export const revalidate = 3600;
 export function ProjectsSection({
-  initialProjects = []
+  initialProjects = [],
+  initialCategories = [],
 }: ProjectsSectionProps) {
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>(initialProjects);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] =
+    useState<SanityCategory[]>(initialCategories);
   const [loading, setLoading] = useState(!initialProjects.length);
 
   const [ref, inView] = useInView({
@@ -53,35 +54,42 @@ export function ProjectsSection({
     threshold: 0.1,
   });
 
-  // Load projects and categories if not provided as initial props
+  // Load projects and categories ONLY if not provided as initial props
   useEffect(() => {
     async function loadData() {
-      if (!initialProjects.length) {
-        try {
+      // Only fetch if we don't have data
+      const needsProjects = !initialProjects.length;
+      const needsCategories = !initialCategories.length;
+      if (!needsProjects && !needsCategories) {
+        // We have all data, no need to fetch
+        return;
+      }
+      try {
+        if (needsProjects && needsCategories) {
+          // Fetch both in parallel
           const [projectsData, categoriesData] = await Promise.all([
             getProjectsData(),
             getProjectCategories(),
           ]);
           setProjects(projectsData);
-          setCategories(categoriesData);
-        } catch (error) {
-          console.error("Failed to load projects:", error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        // Load categories even if we have initial projects
-        try {
+          setCategories(categoriesData as any[]);
+        } else if (needsProjects) {
+          // Only fetch projects
+          const projectsData = await getProjectsData();
+          setProjects(projectsData);
+        } else if (needsCategories) {
+          // Only fetch categories
           const categoriesData = await getProjectCategories();
-          setCategories(categoriesData);
-        } catch (error) {
-          console.error("Failed to load categories:", error);
+          setCategories(categoriesData as any[]);
         }
+      } catch (error) {
+        console.error("Failed to load data:", error);
+      } finally {
+        setLoading(false);
       }
     }
-
     loadData();
-  }, [initialProjects]);
+  }, [initialProjects, initialCategories]);
 
   // Filter projects based on active filter
   const filteredProjects = useMemo(() => {
@@ -179,7 +187,7 @@ export function ProjectsSection({
           {categories.length > 0 && (
             <motion.div variants={itemVariants}>
               <ProjectFilters
-                categories={categories}
+                categories={categories as any[]}
                 activeFilter={activeFilter}
                 onFilterChange={setActiveFilter}
               />
