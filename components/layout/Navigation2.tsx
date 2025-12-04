@@ -5,8 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn, scrollUtils } from "@/lib/utils";
-// import { ThemeToggle } from "../ui/ThemeToggler";
-import ThemeToggle  from "@/components/ThemeSwitch"
+import ThemeToggle from "@/components/ThemeSwitch";
 
 interface NavItem {
   label: string;
@@ -18,7 +17,6 @@ const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Projects", href: "#projects" },
   { label: "Insights", href: "/blog" },
-//   { label: "Contact", href: "#contact" },
 ];
 
 export function Navigation() {
@@ -104,13 +102,16 @@ export function Navigation() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
         isScrolled
-          ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-2xl shadow-purple-500/5 border-b border-gray-200/50 dark:border-white/10"
-          : "bg-white/60 dark:bg-gray-900/60 backdrop-blur-md"
+          ? "bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl shadow-lg border-b border-[#E8B4B8]/30 dark:border-[#E8B4B8]/20"
+          : "bg-white/60 dark:bg-gray-950/60 backdrop-blur-md"
       )}
+      style={{
+        boxShadow: isScrolled ? "0 4px 20px rgba(139, 21, 56, 0.08)" : "none",
+      }}
     >
-      <div className="container-strategic">
+      <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Brand - Enhanced with gradient and animation */}
+          {/* Brand - System Architect Style */}
           <Link
             href="/"
             className="relative flex flex-col group"
@@ -121,15 +122,34 @@ export function Navigation() {
               whileTap={{ scale: 0.98 }}
               className="relative"
             >
-              <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-gray-900 via-purple-600 to-pink-600 dark:from-white dark:via-purple-300 dark:to-pink-300 bg-clip-text text-transparent group-hover:from-purple-600 group-hover:via-pink-600 group-hover:to-purple-600 transition-all duration-500">
+              <span
+                className="text-xl lg:text-2xl font-bold transition-all duration-500"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  background:
+                    "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
                 Chris Norton Jr
               </span>
-              <span className="block text-xs lg:text-sm font-semibold text-purple-600 dark:text-purple-400 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors duration-300">
-                Engineer
+              <span
+                className="block text-xs lg:text-sm font-semibold text-[#7B4B94] dark:text-[#E8B4B8] transition-colors duration-300"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                The Engineer
               </span>
 
-              {/* Hover glow effect */}
-              <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-500/0 via-pink-500/0 to-purple-500/0 group-hover:from-purple-500/20 group-hover:via-pink-500/20 group-hover:to-purple-500/20 blur-xl transition-all duration-500 rounded-lg" />
+              {/* Subtle hover glow effect */}
+              <div
+                className="absolute inset-0 -z-10 blur-xl transition-all duration-500 rounded-lg opacity-0 group-hover:opacity-100"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(139, 21, 56, 0.15) 0%, rgba(184, 51, 106, 0.15) 100%)",
+                }}
+              />
             </motion.div>
           </Link>
 
@@ -156,17 +176,22 @@ export function Navigation() {
                     <Link
                       href={item.href}
                       className={cn(
-                        "relative px-4 lg:px-5 py-2.5 rounded-xl text-sm lg:text-base font-semibold transition-all duration-300 overflow-hidden group",
+                        "relative px-4 lg:px-5 py-2.5 rounded-lg text-sm lg:text-base font-semibold transition-all duration-300 overflow-hidden group",
                         isActive
-                          ? "text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
+                          ? "text-white dark:text-white"
+                          : "text-[#2C2C2C] dark:text-gray-300 hover:text-[#8B1538] dark:hover:text-[#E8B4B8]"
                       )}
+                      style={{ fontFamily: "Inter, sans-serif" }}
                     >
-                      {/* Active background with gradient */}
+                      {/* Active background with brand gradient */}
                       {isActive && (
                         <motion.div
                           layoutId="activeNavPill"
-                          className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl"
+                          className="absolute inset-0 rounded-lg"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                          }}
                           initial={false}
                           transition={{
                             type: "spring",
@@ -176,25 +201,35 @@ export function Navigation() {
                         />
                       )}
 
-                      {/* Inactive background - glassmorphism */}
+                      {/* Inactive background - minimal */}
                       {!isActive && (
-                        <div className="absolute inset-0 bg-gray-100/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div
+                          className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          style={{
+                            background: "#F8F6F7",
+                            border: "1px solid #E8B4B8",
+                          }}
+                        />
                       )}
-
-                      {/* Hover gradient overlay */}
                       {!isActive && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 rounded-xl transition-all duration-300" />
+                        <div
+                          className="absolute inset-0 dark:opacity-100 opacity-0 rounded-lg group-hover:opacity-100 transition-opacity duration-300"
+                          style={{
+                            background: "rgba(255, 255, 255, 0.05)",
+                            border: "1px solid rgba(232, 180, 184, 0.2)",
+                          }}
+                        />
                       )}
 
                       {/* Text */}
                       <span className="relative z-10">{item.label}</span>
 
-                      {/* Active indicator dot */}
+                      {/* Active indicator - minimal dot */}
                       {isActive && (
                         <motion.span
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="absolute top-1 right-1 w-1.5 h-1.5 bg-white rounded-full"
+                          className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-white rounded-full"
                         />
                       )}
                     </Link>
@@ -202,17 +237,22 @@ export function Navigation() {
                     <button
                       onClick={() => handleNavClick(item.href)}
                       className={cn(
-                        "relative px-4 lg:px-5 py-2.5 rounded-xl text-sm lg:text-base font-semibold transition-all duration-300 overflow-hidden group",
+                        "relative px-4 lg:px-5 py-2.5 rounded-lg text-sm lg:text-base font-semibold transition-all duration-300 overflow-hidden group",
                         isActive
-                          ? "text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
+                          ? "text-white dark:text-white"
+                          : "text-[#2C2C2C] dark:text-gray-300 hover:text-[#8B1538] dark:hover:text-[#E8B4B8]"
                       )}
+                      style={{ fontFamily: "Inter, sans-serif" }}
                     >
-                      {/* Active background with gradient */}
+                      {/* Active background with brand gradient */}
                       {isActive && (
                         <motion.div
                           layoutId="activeNavPill"
-                          className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl"
+                          className="absolute inset-0 rounded-lg"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                          }}
                           initial={false}
                           transition={{
                             type: "spring",
@@ -222,25 +262,35 @@ export function Navigation() {
                         />
                       )}
 
-                      {/* Inactive background - glassmorphism */}
+                      {/* Inactive background - minimal */}
                       {!isActive && (
-                        <div className="absolute inset-0 bg-gray-100/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      )}
-
-                      {/* Hover gradient overlay */}
-                      {!isActive && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 rounded-xl transition-all duration-300" />
+                        <>
+                          <div
+                            className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 dark:hidden"
+                            style={{
+                              background: "#F8F6F7",
+                              border: "1px solid #E8B4B8",
+                            }}
+                          />
+                          <div
+                            className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden dark:block"
+                            style={{
+                              background: "rgba(255, 255, 255, 0.05)",
+                              border: "1px solid rgba(232, 180, 184, 0.2)",
+                            }}
+                          />
+                        </>
                       )}
 
                       {/* Text */}
                       <span className="relative z-10">{item.label}</span>
 
-                      {/* Active indicator dot */}
+                      {/* Active indicator - minimal dot */}
                       {isActive && (
                         <motion.span
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="absolute top-1 right-1 w-1.5 h-1.5 bg-white rounded-full"
+                          className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-white rounded-full"
                         />
                       )}
                     </button>
@@ -251,28 +301,31 @@ export function Navigation() {
               return NavButton;
             })}
 
-            {/* Theme Toggle with enhanced styling */}
+            {/* Theme Toggle with system architect styling */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               className="ml-2"
             >
-              <ThemeToggle className="rounded-xl" />
+              <ThemeToggle className="rounded-lg" />
             </motion.div>
           </div>
 
-          {/* Mobile Menu Button - Enhanced */}
+          {/* Mobile Menu Button - System Architect Style */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             id="nav-toggle"
             className={cn(
-              "md:hidden relative p-2.5 rounded-xl transition-all duration-300",
-              "bg-gray-100/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10",
-              "hover:bg-gray-200/80 dark:hover:bg-white/10 hover:border-purple-500/50",
-              isOpen &&
-                "bg-gradient-to-r from-purple-500 to-pink-500 border-transparent"
+              "md:hidden relative p-2.5 rounded-lg transition-all duration-300",
+              isOpen ? "text-white" : "text-[#2C2C2C] dark:text-gray-300"
             )}
+            style={{
+              background: isOpen
+                ? "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)"
+                : "#F8F6F7",
+              border: isOpen ? "none" : "1px solid #E8B4B8",
+            }}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle navigation menu"
             aria-expanded={isOpen}
@@ -286,12 +339,7 @@ export function Navigation() {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <X
-                    size={20}
-                    className={
-                      isOpen ? "text-white" : "text-gray-700 dark:text-gray-300"
-                    }
-                  />
+                  <X size={20} />
                 </motion.div>
               ) : (
                 <motion.div
@@ -301,17 +349,14 @@ export function Navigation() {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Menu
-                    size={20}
-                    className="text-gray-700 dark:text-gray-300"
-                  />
+                  <Menu size={20} />
                 </motion.div>
               )}
             </AnimatePresence>
           </motion.button>
         </div>
 
-        {/* Mobile Navigation - Enhanced with animations */}
+        {/* Mobile Navigation - System Architect Style */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -320,14 +365,17 @@ export function Navigation() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="md:hidden overflow-hidden border-t border-gray-200 dark:border-white/10"
+              className="md:hidden overflow-hidden"
+              style={{
+                borderTop: "1px solid #E8B4B8",
+              }}
             >
               <motion.div
                 initial={{ y: -20 }}
                 animate={{ y: 0 }}
                 exit={{ y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="px-6 py-6 space-y-2 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl"
+                className="px-6 py-6 space-y-2 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl"
               >
                 {navItems.map((item, index) => {
                   const isActive =
@@ -350,23 +398,48 @@ export function Navigation() {
                         <Link
                           href={item.href}
                           className={cn(
-                            "block relative px-5 py-4 rounded-xl text-base font-semibold transition-all duration-300 overflow-hidden group",
+                            "block relative px-5 py-4 rounded-lg text-base font-semibold transition-all duration-300 overflow-hidden group",
                             isActive
                               ? "text-white"
-                              : "text-gray-700 dark:text-gray-300"
+                              : "text-[#2C2C2C] dark:text-gray-300"
                           )}
+                          style={{ fontFamily: "Inter, sans-serif" }}
                           onClick={() => setIsOpen(false)}
                         >
                           {/* Active background */}
                           {isActive && (
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl" />
+                            <div
+                              className="absolute inset-0 rounded-lg"
+                              style={{
+                                background:
+                                  "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                              }}
+                            />
                           )}
 
                           {/* Inactive background */}
                           {!isActive && (
                             <>
-                              <div className="absolute inset-0 bg-gray-100/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl" />
-                              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 rounded-xl transition-all duration-300" />
+                              <div
+                                className="absolute inset-0 rounded-lg dark:hidden"
+                                style={{
+                                  background: "#F8F6F7",
+                                  border: "1px solid #E8B4B8",
+                                }}
+                              />
+                              <div
+                                className="absolute inset-0 rounded-lg hidden dark:block"
+                                style={{
+                                  background: "rgba(255, 255, 255, 0.05)",
+                                  border: "1px solid rgba(232, 180, 184, 0.2)",
+                                }}
+                              />
+                              <div
+                                className="absolute inset-0 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100"
+                                style={{
+                                  background: "rgba(139, 21, 56, 0.05)",
+                                }}
+                              />
                             </>
                           )}
 
@@ -381,22 +454,47 @@ export function Navigation() {
                         <button
                           onClick={() => handleNavClick(item.href)}
                           className={cn(
-                            "w-full text-left relative px-5 py-4 rounded-xl text-base font-semibold transition-all duration-300 overflow-hidden group",
+                            "w-full text-left relative px-5 py-4 rounded-lg text-base font-semibold transition-all duration-300 overflow-hidden group",
                             isActive
                               ? "text-white"
-                              : "text-gray-700 dark:text-gray-300"
+                              : "text-[#2C2C2C] dark:text-gray-300"
                           )}
+                          style={{ fontFamily: "Inter, sans-serif" }}
                         >
                           {/* Active background */}
                           {isActive && (
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl" />
+                            <div
+                              className="absolute inset-0 rounded-lg"
+                              style={{
+                                background:
+                                  "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                              }}
+                            />
                           )}
 
                           {/* Inactive background */}
                           {!isActive && (
                             <>
-                              <div className="absolute inset-0 bg-gray-100/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl" />
-                              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 rounded-xl transition-all duration-300" />
+                              <div
+                                className="absolute inset-0 rounded-lg dark:hidden"
+                                style={{
+                                  background: "#F8F6F7",
+                                  border: "1px solid #E8B4B8",
+                                }}
+                              />
+                              <div
+                                className="absolute inset-0 rounded-lg hidden dark:block"
+                                style={{
+                                  background: "rgba(255, 255, 255, 0.05)",
+                                  border: "1px solid rgba(232, 180, 184, 0.2)",
+                                }}
+                              />
+                              <div
+                                className="absolute inset-0 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100"
+                                style={{
+                                  background: "rgba(139, 21, 56, 0.05)",
+                                }}
+                              />
                             </>
                           )}
 
@@ -417,7 +515,8 @@ export function Navigation() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: navItems.length * 0.1, duration: 0.3 }}
-                  className="pt-4 border-t border-gray-200 dark:border-white/10"
+                  className="pt-4"
+                  style={{ borderTop: "1px solid #E8B4B8" }}
                 >
                   <div className="px-5 py-2">
                     <ThemeToggle />

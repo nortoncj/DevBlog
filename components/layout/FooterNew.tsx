@@ -1,229 +1,331 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { Mail, ArrowUp, Code2, Heart, Sparkles } from "lucide-react";
-import { scrollUtils } from "@/lib/utils";
-import { BsGithub, BsLinkedin, BsTwitterX, BsYoutube } from "react-icons/bs";
-import { useState, useEffect } from "react";
+import {
+  Github,
+  Linkedin,
+  Twitter,
+  Mail,
+  ArrowUp,
+  Heart,
+  Code2,
+  Sparkles,
+} from "lucide-react";
 
-const footerLinks = {
-  services: [{ label: "Projects", href: "#projects" }],
-  resources: [
-    { label: "Technical Insights", href: "/blog" },
-    { label: "Case Studies", href: "/blog" },
-    { label: "System Blueprints", href: "/blog" },
-    { label: "Architecture Patterns", href: "/blog" },
-  ],
-  connect: [
-    { label: "Start Project", href: "#contact" },
-    {
-      label: "Download Resume",
-      href: "https://docs.google.com/document/d/16Cp_Q5bbbjoZqqiHHOPIa31t2y3S4b2StQtIFcnjrFY/edit?usp=sharing",
-    },
-  ],
-};
+// Types
+interface FooterLink {
+  label: string;
+  href: string;
+}
 
-const socialLinks  = [
-  {
-    name: "LinkedIn",
-    icon: BsLinkedin,
-    href: "https://linkedin.com/in/chrisnortonjr",
-    username: "@chrisnortonjr",
-  },
+interface SocialLink {
+  name: string;
+  icon: any;
+  href: string;
+  username: string;
+}
+
+// Social Links
+const socialLinks: SocialLink[] = [
   {
     name: "GitHub",
-    icon: BsGithub,
-    href: "https://github.com/nortoncj",
-    username: "@nortoncj",
+    icon: Github,
+    href: "https://github.com/yourusername",
+    username: "@yourusername",
+  },
+  {
+    name: "LinkedIn",
+    icon: Linkedin,
+    href: "https://linkedin.com/in/yourusername",
+    username: "Chris Norton Jr",
   },
   {
     name: "Twitter",
-    icon: BsTwitterX,
-    href: "https://twitter.com/thewebtechninja",
-    username: "@thewebtechninja",
+    icon: Twitter,
+    href: "https://twitter.com/yourusername",
+    username: "@yourusername",
   },
   {
-    name: "Youtube",
-    icon: BsYoutube,
-    href: "https://www.youtube.com/@chrisnortonjr/",
-    username: "@chrisnortonjr",
+    name: "Email",
+    icon: Mail,
+    href: "mailto:your.email@example.com",
+    username: "your.email@example.com",
   },
 ];
 
-// Floating particles component
-const FloatingParticles = () => {
+// Footer Links
+const footerLinks = {
+  services: [
+    { label: "System Architecture", href: "#services" },
+    { label: "Data Engineering", href: "#services" },
+    { label: "Automation Solutions", href: "#services" },
+    { label: "Technical Leadership", href: "#services" },
+  ],
+  resources: [
+    { label: "Blog & Insights", href: "/blog" },
+    { label: "Case Studies", href: "/blog" },
+    { label: "Documentation", href: "/blog" },
+    { label: "Technical Guides", href: "/blog" },
+  ],
+  connect: [
+    { label: "View Projects", href: "#projects" },
+    { label: "Schedule Consultation", href: "#contact" },
+    { label: "Download Resume", href: "#contact" },
+    { label: "Get in Touch", href: "#contact" },
+  ],
+};
+
+// Floating Particles Component
+function FloatingParticles() {
   const [particles, setParticles] = useState<
-    Array<{ id: number; x: number; y: number; size: number; duration: number }>
+    Array<{
+      left: number;
+      top: number;
+      delay: number;
+      duration: number;
+    }>
   >([]);
 
   useEffect(() => {
-    const generateParticles = () => {
-      const newParticles = Array.from({ length: 20 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 3 + 1,
-        duration: Math.random() * 15 + 10,
-      }));
-      setParticles(newParticles);
-    };
-
-    generateParticles();
+    // Generate random positions on client side only
+    setParticles(
+      [...Array(20)].map(() => ({
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        delay: Math.random() * 2,
+        duration: 3 + Math.random() * 2,
+      }))
+    );
   }, []);
 
+  if (particles.length === 0) return null;
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-30">
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute rounded-full bg-gradient-to-br from-purple-400 to-pink-400"
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((particle, i) => (
+        <div
+          key={i}
+          className="absolute w-1 h-1 rounded-full animate-float"
           style={{
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
-          }}
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.2, 0.5, 0.2],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            ease: "easeInOut",
+            background:
+              i % 3 === 0 ? "#8B1538" : i % 2 === 0 ? "#B8336A" : "#E8B4B8",
+            left: `${particle.left}%`,
+            top: `${particle.top}%`,
+            animationDelay: `${particle.delay}s`,
+            animationDuration: `${particle.duration}s`,
           }}
         />
       ))}
     </div>
   );
-};
+}
 
 export function Footer() {
+  const [inView, setInView] = useState(false);
+  const footerRef = useRef<HTMLElement>(null);
   const currentYear = new Date().getFullYear();
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  // Intersection Observer for animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+
+    return () => {
+      if (footerRef.current) {
+        observer.unobserve(footerRef.current);
+      }
+    };
+  }, []);
+
+  // Handle smooth scrolling for internal links
+  const handleNavClick = (href: string) => {
+    if (href.startsWith("#")) {
+      const elementId = href.substring(1);
+      const element = document.getElementById(elementId);
+      if (element) {
+        const offset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
+  // Scroll to top handler
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleNavClick = (href: string) => {
-    if (href.startsWith("#")) {
-      const elementId = href.substring(1);
-      scrollUtils.scrollToElement(elementId, 80);
-    }
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants : Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    },
-  };
-
   return (
-    <footer className="relative bg-gray-900 dark:bg-gray-950 text-white overflow-hidden">
+    <footer
+      ref={footerRef}
+      className="relative bg-[#2C2C2C] dark:bg-gray-950 text-white overflow-hidden"
+      style={{ fontFamily: "Inter, sans-serif" }}
+    >
       {/* Floating Particles */}
       <FloatingParticles />
 
-      {/* Gradient Overlays */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[128px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-[128px] pointer-events-none" />
+      {/* Blueprint Grid Background */}
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(139, 21, 56, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 21, 56, 0.1) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
 
-      {/* Wave Pattern Top Border */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500" />
+      {/* Gradient Overlays - System Architect Colors */}
+      <div
+        className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(139, 21, 56, 0.15) 0%, transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(232, 180, 184, 0.15) 0%, transparent 70%)",
+        }}
+      />
 
-      <div className="container-strategic relative z-10">
+      {/* Top Border - Brand Gradient */}
+      <div
+        className="absolute top-0 left-0 right-0 h-1"
+        style={{
+          background:
+            "linear-gradient(135deg, #8B1538 0%, #B8336A 50%, #8B1538 100%)",
+        }}
+      />
+
+      <div className="container mx-auto px-6 relative z-10">
         {/* Main Footer Content */}
-        <motion.div
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="py-16 lg:py-20"
+        <div
+          className={`py-16 lg:py-20 transition-all duration-1000 ${
+            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-8">
             {/* Brand Section */}
-            <motion.div
-              variants={itemVariants}
-              className="lg:col-span-1 space-y-6"
-            >
+            <div className="lg:col-span-1 space-y-6">
               <div>
-                <motion.h3
-                  whileHover={{ scale: 1.02 }}
-                  className="text-2xl lg:text-3xl font-bold mb-2 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent cursor-default"
+                <h3
+                  className="text-2xl lg:text-3xl font-bold mb-2 cursor-default hover:scale-105 transition-transform inline-block"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
                 >
                   Chris Norton Jr
-                </motion.h3>
-                <p className="text-purple-400 dark:text-purple-300 font-semibold mb-3 flex items-center gap-2">
-                  <Sparkles size={16} className="text-pink-400" />
-                  The Engineer
+                </h3>
+                <p
+                  className="font-semibold mb-3 flex items-center gap-2"
+                  style={{ color: "#E8B4B8" }}
+                >
+                  <Sparkles size={16} style={{ color: "#B8336A" }} />
+                  The System Architect
                 </p>
-                <p className="text-gray-300 dark:text-gray-400 italic text-base leading-relaxed">
+                <p
+                  className="italic text-base leading-relaxed"
+                  style={{ color: "#A8A8A8" }}
+                >
                   "Build systems that scale. Results with precision."
                 </p>
               </div>
 
               {/* Mission Statement */}
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                className="group relative p-5 bg-white/5 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-500 hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/20"
+              <div
+                className="group relative p-5 backdrop-blur-xl rounded-xl border overflow-hidden transition-all duration-500 hover:scale-105 hover:-translate-y-1"
+                style={{
+                  background: "rgba(255, 255, 255, 0.03)",
+                  borderColor: "#E8B4B8",
+                }}
               >
-                {/* Gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 transition-all duration-500" />
+                {/* Subtle gradient overlay on hover */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(139, 21, 56, 0.05) 0%, rgba(184, 51, 106, 0.05) 100%)",
+                  }}
+                />
 
-                <p className="relative z-10 text-sm text-gray-300 dark:text-gray-400 leading-relaxed">
-                  Engineer specializing in scalable tools, automations, and
-                  products for businesses without the endless grind.
+                <p
+                  className="relative z-10 text-sm leading-relaxed"
+                  style={{ color: "#A8A8A8" }}
+                >
+                  System architect specializing in scalable tools, automations,
+                  and products for businesses without the endless grind.
                 </p>
-              </motion.div>
+              </div>
 
               {/* Social Links */}
               <div>
                 <h4 className="font-semibold mb-4 text-white flex items-center gap-2">
                   <span>Connect & Follow</span>
-                  <div className="flex-1 h-px bg-gradient-to-r from-purple-500/50 to-transparent" />
+                  <div
+                    className="flex-1 h-px"
+                    style={{
+                      background:
+                        "linear-gradient(to right, rgba(139, 21, 56, 0.5), transparent)",
+                    }}
+                  />
                 </h4>
                 <div className="flex gap-3 flex-wrap">
                   {socialLinks.map((social, index) => {
                     const Icon = social.icon;
                     return (
-                      <motion.div
+                      <div
                         key={social.name}
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={inView ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
+                        className={`transition-all duration-300 ${
+                          inView ? "opacity-100 scale-100" : "opacity-0 scale-0"
+                        }`}
+                        style={{
+                          transitionDelay: `${0.5 + index * 0.1}s`,
+                        }}
                       >
-                        <motion.a
+                        <a
                           href={social.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="relative group block"
-                          whileHover={{ scale: 1.1, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
+                          className="relative group block hover:scale-110 hover:-translate-y-1 active:scale-95 transition-all"
                           title={`${social.name}: ${social.username}`}
                         >
-                          <div className="relative w-11 h-11 rounded-xl bg-white/5 dark:bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-gray-300 transition-all duration-300 group-hover:border-purple-500/50 overflow-hidden">
+                          <div
+                            className="relative w-11 h-11 rounded-lg backdrop-blur-xl border flex items-center justify-center transition-all duration-300 overflow-hidden"
+                            style={{
+                              background: "rgba(255, 255, 255, 0.03)",
+                              borderColor: "rgba(232, 180, 184, 0.3)",
+                              color: "#A8A8A8",
+                            }}
+                          >
                             {/* Gradient background on hover */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            <div
+                              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                              style={{
+                                background:
+                                  "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                              }}
+                            />
 
                             {/* Icon */}
                             <Icon
@@ -232,50 +334,76 @@ export function Footer() {
                             />
                           </div>
 
-                          {/* Glow effect */}
-                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-purple-500/30 -z-10" />
-                        </motion.a>
-                      </motion.div>
+                          {/* Subtle glow effect */}
+                          <div
+                            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
+                            style={{
+                              background: "rgba(139, 21, 56, 0.3)",
+                            }}
+                          />
+                        </a>
+                      </div>
                     );
                   })}
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Footer Links */}
-            <motion.div variants={itemVariants} className="lg:col-span-3">
+            <div className="lg:col-span-3">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Services */}
                 <div>
                   <h4 className="font-semibold text-white mb-5 flex items-center gap-2 text-lg">
                     Services
-                    <div className="flex-1 h-px bg-gradient-to-r from-purple-500/50 to-transparent" />
+                    <div
+                      className="flex-1 h-px"
+                      style={{
+                        background:
+                          "linear-gradient(to right, rgba(139, 21, 56, 0.5), transparent)",
+                      }}
+                    />
                   </h4>
                   <ul className="space-y-3">
                     {footerLinks.services.map((link) => (
-                      <motion.li
+                      <li
                         key={link.label}
-                        whileHover={{ x: 4 }}
-                        transition={{ duration: 0.2 }}
+                        className="hover:translate-x-1 transition-transform duration-200"
                       >
                         {link.href.startsWith("#") ? (
                           <button
                             onClick={() => handleNavClick(link.href)}
-                            className="group flex items-center gap-2 text-gray-400 dark:text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                            className="group flex items-center gap-2 transition-colors text-sm"
+                            style={{ color: "#A8A8A8" }}
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-purple-500/0 group-hover:bg-purple-500 transition-colors" />
-                            {link.label}
+                            <span
+                              className="w-1.5 h-1.5 rounded-full transition-all group-hover:bg-[#8B1538]"
+                              style={{
+                                background: "transparent",
+                              }}
+                            />
+                            <span className="group-hover:text-[#E8B4B8] transition-colors">
+                              {link.label}
+                            </span>
                           </button>
                         ) : (
                           <Link
                             href={link.href}
-                            className="group flex items-center gap-2 text-gray-400 dark:text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                            className="group flex items-center gap-2 transition-colors text-sm"
+                            style={{ color: "#A8A8A8" }}
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-purple-500/0 group-hover:bg-purple-500 transition-colors" />
-                            {link.label}
+                            <span
+                              className="w-1.5 h-1.5 rounded-full transition-all group-hover:bg-[#8B1538]"
+                              style={{
+                                background: "transparent",
+                              }}
+                            />
+                            <span className="group-hover:text-[#E8B4B8] transition-colors">
+                              {link.label}
+                            </span>
                           </Link>
                         )}
-                      </motion.li>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -284,23 +412,36 @@ export function Footer() {
                 <div>
                   <h4 className="font-semibold text-white mb-5 flex items-center gap-2 text-lg">
                     Resources
-                    <div className="flex-1 h-px bg-gradient-to-r from-purple-500/50 to-transparent" />
+                    <div
+                      className="flex-1 h-px"
+                      style={{
+                        background:
+                          "linear-gradient(to right, rgba(139, 21, 56, 0.5), transparent)",
+                      }}
+                    />
                   </h4>
                   <ul className="space-y-3">
                     {footerLinks.resources.map((link) => (
-                      <motion.li
+                      <li
                         key={link.label}
-                        whileHover={{ x: 4 }}
-                        transition={{ duration: 0.2 }}
+                        className="hover:translate-x-1 transition-transform duration-200"
                       >
                         <Link
                           href={link.href}
-                          className="group flex items-center gap-2 text-gray-400 dark:text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                          className="group flex items-center gap-2 transition-colors text-sm"
+                          style={{ color: "#A8A8A8" }}
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-purple-500/0 group-hover:bg-purple-500 transition-colors" />
-                          {link.label}
+                          <span
+                            className="w-1.5 h-1.5 rounded-full transition-all group-hover:bg-[#8B1538]"
+                            style={{
+                              background: "transparent",
+                            }}
+                          />
+                          <span className="group-hover:text-[#E8B4B8] transition-colors">
+                            {link.label}
+                          </span>
                         </Link>
-                      </motion.li>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -309,101 +450,182 @@ export function Footer() {
                 <div>
                   <h4 className="font-semibold text-white mb-5 flex items-center gap-2 text-lg">
                     Get Started
-                    <div className="flex-1 h-px bg-gradient-to-r from-purple-500/50 to-transparent" />
+                    <div
+                      className="flex-1 h-px"
+                      style={{
+                        background:
+                          "linear-gradient(to right, rgba(139, 21, 56, 0.5), transparent)",
+                      }}
+                    />
                   </h4>
                   <ul className="space-y-3">
                     {footerLinks.connect.map((link) => (
-                      <motion.li
+                      <li
                         key={link.label}
-                        whileHover={{ x: 4 }}
-                        transition={{ duration: 0.2 }}
+                        className="hover:translate-x-1 transition-transform duration-200"
                       >
                         {link.href.startsWith("#") ? (
                           <button
                             onClick={() => handleNavClick(link.href)}
-                            className="group flex items-center gap-2 text-gray-400 dark:text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                            className="group flex items-center gap-2 transition-colors text-sm"
+                            style={{ color: "#A8A8A8" }}
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-purple-500/0 group-hover:bg-purple-500 transition-colors" />
-                            {link.label}
+                            <span
+                              className="w-1.5 h-1.5 rounded-full transition-all group-hover:bg-[#8B1538]"
+                              style={{
+                                background: "transparent",
+                              }}
+                            />
+                            <span className="group-hover:text-[#E8B4B8] transition-colors">
+                              {link.label}
+                            </span>
                           </button>
                         ) : (
                           <Link
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group flex items-center gap-2 text-gray-400 dark:text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                            className="group flex items-center gap-2 transition-colors text-sm"
+                            style={{ color: "#A8A8A8" }}
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-purple-500/0 group-hover:bg-purple-500 transition-colors" />
-                            {link.label}
+                            <span
+                              className="w-1.5 h-1.5 rounded-full transition-all group-hover:bg-[#8B1538]"
+                              style={{
+                                background: "transparent",
+                              }}
+                            />
+                            <span className="group-hover:text-[#E8B4B8] transition-colors">
+                              {link.label}
+                            </span>
                           </Link>
                         )}
-                      </motion.li>
+                      </li>
                     ))}
                   </ul>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Bottom Bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="border-t border-white/10 py-8"
+        <div
+          className={`border-t py-8 transition-opacity duration-1000 delay-700 ${
+            inView ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ borderColor: "rgba(232, 180, 184, 0.2)" }}
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-gray-400">
+            <div
+              className="flex flex-col sm:flex-row items-center gap-4 text-sm"
+              style={{ color: "#A8A8A8" }}
+            >
               <p className="flex items-center gap-2">
                 <span>© {currentYear} Chris Norton Jr.</span>
-                <span className="hidden sm:inline text-gray-600">•</span>
-                <span className="text-purple-400">
+                <span className="hidden sm:inline" style={{ color: "#7B4B94" }}>
+                  •
+                </span>
+                <span style={{ color: "#E8B4B8" }}>
                   Strategic systems that scale.
                 </span>
               </p>
               <div className="flex items-center gap-2">
-                <span className="text-gray-500">Built with</span>
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 1, repeat: Infinity, repeatDelay: 3 }}
-                >
-                  <Heart size={14} className="text-pink-400 fill-current" />
-                </motion.div>
-                <span className="text-gray-500">and</span>
-                <Code2 size={14} className="text-purple-400" />
+                <span style={{ color: "#7B4B94" }}>Built with</span>
+                <Heart
+                  size={14}
+                  className="fill-current animate-heartbeat"
+                  style={{ color: "#B8336A" }}
+                />
+                <span style={{ color: "#7B4B94" }}>and</span>
+                <Code2 size={14} style={{ color: "#8B1538" }} />
               </div>
             </div>
 
             {/* Scroll to Top */}
-            <motion.button
+            <button
               onClick={handleScrollToTop}
-              className="group relative"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="group relative hover:scale-105 active:scale-95 transition-transform"
             >
-              <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 text-sm text-gray-300 transition-all duration-300 group-hover:border-purple-500/50 group-hover:bg-white/10 overflow-hidden">
+              <div
+                className="flex items-center gap-2 px-5 py-2.5 rounded-lg backdrop-blur-xl border text-sm transition-all duration-300 overflow-hidden"
+                style={{
+                  background: "rgba(255, 255, 255, 0.03)",
+                  borderColor: "rgba(232, 180, 184, 0.3)",
+                  color: "#A8A8A8",
+                }}
+              >
                 {/* Gradient background on hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/20 group-hover:to-pink-500/20 transition-all duration-300" />
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(139, 21, 56, 0.2) 0%, rgba(184, 51, 106, 0.2) 100%)",
+                  }}
+                />
 
                 <span className="relative z-10 group-hover:text-white transition-colors">
                   Back to Top
                 </span>
-                <motion.div
-                  animate={{ y: [0, -3, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="relative z-10"
-                >
+                <div className="relative z-10 animate-bounce-subtle">
                   <ArrowUp
                     size={16}
-                    className="text-purple-400 group-hover:text-pink-400 transition-colors"
+                    className="transition-colors"
+                    style={{ color: "#E8B4B8" }}
                   />
-                </motion.div>
+                </div>
               </div>
-            </motion.button>
+            </button>
           </div>
-        </motion.div>
+        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0) translateX(0);
+            opacity: 0;
+          }
+          50% {
+            transform: translateY(-30px) translateX(10px);
+            opacity: 1;
+          }
+        }
+
+        @keyframes heartbeat {
+          0%,
+          100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.2);
+          }
+        }
+
+        @keyframes bounce-subtle {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-3px);
+          }
+        }
+
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-heartbeat {
+          animation: heartbeat 1s ease-in-out infinite;
+          animation-iteration-count: infinite;
+          animation-delay: 3s;
+        }
+
+        .animate-bounce-subtle {
+          animation: bounce-subtle 1.5s ease-in-out infinite;
+        }
+      `}</style>
     </footer>
   );
 }

@@ -45,7 +45,7 @@ export default async function Home() {
 
         {/* Blog Insights - Pass preloaded data */}
         {/* <BlogSection initialPosts={featuredPosts} /> */}
-        <BlogSection />
+        <BlogSection initialPosts={featuredPosts} />
 
         {/* Contact */}
         {/* <ContactSection /> */}

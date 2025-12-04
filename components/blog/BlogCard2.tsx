@@ -29,6 +29,7 @@ interface BlogPost {
 interface BlogCardProps {
   post: BlogPost;
   index?: number;
+  featured?: boolean;
 }
 
 const categoryColors: Record<string, string> = {

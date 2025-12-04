@@ -235,7 +235,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Left Column - Text Content */}
           <div className="space-y-8 animate-fade-in-up">
             {/* Greeting Badge */}
-            <div className="inline-flex items-center space-x-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm px-4 py-2 rounded-full border border-purple-200 dark:border-purple-800 transition-all hover:scale-105 hover:shadow-lg">
+            <div className="inline-flex items-center space-x-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm px-4 py-2 rounded-full border border-purple-200 dark:border-pink-800 transition-all hover:scale-105 hover:shadow-lg">
               <span className="relative flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
@@ -249,7 +249,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <div>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-space-grotesk text-gray-900 dark:text-white leading-tight">
                 Hi, I'm{" "}
-                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-pink-600 via-rose-600 to-fuchsia-600 bg-clip-text text-transparent">
                   {name}
                 </span>
               </h1>
@@ -258,7 +258,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   I Build
                 </span>{" "}
                 <span
-                  className={`inline-block text-purple-600 dark:text-purple-400 min-w-[300px] transition-all duration-500 ${
+                  className={`inline-block text-pink-600 dark:text-rose-400 min-w-[300px] transition-all duration-500 ${
                     isVisible
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-5"
@@ -276,12 +276,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 scalable software solutions
               </span>
               ,
-              <span className="font-semibold text-pink-600 dark:text-pink-400">
+              <span className="font-semibold text-rose-600 dark:text-rose-400">
                 {" "}
                 intelligent automation
               </span>
               , and
-              <span className="font-semibold text-blue-600 dark:text-blue-400">
+              <span className="font-semibold text-fuchsia-600 dark:text-fuchsia-400">
                 {" "}
                 embedded systems
               </span>
@@ -314,7 +314,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="flex flex-wrap gap-4 pt-4">
               <a
                 href="#projects"
-                className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
+                className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-rose-600 to-fuchsia-600 text-white rounded-xl font-semibold hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
               >
                 View My Work
                 <FaArrowRight
@@ -379,7 +379,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           >
             <div className="relative">
               {/* Decorative elements */}
-              <div className="absolute -top-8 -left-8 w-72 h-72 bg-purple-300 dark:bg-purple-600 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl opacity-30 dark:opacity-20 animate-pulse"></div>
+              <div className="absolute -top-8 -left-8 w-72 h-72 bg-rose-300 dark:bg-fuchsia-600 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl opacity-30 dark:opacity-20 animate-pulse"></div>
               <div
                 className="absolute -bottom-8 -right-8 w-72 h-72 bg-pink-300 dark:bg-pink-600 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl opacity-30 dark:opacity-20 animate-pulse"
                 style={{ animationDelay: "1s" }}
@@ -390,7 +390,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="relative w-full aspect-square max-w-lg mx-auto">
                   {/* Glowing border effect */}
                   <div
-                    className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-3xl opacity-75"
+                    className="absolute inset-0 bg-gradient-to-r from-rose-600 via-pink-600 to-fuchsia-600 rounded-3xl opacity-75"
                     style={{ boxShadow: "0 0 60px rgba(139, 92, 246, 0.5)" }}
                   ></div>
 
@@ -412,7 +412,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               {/* Floating Stats Cards */}
               <div className="absolute -left-4 top-1/4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 border border-gray-200 dark:border-gray-700 transition-all hover:scale-105 hover:shadow-2xl">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-fuchsia-500 rounded-xl flex items-center justify-center">
                     <FaCode size={24} className="text-white" />
                   </div>
                   <div>
@@ -428,7 +428,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
               <div className="absolute -right-4 bottom-1/4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 border border-gray-200 dark:border-gray-700 transition-all hover:scale-105 hover:shadow-2xl">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-slate-500 rounded-xl flex items-center justify-center">
                     <FaGraduationCap size={24} className="text-white" />
                   </div>
                   <div>

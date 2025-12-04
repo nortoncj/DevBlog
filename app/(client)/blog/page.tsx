@@ -1,8 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence , type Variants} from "framer-motion";
-import { useInView } from "react-intersection-observer";
+/**
+ * BlogIndexPage - OPTIMIZED VERSION
+ *
+ * Integrates real Sanity fetching with full optimization:
+ * - Client-side fetching with useEffect
+ * - Memoized filtering (ZERO API calls on filter/search)
+ * - Performance-optimized components
+ * - Beautiful design maintained
+ */
+
+import { useState, useEffect, useMemo, memo } from "react";
 import {
   Search,
   Filter,
@@ -12,11 +20,8 @@ import {
   Eye,
   BookOpen,
   Clock,
-  Sparkles,
-  X,
+  Zap,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { BlogCard } from "@/components/blog/BlogCard2";
 import {
   getPosts,
   getFeaturedPosts,
@@ -25,8 +30,38 @@ import {
   urlFor,
 } from "@/lib/sanity";
 
+// Types
+interface Category {
+  title: string;
+}
+
+interface Author {
+  name: string;
+}
+
+interface Post {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  publishedAt: string;
+  readTime: string;
+  featured: boolean;
+  categories: Category[];
+  tags: string[];
+  author: Author;
+  thumbnail?: string;
+  image?: {
+    asset: {
+      url: string;
+    };
+  };
+  views: number;
+  likes: number;
+}
+
 // Adapter function to convert Sanity blog data to BlogCard format
-function adaptSanityPost(post: any) {
+function adaptSanityPost(post: any): Post {
   return {
     _id: post._id,
     title: post.title,
@@ -39,7 +74,7 @@ function adaptSanityPost(post: any) {
     featured: post.featured || false,
     categories: post.categories || [],
     tags: post.tags || [],
-    author: { name: "Chris Norton Jr" },
+    author: post.author || { name: "Chris Norton Jr" },
     thumbnail: post.image
       ? urlFor(post.image).width(800).height(400).quality(90).url()
       : undefined,
@@ -51,110 +86,207 @@ function adaptSanityPost(post: any) {
   };
 }
 
-// Particle background component
-const ParticleBackground = () => {
-  const [particles, setParticles] = useState<
-    Array<{ id: number; x: number; y: number; size: number; duration: number }>
-  >([]);
+// BlogCard Component - Memoized for performance
+interface BlogCardProps {
+  post: Post;
+  size?: "default" | "large";
+  showExcerpt?: boolean;
+}
 
-  useEffect(() => {
-    const generateParticles = () => {
-      const newParticles = Array.from({ length: 25 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 4 + 2,
-        duration: Math.random() * 20 + 10,
-      }));
-      setParticles(newParticles);
-    };
+const BlogCard = memo(
+  ({ post, size = "default", showExcerpt = true }: BlogCardProps) => {
+    const isLarge = size === "large";
 
-    generateParticles();
-  }, []);
+    return (
+      <article
+        className={`group relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-[#F8F6F7] dark:border-gray-800 hover:border-[#E8B4B8] dark:hover:border-[#E8B4B8] transition-all duration-300 hover:-translate-y-1 ${
+          isLarge ? "h-full" : ""
+        }`}
+        style={{
+          boxShadow: "0 4px 20px rgba(139, 21, 56, 0.08)",
+        }}
+      >
+        {/* Thumbnail */}
+        {post.thumbnail && (
+          <div
+            className={`relative overflow-hidden ${isLarge ? "h-80" : "h-48"}`}
+          >
+            <img
+              src={post.thumbnail}
+              alt={post.title}
+              loading="lazy"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#2C2C2C]/60 to-transparent" />
 
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-30">
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute rounded-full bg-gradient-to-br from-purple-400 to-pink-400"
-          style={{
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.5, 0.2],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
+            {/* Featured Badge */}
+            {post.featured && (
+              <div className="absolute top-4 right-4">
+                <span
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white"
+                  style={{
+                    background: "linear-gradient(135deg, #8B1538, #B8336A)",
+                  }}
+                >
+                  <Zap size={12} />
+                  Featured
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
-    },
-  },
-};
+        {/* Content */}
+        <div className="p-6">
+          {/* Categories */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            {post.categories.slice(0, 2).map((cat, idx) => (
+              <span
+                key={idx}
+                className="px-3 py-1 text-xs font-medium rounded-full"
+                style={{
+                  background: "rgba(139, 21, 56, 0.1)",
+                  color: "#8B1538",
+                  border: "1px solid rgba(139, 21, 56, 0.2)",
+                }}
+              >
+                {cat.title}
+              </span>
+            ))}
+          </div>
 
-const itemVariants :Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-};
-export const revalidate = 3600;
+          {/* Title */}
+          <h3
+            className={`font-semibold text-[#2C2C2C] dark:text-white mb-3 line-clamp-2 group-hover:text-[#8B1538] dark:group-hover:text-[#E8B4B8] transition-colors ${
+              isLarge ? "text-2xl" : "text-xl"
+            }`}
+            style={{ fontFamily: "Inter, sans-serif" }}
+          >
+            {post.title}
+          </h3>
+
+          {/* Excerpt */}
+          {showExcerpt && post.excerpt && (
+            <p
+              className="text-[#A8A8A8] dark:text-gray-400 mb-4 line-clamp-2"
+              style={{ fontFamily: "Inter, sans-serif", fontSize: "0.9375rem" }}
+            >
+              {post.excerpt}
+            </p>
+          )}
+
+          {/* Meta */}
+          <div className="flex items-center justify-between text-sm text-[#A8A8A8] dark:text-gray-400">
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5">
+                <Clock size={14} />
+                {post.readTime}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Eye size={14} />
+                {post.views?.toLocaleString() || 0}
+              </span>
+            </div>
+            <span className="flex items-center gap-1.5">
+              <Calendar size={14} />
+              {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+
+          {/* Read More Link */}
+          <div className="mt-4 pt-4 border-t border-[#F8F6F7] dark:border-gray-800">
+            <span
+              className="inline-flex items-center gap-2 text-sm font-medium group-hover:gap-3 transition-all"
+              style={{ color: "#8B1538" }}
+            >
+              Read Article
+              <ArrowRight
+                size={16}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </span>
+          </div>
+        </div>
+      </article>
+    );
+  }
+);
+
+BlogCard.displayName = "BlogCard";
+
+// Main Component
 export default function BlogIndexPage() {
-  const [selectedCategory, setSelectedCategory] = useState("All Posts");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [allPosts, setAllPosts] = useState<any[]>([]);
-  const [featuredPosts, setFeaturedPosts] = useState<any[]>([]);
-  const [categories, setCategories] = useState<string[]>(["All Posts"]);
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-    
-  // Fetch data from Sanity
+  // State for fetched data
+  const [allPosts, setAllPosts] = useState<Post[]>([]);
+  const [featuredPosts, setFeaturedPosts] = useState<Post[]>([]);
+  const [categoryList, setCategoryList] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // Filter state
+  const [selectedCategory, setSelectedCategory] = useState<string>("All Posts");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Fetch data from Sanity on mount
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
 
       try {
+        // console.log("🔍 [Client] Fetching blog data from Sanity...");
+
+        // Fetch all data in parallel
         const [sanityPosts, sanityFeaturedPosts, sanityCategories] =
           await Promise.all([getPosts(), getFeaturedPosts(), getCategories()]);
 
-        const transformedPosts = sanityPosts.map(adaptSanityPost);
-        const transformedFeatured = sanityFeaturedPosts.map(adaptSanityPost);
-        const categoryTitles = [
-          "All Posts",
-          ...sanityCategories.map((cat: any) => cat.title),
-        ];
+        // console.log("✅ [Client] Raw posts:", sanityPosts?.length || 0);
+        // console.log(
+        //   "✅ [Client] Raw featured:",
+        //   sanityFeaturedPosts?.length || 0
+        // );
+        // console.log(
+        //   "✅ [Client] Raw categories:",
+        //   sanityCategories?.length || 0
+        // );
 
+        // Transform Sanity data to BlogCard format
+        const transformedPosts = Array.isArray(sanityPosts)
+          ? sanityPosts.map(adaptSanityPost)
+          : [];
+
+        const transformedFeatured = Array.isArray(sanityFeaturedPosts)
+          ? sanityFeaturedPosts.map(adaptSanityPost)
+          : [];
+
+        // Create category list
+        const categoryTitles = Array.isArray(sanityCategories)
+          ? sanityCategories.map((cat: any) => cat.title || cat).filter(Boolean)
+          : [];
+
+        // console.log("🎯 [Client] Transformed posts:", transformedPosts.length);
+
+        // DEBUG: Log first post structure
+        // if (transformedPosts.length > 0) {
+        //   console.log("🔍 [Client] First post structure:", {
+        //     _id: transformedPosts[0]._id,
+        //     title: transformedPosts[0].title,
+        //     categories: transformedPosts[0].categories,
+        //     excerpt: transformedPosts[0].excerpt?.substring(0, 50),
+        //   });
+        // }
+
+        // Update state
         setAllPosts(transformedPosts);
         setFeaturedPosts(transformedFeatured);
-        setCategories(categoryTitles);
+        setCategoryList(categoryTitles);
       } catch (error) {
-        console.error("Error fetching blog data:", error);
+        console.error("❌ [Client] Error fetching blog data:", error);
         setAllPosts([]);
         setFeaturedPosts([]);
+        setCategoryList([]);
       } finally {
         setIsLoading(false);
       }
@@ -163,44 +295,81 @@ export default function BlogIndexPage() {
     fetchData();
   }, []);
 
-  // Filter posts
-  const regularPosts = allPosts.filter((post) => !post.featured);
+  // Memoized categories list
+  const categories = useMemo(() => {
+    return ["All Posts", ...categoryList];
+  }, [categoryList]);
 
-  const filteredPosts = regularPosts.filter((post) => {
-    const matchesCategory =
-      selectedCategory === "All Posts" ||
-      post.categories.some((cat: any) => cat.title === selectedCategory);
+  // Memoized regular posts (exclude featured)
+  const regularPosts = useMemo(() => {
+    // console.log("🔍 [Posts Debug] Total allPosts:", allPosts.length);
+    // console.log("🔍 [Posts Debug] Featured posts:", featuredPosts.length);
 
-    const matchesSearch =
-      searchQuery === "" ||
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    // Return ALL posts for the main grid
+    return allPosts;
+  }, [allPosts, featuredPosts]);
 
-    return matchesCategory && matchesSearch;
-  });
+  // CLIENT-SIDE FILTERING - ZERO API CALLS! 🎯
+  const filteredPosts = useMemo(() => {
+    let filtered = regularPosts;
 
-  // Calculate stats
-  const totalViews = 150;
-  const totalPosts = allPosts.length;
+    // console.log("🔍 [Filter Debug] Starting with posts:", regularPosts.length);
+    // console.log("🔍 [Filter Debug] Selected category:", selectedCategory);
+    // console.log("🔍 [Filter Debug] Search query:", searchQuery);
+
+    // Category filter
+    if (selectedCategory !== "All Posts") {
+      filtered = filtered.filter((post) => {
+        const postCategories = post.categories || [];
+        const matches = postCategories.some((cat: any) => {
+          const catTitle = typeof cat === "string" ? cat : cat?.title;
+          return catTitle === selectedCategory;
+        });
+        return matches;
+      });
+      // console.log("🔍 [Filter Debug] After category filter:", filtered.length);
+    }
+
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((post) => {
+        const titleMatch = post.title?.toLowerCase().includes(query);
+        const excerptMatch = post.excerpt?.toLowerCase().includes(query);
+
+        return titleMatch || excerptMatch;
+      });
+      // console.log("🔍 [Filter Debug] After search filter:", filtered.length);
+    }
+
+    // console.log("✅ [Filter Debug] Final filtered posts:", filtered.length);
+    return filtered;
+  }, [regularPosts, selectedCategory, searchQuery]);
+
+  // Memoized stats
+  const stats = useMemo(() => {
+    const totalViews = allPosts.reduce(
+      (sum, post) => sum + (post.views || 0),
+      0
+    );
+    const totalPosts = allPosts.length;
+
+    return { totalViews, totalPosts };
+  }, [allPosts]);
 
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 relative overflow-hidden">
-        <ParticleBackground />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 dark:bg-purple-500/30 rounded-full blur-[128px] pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/20 dark:bg-pink-500/30 rounded-full blur-[128px] pointer-events-none" />
-
-        <div className="relative container mx-auto px-6 pt-32">
+      <div className="min-h-screen bg-[#FEFCFC] dark:bg-gray-950 transition-colors duration-300">
+        <div className="container mx-auto px-6 pt-32">
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full mx-auto mb-4"
-              />
-              <p className="text-gray-600 dark:text-gray-400">
-                Loading articles...
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 mx-auto mb-4 border-[#8B1538] dark:border-[#E8B4B8]" />
+              <p
+                className="text-[#A8A8A8] dark:text-gray-400"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                Loading articles from Sanity...
               </p>
             </div>
           </div>
@@ -210,301 +379,296 @@ export default function BlogIndexPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 relative overflow-hidden">
-      {/* Particle Background */}
-      <ParticleBackground />
-
-      {/* Gradient Overlays */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 dark:bg-purple-500/30 rounded-full blur-[128px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/20 dark:bg-pink-500/30 rounded-full blur-[128px] pointer-events-none" />
-
+    <div className="min-h-screen bg-[#FEFCFC] dark:bg-gray-950 transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16">
-        <div className="container mx-auto px-6 relative z-10">
-          {/* Page Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 backdrop-blur-xl mb-6"
-            >
-              <Sparkles size={16} className="text-purple-400" />
-              <span className="text-sm font-semibold text-purple-600 dark:text-purple-300">
-                Technical Articles & Insights
-              </span>
-            </motion.div>
+      <section className="relative pt-24 pb-16 overflow-hidden">
+        {/* Blueprint Grid Background */}
+        <div
+          className="absolute inset-0 opacity-40 dark:opacity-20"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(139, 21, 56, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 21, 56, 0.1) 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
+          }}
+        />
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-gray-900 via-purple-600 to-pink-600 dark:from-white dark:via-purple-200 dark:to-pink-200 bg-clip-text text-transparent">
-                Engineering Insights
-              </span>
-              <br />
-              <span className="text-gray-700 dark:text-gray-300">
-                & Solutions
+        {/* Gradient Overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(139, 21, 56, 0.03) 0%, rgba(232, 180, 184, 0.05) 100%)",
+          }}
+        />
+
+        <div className="container mx-auto px-6 relative z-10">
+          {/* Header */}
+          <div className="text-center mb-16 animate-fade-in">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 text-white"
+              style={{
+                background: "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                fontFamily: "Inter, sans-serif",
+              }}
+            >
+              <BookOpen size={16} />
+              Technical Articles & System Insights
+            </div>
+
+            <h1
+              className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-[#2C2C2C] dark:text-white"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Engineering Insights
+              <span
+                className="block mt-2"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                & Strategic Solutions
               </span>
             </h1>
 
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Deep technical insights, architectural patterns, and strategic
-              engineering approaches from building scalable systems.
+            <p
+              className="text-xl max-w-3xl mx-auto leading-relaxed mb-8 text-[#2C2C2C] dark:text-gray-300"
+              style={{
+                fontFamily: "Inter, sans-serif",
+              }}
+            >
+              Deep technical insights, architectural patterns, and systematic
+              approaches to building scalable enterprise systems.
             </p>
 
-            {/* Blog Stats */}
-            <div className="flex flex-wrap items-center justify-center gap-6 mt-10">
-              {[
-                {
-                  icon: Eye,
-                  label: `${totalViews.toLocaleString()} views`,
-                  delay: 0.3,
-                },
-                { icon: BookOpen, label: `${totalPosts} articles`, delay: 0.4 },
-                { icon: TrendingUp, label: "Updated weekly", delay: 0.5 },
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: stat.delay, duration: 0.5 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10"
-                >
-                  <stat.icon size={16} className="text-purple-500" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                    {stat.label}
-                  </span>
-                </motion.div>
-              ))}
+            {/* Stats */}
+            <div className="flex items-center justify-center gap-8 text-sm flex-wrap text-[#A8A8A8] dark:text-gray-400">
+              <div className="flex items-center gap-2">
+                <Eye size={16} />
+                <span>{stats.totalViews.toLocaleString()} total views</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <BookOpen size={16} />
+                <span>{stats.totalPosts} articles</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <TrendingUp size={16} />
+                <span>Updated weekly</span>
+              </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Featured Posts */}
           {featuredPosts.length > 0 && (
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="mb-20"
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                  <TrendingUp className="text-white" size={20} />
-                </div>
-                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
+            <div className="mb-20">
+              <div className="flex items-center gap-2 mb-8">
+                <TrendingUp
+                  className="text-[#8B1538] dark:text-[#E8B4B8]"
+                  size={20}
+                />
+                <h2
+                  className="text-2xl font-semibold text-[#2C2C2C] dark:text-white"
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
                   Featured Articles
                 </h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-purple-500/50 to-transparent" />
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {featuredPosts.slice(0, 2).map((post) => (
-                  <motion.div key={post._id} variants={itemVariants}>
-                    <BlogCard post={post} />
-                  </motion.div>
+                {featuredPosts.slice(0, 2).map((post, index) => (
+                  <div key={post._id}>
+                    <BlogCard
+                      post={post}
+                      size={index === 0 ? "large" : "default"}
+                      showExcerpt={true}
+                    />
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           )}
         </div>
       </section>
 
       {/* Main Content */}
-      <section className="relative pb-20" ref={ref}>
-        <div className="container mx-auto px-6 relative z-10">
-          {/* Search and Filter Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-12"
-          >
-            <div className="relative bg-gray-50/80 dark:bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-xl">
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-2xl pointer-events-none" />
+      <section className="pb-20">
+        <div className="container mx-auto px-6">
+          {/* Search and Filter */}
+          <div className="rounded-xl p-6 mb-12 bg-[#F8F6F7] dark:bg-gray-900 border border-[#E8B4B8] dark:border-gray-800">
+            <div className="flex flex-col lg:flex-row gap-6 items-center">
+              {/* Search */}
+              <div className="relative flex-1 w-full">
+                <Search
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#A8A8A8] dark:text-gray-400"
+                  size={20}
+                />
+                <input
+                  type="text"
+                  placeholder="Search articles, topics, technologies..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all bg-[#FEFCFC] dark:bg-gray-800 border-[#E8B4B8] dark:border-gray-700 text-[#2C2C2C] dark:text-white focus:ring-[#8B1538] dark:focus:ring-[#E8B4B8]"
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                />
+              </div>
 
-              <div className="relative flex flex-col lg:flex-row gap-6 items-center">
-                {/* Search */}
-                <div className="relative flex-1 w-full group">
-                  <Search
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors"
-                    size={20}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Search articles, topics, technologies..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-12 pr-10 py-3.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                  />
-                  {searchQuery && (
+              {/* Categories */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto">
+                <Filter
+                  className="text-[#A8A8A8] dark:text-gray-400 flex-shrink-0"
+                  size={20}
+                />
+                <div className="flex gap-2">
+                  {categories.map((category) => (
                     <button
-                      onClick={() => setSearchQuery("")}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                    >
-                      <X size={18} />
-                    </button>
-                  )}
-                </div>
-
-                {/* Category Filter */}
-                <div className="flex items-center gap-3 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto scrollbar-hide">
-                  <Filter className="text-gray-400 flex-shrink-0" size={20} />
-                  <div className="flex gap-2">
-                    {categories.map((category, index) => (
-                      <motion.button
-                        key={category}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.05 }}
-                        onClick={() => setSelectedCategory(category)}
-                        className={cn(
-                          "relative px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-300 overflow-hidden",
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all"
+                      style={{
+                        background:
                           selectedCategory === category
-                            ? "text-white"
-                            : "text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
-                        )}
-                      >
-                        {/* Active background */}
-                        {selectedCategory === category && (
-                          <motion.div
-                            layoutId="activeCategory"
-                            className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500"
-                            initial={false}
-                            transition={{
-                              type: "spring",
-                              stiffness: 500,
-                              damping: 30,
-                            }}
-                          />
-                        )}
-
-                        {/* Inactive background */}
-                        {selectedCategory !== category && (
-                          <div className="absolute inset-0 bg-gray-100 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl" />
-                        )}
-
-                        <span className="relative z-10">{category}</span>
-                      </motion.button>
-                    ))}
-                  </div>
+                            ? "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)"
+                            : "transparent",
+                        color:
+                          selectedCategory === category ? "#FEFCFC" : "#2C2C2C",
+                        border:
+                          selectedCategory === category
+                            ? "none"
+                            : "1px solid #E8B4B8",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
+                      {category}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
-          </motion.div>
 
-          {/* Results Count */}
-          {!isLoading && filteredPosts.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mb-8 flex items-center justify-between"
-            >
-              <p className="text-gray-600 dark:text-gray-400">
-                Showing{" "}
-                <span className="font-semibold text-purple-600 dark:text-purple-400">
-                  {filteredPosts.length}
-                </span>{" "}
-                {filteredPosts.length === 1 ? "article" : "articles"}
-              </p>
-
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-                >
-                  Clear search
-                </button>
-              )}
-            </motion.div>
-          )}
+            {/* Results Count */}
+            <div className="mt-4 text-center text-sm text-[#A8A8A8] dark:text-gray-400">
+              {filteredPosts.length > 0 ? (
+                <>
+                  Showing{" "}
+                  <span className="font-semibold text-[#8B1538] dark:text-[#E8B4B8]">
+                    {filteredPosts.length}
+                  </span>{" "}
+                  {filteredPosts.length === 1 ? "article" : "articles"}
+                  {selectedCategory !== "All Posts" && (
+                    <>
+                      {" "}
+                      in{" "}
+                      <span className="font-semibold">{selectedCategory}</span>
+                    </>
+                  )}
+                  {searchQuery && (
+                    <>
+                      {" "}
+                      matching "
+                      <span className="font-semibold">{searchQuery}</span>"
+                    </>
+                  )}
+                </>
+              ) : null}
+            </div>
+          </div>
 
           {/* Articles Grid */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${selectedCategory}-${searchQuery}`}
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit={{ opacity: 0 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
+          {filteredPosts.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => (
-                <motion.div key={post._id} variants={itemVariants}>
-                  <BlogCard post={post}  />
-                </motion.div>
+                <div key={post._id}>
+                  <BlogCard post={post} showExcerpt={true} />
+                </div>
               ))}
-            </motion.div>
-          </AnimatePresence>
+            </div>
+          )}
 
           {/* No Results */}
-          {!isLoading && filteredPosts.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center py-20"
-            >
-              <div className="relative inline-flex items-center justify-center w-24 h-24 mb-6">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl" />
-                <div className="relative w-24 h-24 rounded-full bg-gray-100 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 flex items-center justify-center">
-                  <Search className="text-gray-400" size={32} />
-                </div>
+          {filteredPosts.length === 0 && (
+            <div className="text-center py-20">
+              <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center bg-[#F8F6F7] dark:bg-gray-900">
+                <Search
+                  className="text-[#A8A8A8] dark:text-gray-400"
+                  size={32}
+                />
               </div>
-
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <h3
+                className="text-xl font-semibold mb-2 text-[#2C2C2C] dark:text-white"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
                 No articles found
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-                Try adjusting your search terms or category filter to find what
-                you're looking for.
+              <p
+                className="mb-6 text-[#A8A8A8] dark:text-gray-400"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                Try adjusting your search terms or category filter
               </p>
-
               <button
                 onClick={() => {
                   setSearchQuery("");
                   setSelectedCategory("All Posts");
                 }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:shadow-xl hover:shadow-purple-500/50 transition-all duration-300"
+                className="px-6 py-3 rounded-lg font-medium text-white transition-all hover:opacity-90"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #8B1538 0%, #B8336A 100%)",
+                  fontFamily: "Inter, sans-serif",
+                }}
               >
-                <X size={18} />
-                Clear All Filters
+                Clear Filters
               </button>
-            </motion.div>
+            </div>
           )}
 
           {/* Load More */}
-          {filteredPosts.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="flex justify-center mt-16"
-            >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group relative"
+          {filteredPosts.length > 0 && filteredPosts.length >= 9 && (
+            <div className="flex justify-center mt-16">
+              <button
+                className="group flex items-center gap-2 px-8 py-4 rounded-lg transition-all duration-300 font-medium hover:shadow-lg bg-[#F8F6F7] dark:bg-gray-900 text-[#2C2C2C] dark:text-white border border-[#E8B4B8] dark:border-gray-800 hover:border-[#8B1538] dark:hover:border-[#E8B4B8]"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                }}
               >
-                <div className="relative flex items-center gap-3 px-8 py-4 rounded-2xl bg-gray-100/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 overflow-hidden transition-all duration-300 hover:border-purple-500/50">
-                  {/* Gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 transition-all duration-300" />
-
-                  <span className="relative z-10 font-semibold text-gray-900 dark:text-white">
-                    Load More Articles
-                  </span>
-                  <ArrowRight
-                    size={20}
-                    className="relative z-10 text-purple-500 group-hover:translate-x-1 transition-transform"
-                  />
-                </div>
-              </motion.button>
-            </motion.div>
+                <span>Load More Articles</span>
+                <ArrowRight
+                  size={20}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </button>
+            </div>
           )}
         </div>
       </section>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
