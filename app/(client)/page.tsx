@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import { Metadata } from "next";
 // import { HeroSection } from "@/components/sections/HeroSection";
 import  HeroSection  from "@/components/sections/Hero2Section";
@@ -7,14 +7,14 @@ import { AboutSection } from "@/components/sections/AboutSection";
 // import { ProjectsSection } from "@/components/sections/ProjectSection";
 // import { BlogSection } from "@/components/sections/BlogSection";
 import { BlogSection } from "@/components/sections/BlogSectionNew";
-import { ContactSection } from "@/components/sections/ContactSection";
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
+// import { ContactSection } from "@/components/sections/ContactSection";
+// import { Navigation } from "@/components/layout/Navigation";
+// import { Footer } from "@/components/layout/Footer";
 import { preloadHomepageData } from "@/data/sanity-data";
 // import '@/public/assets/css/styles.css'
 import SkillsEducationSection  from "@/components/sections/Skills2Section";
-import SkillsEducation from "@/components/sections/SkillsEducation";
-import { ThemeTest } from "@/components/test/ThemeTest";
+// import SkillsEducation from "@/components/sections/SkillsEducation";
+// import { ThemeTest } from "@/components/test/ThemeTest";
 import { ProjectsSection } from "@/components/sections/ProjectSectionNew";
 
 export const metadata: Metadata = {

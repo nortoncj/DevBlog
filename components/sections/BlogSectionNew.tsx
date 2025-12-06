@@ -12,7 +12,6 @@ import {
   FiUsers,
   FiStar,
 } from "react-icons/fi";
-import { getFeaturedBlogPosts } from "@/data/sanity-data";
 import { BlogPost } from "@/types/sanity";
 import { brand, brandGradients, colors } from "../ui/BrandColors";
 

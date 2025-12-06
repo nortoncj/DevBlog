@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Code2, Target, Zap, MailIcon, Cloud } from "lucide-react";
-import { cn, scrollUtils } from "@/lib/utils";
+import { scrollUtils } from "@/lib/utils";
 import heroImage from "@/public/assets/img/chrisNorton1.png";
-import PlayButton from "../ui/PlayButton";
+
 
 const badges = [
   { icon: Code2, label: "Engineer" },

@@ -1,14 +1,28 @@
+/**
+ * Sanity Client - Optimized with Webhook Cache
+ *
+ * Data fetching priority:
+ * 1. Webhook cache (instant, 0 API calls)
+ * 2. CDN cache (fast, CDN requests)
+ * 3. Direct API (fallback, API requests)
+ */
+
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import {
+  fetchWithCache,
+  CACHE_KEYS,
+  getCacheStats,
+} from "./sanity-webhook-cache";
 
-// Sanity client configuration
+// Main Sanity client (keeps existing client for compatibility)
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2024-01-01",
-  useCdn: process.env.NODE_ENV === "production",
-  token: process.env.SANITY_API_TOKEN, // Only needed for mutations
+  useCdn: true, // Always prefer CDN
+  token: process.env.SANITY_API_TOKEN,
 });
 
 // Image URL builder
@@ -31,6 +45,7 @@ export const queries = {
       image,
       video,
       body,
+      featured,
       categories[]-> {
         _id,
         title,
@@ -44,9 +59,9 @@ export const queries = {
     }
   `,
 
-  // Get featured posts (you can add a featured field to your schema)
+  // Get featured posts
   featuredPosts: `
-    *[_type == "post" && defined(publishedAt)] | order(publishedAt desc)[0...4] {
+    *[_type == "post" && featured == true] | order(publishedAt desc)[0...3] {
       _id,
       title,
       slug,
@@ -172,71 +187,160 @@ export const queries = {
   `,
 };
 
-// Utility functions for data fetching
+export const revalidate = 14400; // 4 hours
+
+// ============================================================================
+// OPTIMIZED DATA FETCHING WITH WEBHOOK CACHE
+// ============================================================================
+
+/**
+ * Get all posts
+ * Priority: Webhook cache > CDN > API
+ */
 export async function getPosts() {
   try {
-    return await client.fetch(queries.posts);
+    const { data, source } = await fetchWithCache<any[]>(
+      CACHE_KEYS.POSTS,
+      queries.posts
+    );
+
+    console.log(`📚 [getPosts] Fetched ${data.length} posts from ${source}`);
+    return data;
   } catch (error) {
     console.error("Error fetching posts:", error);
     return [];
   }
 }
 
+/**
+ * Get featured posts
+ * Priority: Webhook cache > CDN > API
+ */
 export async function getFeaturedPosts() {
   try {
-    return await client.fetch(queries.featuredPosts);
+    const { data, source } = await fetchWithCache<any[]>(
+      CACHE_KEYS.FEATURED_POSTS,
+      queries.featuredPosts
+    );
+
+    console.log(
+      `⭐ [getFeaturedPosts] Fetched ${data.length} posts from ${source}`
+    );
+    return data;
   } catch (error) {
     console.error("Error fetching featured posts:", error);
     return [];
   }
 }
 
+/**
+ * Get post by slug
+ * Priority: Webhook cache > CDN > API
+ */
 export async function getPostBySlug(slug: string) {
   try {
-    return await client.fetch(queries.postBySlug, { slug });
+    const { data, source } = await fetchWithCache<any>(
+      CACHE_KEYS.POST_BY_SLUG(slug),
+      queries.postBySlug,
+      { slug }
+    );
+
+    console.log(`📄 [getPostBySlug] Fetched post "${slug}" from ${source}`);
+    return data;
   } catch (error) {
     console.error("Error fetching post by slug:", error);
     return null;
   }
 }
 
+/**
+ * Get all projects
+ * Priority: Webhook cache > CDN > API
+ */
 export async function getProjects() {
   try {
-    return await client.fetch(queries.projects);
+    const { data, source } = await fetchWithCache<any[]>(
+      CACHE_KEYS.PROJECTS,
+      queries.projects
+    );
+
+    console.log(
+      `🚀 [getProjects] Fetched ${data.length} projects from ${source}`
+    );
+    return data;
   } catch (error) {
     console.error("Error fetching projects:", error);
     return [];
   }
 }
 
+/**
+ * Get project by ID
+ * Priority: Webhook cache > CDN > API
+ */
 export async function getProjectById(id: string) {
   try {
-    return await client.fetch(queries.projectById, { id });
+    const { data, source } = await fetchWithCache<any>(
+      CACHE_KEYS.PROJECT_BY_ID(id),
+      queries.projectById,
+      { id }
+    );
+
+    console.log(`🎯 [getProjectById] Fetched project "${id}" from ${source}`);
+    return data;
   } catch (error) {
     console.error("Error fetching project by ID:", error);
     return null;
   }
 }
 
+/**
+ * Get categories
+ * Uses CDN client directly (less frequently updated)
+ */
 export async function getCategories() {
   try {
-    return await client.fetch(queries.categories);
+    const { data, source } = await fetchWithCache<any[]>(
+      CACHE_KEYS.CATEGORIES,
+      queries.categories
+    );
+
+    console.log(
+      `🏷️  [getCategories] Fetched ${data.length} categories from ${source}`
+    );
+    return data;
   } catch (error) {
     console.error("Error fetching categories:", error);
     return [];
   }
 }
 
+/**
+ * Get tags
+ * Uses CDN client directly (less frequently updated)
+ */
 export async function getTags() {
   try {
-    return await client.fetch(queries.tags);
+    const { data, source } = await fetchWithCache<any[]>(
+      CACHE_KEYS.TAGS,
+      queries.tags
+    );
+
+    console.log(`🔖 [getTags] Fetched ${data.length} tags from ${source}`);
+    return data;
   } catch (error) {
     console.error("Error fetching tags:", error);
     return [];
   }
 }
 
-// Helper function to convert Sanity date to readable format
+// ============================================================================
+// HELPER FUNCTIONS (Keep existing)
+// ============================================================================
+
+/**
+ * Format Sanity date to readable format
+ */
 export function formatSanityDate(date: string): string {
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
@@ -245,7 +349,9 @@ export function formatSanityDate(date: string): string {
   });
 }
 
-// Helper function to calculate reading time from Sanity block content
+/**
+ * Calculate reading time from Sanity block content
+ */
 export function calculateReadingTimeFromBlocks(blocks: any[]): string {
   if (!blocks || !Array.isArray(blocks)) return "5 min read";
 
@@ -267,11 +373,12 @@ export function calculateReadingTimeFromBlocks(blocks: any[]): string {
   return `${minutes} min read`;
 }
 
-// Helper function to get image dimensions for optimization
+/**
+ * Get image dimensions from Sanity image reference
+ */
 export function getImageDimensions(image: any) {
   if (!image?.asset?._ref) return { width: 800, height: 600 };
 
-  // Extract dimensions from Sanity image reference
   const ref = image.asset._ref;
   const dimensions = ref.split("-")[2];
   if (dimensions) {
@@ -282,16 +389,12 @@ export function getImageDimensions(image: any) {
   return { width: 800, height: 600 };
 }
 
-// Environment variable validation
+/**
+ * Validate Sanity configuration
+ */
 export function validateSanityConfig() {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
-
-  // console.log("🔍 Sanity validation check:");
-  // console.log("  PROJECT_ID value:", projectId ? `"${projectId}"` : "MISSING");
-  // console.log("  DATASET value:", dataset ? `"${dataset}"` : "MISSING");
-  // console.log("  PROJECT_ID length:", projectId?.length || 0);
-  // console.log("  DATASET length:", dataset?.length || 0);
 
   if (!projectId || projectId.trim() === "") {
     console.warn("❌ NEXT_PUBLIC_SANITY_PROJECT_ID is missing or empty");
@@ -303,6 +406,53 @@ export function validateSanityConfig() {
     return false;
   }
 
-  console.log("✅  configuration is valid");
+  console.log("✅ Sanity configuration is valid");
   return true;
+}
+
+// ============================================================================
+// MONITORING & DEBUGGING
+// ============================================================================
+
+/**
+ * Get cache statistics for monitoring
+ */
+export function logCacheStats() {
+  const stats = getCacheStats();
+  console.log("📊 [Cache Stats]:", {
+    totalCached: stats.size,
+    keys: stats.keys,
+    entries: stats.entries.map((e) => ({
+      key: e.key,
+      source: e.source,
+      age: `${Math.round(e.age / 1000)}s`,
+    })),
+  });
+  return stats;
+}
+
+/**
+ * Test webhook cache system
+ */
+export async function testCacheSystem() {
+  console.log("🧪 [Test] Testing cache system...");
+
+  // Test posts
+  const posts1 = await getPosts();
+  const posts2 = await getPosts();
+
+  console.log("🧪 [Test] First call:", posts1.length, "posts");
+  console.log(
+    "🧪 [Test] Second call:",
+    posts2.length,
+    "posts (should be cached)"
+  );
+
+  // Show stats
+  logCacheStats();
+
+  return {
+    posts: posts1.length,
+    cached: posts1 === posts2,
+  };
 }

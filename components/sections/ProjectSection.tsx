@@ -8,11 +8,7 @@ import { ProjectFilters } from "@/components/projects/ProjectFilters";
 import { ProjectModal } from "@/components/projects/ProjectModal";
 import { getProjectsData, getProjectCategories } from "@/data/sanity-data";
 import { Project } from "@/types/sanity";
-import { ProjectCategoriesDebug } from "../test/ProjectCategoriesDebug";
-import { SanityDataTest } from "../test/debug-categories-component";
-import { ForceCategoryRefresh } from "../test/ForceCategoryRefresh";
-import { ProjectDataAnalysis } from "../test/ProjectData";
-import { getProjects } from "@/lib/sanity";
+
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },

@@ -24,7 +24,6 @@ import {
 } from "@/lib/sanity";
 import avi from "@images/Avatar.jpeg";
 import FeaturedMedia from "./FeatureMedia2";
-import  DiagnosticDebug  from "./DiagnosticDebug";
 // import { FeaturedMedia } from "./FeatureMedia";
 
 // Floating particle component

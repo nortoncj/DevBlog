@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { getFeaturedBlogPosts } from "@/data/sanity-data";
-// import { BlogPost } from "@/types/sanity";
 import { ArrowRight, BookOpen } from "lucide-react";
 
 interface FlexibleBlogPost {
