@@ -122,7 +122,7 @@ function FloatingParticles() {
   );
 }
 
-export function Footer() {
+export function  Footer() {
   const [inView, setInView] = useState(false);
   const footerRef = useRef<HTMLElement>(null);
   const currentYear = new Date().getFullYear();
