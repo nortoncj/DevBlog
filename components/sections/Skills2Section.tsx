@@ -53,12 +53,20 @@ import { HiFlag } from "react-icons/hi";
 import { LuWaves } from "react-icons/lu";
 import { SiCplusplus, SiPhp } from "react-icons/si";
 import { TbBrandCSharp, TbBrandMysql } from "react-icons/tb";
+import {
+  brand,
+  brandGradients,
+  classUpdates,
+  gradients,
+} from "../ui/BrandColors";
 
 interface Skill {
   name: string;
   icon: IconType;
   description: string;
   tags: string[];
+  style: string;
+  color?: string;
 }
 
 interface Education {
@@ -101,6 +109,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Web", "Markup", "Frontend"],
       badgeColor:
         "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300",
+      style: gradients.orange.default,
     },
     {
       name: "CSS",
@@ -109,6 +118,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Design", "Styling", "Responsive"],
       badgeColor:
         "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+      style: gradients.purple.default,
     },
     {
       name: "Liquid",
@@ -117,6 +127,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Templates", "E-commerce", "Dynamic"],
       badgeColor:
         "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300",
+      style: gradients.skyBlue.default,
     },
     {
       name: "HubSpot",
@@ -125,14 +136,17 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Marketing", "Sales", "Analytics"],
       badgeColor:
         "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300",
+      style: gradients.orange.default,
     },
     {
       name: "Mailchimp",
       icon: FaMailchimp,
       description: "Email marketing and automation service",
       tags: ["Campaigns", "Templates", "Analytics"],
+      color: "text-black",
       badgeColor:
         "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
+      style: gradients.yellow.default,
     },
     {
       name: "Zapier",
@@ -141,6 +155,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Automation", "Integration", "No-code"],
       badgeColor:
         "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300",
+      style: gradients.red.default,
     },
     {
       name: "Make",
@@ -149,6 +164,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Workflows", "API", "Integration"],
       badgeColor:
         "bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300",
+      style: gradients.fuschia.default,
     },
     {
       name: "Salesforce",
@@ -157,6 +173,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["CRM", "Sales", "Enterprise"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.blue.default,
     },
     // {
     //   name: "SendGrid",
@@ -171,6 +188,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["AWS", "Cloud", "Scalable"],
       badgeColor:
         "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
+      style: gradients.slate.default,
     },
     // {
     //   name: "Postmark",
@@ -185,6 +203,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Open-source", "Self-hosted", "Workflows"],
       badgeColor:
         "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+      style: gradients.purple.default,
     },
     {
       name: "Figma",
@@ -193,6 +212,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Design", "Prototyping", "Collaboration"],
       badgeColor:
         "bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300",
+      style: gradients.fuschia.default,
     },
     {
       name: "Klaviyo",
@@ -201,6 +221,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["E-commerce", "Segmentation", "Automation"],
       badgeColor:
         "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+      style: gradients.purple.default,
     },
     // {
     //   name: "Webhooks",
@@ -215,6 +236,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Metrics", "Reporting", "ROI"],
       badgeColor:
         "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
+      style: gradients.green.default,
     },
   ],
   webSkills = [
@@ -225,6 +247,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Frontend", "Components", "Hooks"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.skyBlue.default,
     },
     {
       name: "Next.js",
@@ -232,6 +255,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       description: "React framework with SSR and static generation",
       tags: ["React", "SSR", "Full-stack"],
       badgeColor: "bg-black/10 dark:bg-white/10 text-gray-900 dark:text-white",
+      style: gradients.slate.default,
     },
     {
       name: "Node.js",
@@ -240,6 +264,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Backend", "JavaScript", "API"],
       badgeColor:
         "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
+      style: gradients.green.default,
     },
     {
       name: "Python",
@@ -248,6 +273,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Backend", "Data", "ML"],
       badgeColor:
         "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
+      style: gradients.yellow.default,
     },
     {
       name: "MySQL",
@@ -256,6 +282,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["SQL", "Database", "Relational"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.blue.default,
     },
     {
       name: "PostgreSQL",
@@ -264,6 +291,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["SQL", "Database", "ACID"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.slate.default,
     },
     {
       name: "MongoDB",
@@ -272,6 +300,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["NoSQL", "JSON", "Scalable"],
       badgeColor:
         "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
+      style: gradients.green.default,
     },
     {
       name: "PHP",
@@ -280,6 +309,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Backend", "Web", "Scripting"],
       badgeColor:
         "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+      style: gradients.purple.default,
     },
     {
       name: "C/C++",
@@ -289,6 +319,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Systems", "Performance", "Low-level"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.blue.default,
     },
     {
       name: "C#",
@@ -297,6 +328,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: [".NET", "Windows", "Applications"],
       badgeColor:
         "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+      style: gradients.purple.default,
     },
     {
       name: "AWS",
@@ -305,6 +337,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Cloud", "Infrastructure", "DevOps"],
       badgeColor:
         "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
+      style: gradients.slate.default,
     },
     {
       name: "Docker",
@@ -313,6 +346,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Containers", "DevOps", "Deployment"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.blue.default,
     },
     {
       name: "Git",
@@ -321,6 +355,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Version Control", "Collaboration", "GitHub"],
       badgeColor:
         "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300",
+      style: gradients.red.default,
     },
     {
       name: "Tailwind CSS",
@@ -329,14 +364,16 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["CSS", "Responsive", "Design"],
       badgeColor:
         "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300",
+      style: gradients.skyBlue.default,
     },
     {
       name: "TypeScript",
       icon: FaJs,
       description: "Typed superset of JavaScript",
-      tags: ["JavaScript", "Types", "DX"],
+      tags: ["JavaScript", "Typescript", "React"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.blue.default,
     },
     {
       name: "REST APIs",
@@ -345,6 +382,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["API", "HTTP", "Backend"],
       badgeColor:
         "bg-stone-100 dark:bg-stone-900/30 text-stone-700 dark:text-stone-300",
+      style: gradients.smoke.default,
     },
   ],
   engineeringSkills = [
@@ -355,6 +393,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Arduino", "ESP32", "PIC", "ARM"],
       badgeColor:
         "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300",
+      style: gradients.red.default,
     },
     {
       name: "Wireless Communications",
@@ -363,6 +402,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["IoT", "Wireless", "Low-power"],
       badgeColor:
         "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
+      style: gradients.yellow.default,
     },
     {
       name: "MatLab",
@@ -371,6 +411,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Simulation", "Modeling", "Data Analysis", "Simulink"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.blue.default,
     },
     {
       name: "MQTT",
@@ -379,6 +420,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["IoT", "Messaging", "Pub/Sub"],
       badgeColor:
         "bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-300",
+      style: gradients.slate.default,
     },
     {
       name: "Circuit Design",
@@ -387,6 +429,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Hardware", "PCB", "Analog", "AC", "DC"],
       badgeColor:
         "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+      style: gradients.purple.default,
     },
     {
       name: "CAD",
@@ -395,6 +438,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["3D Modeling", "Design", "Manufacturing", "Fusion 360"],
       badgeColor:
         "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+      style: gradients.blue.default,
     },
     // {
     //   name: "TensorFlow",
@@ -433,6 +477,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Programming", "Low-level", "Firmware"],
       badgeColor:
         "bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300",
+      style: gradients.blue.default,
     },
     {
       name: "VHDL/Verifilog",
@@ -441,6 +486,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["FPGA", "ASIC", "Digital Design"],
       badgeColor:
         "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300",
+      style: gradients.orange.default,
     },
     {
       name: "PLC",
@@ -449,6 +495,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       tags: ["Siemens", "LadderLogic", "Control"],
       badgeColor:
         "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+      style: gradients.purple.default,
     },
   ],
   education = [
@@ -459,6 +506,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       description:
         "Focused on Computer Engineering and Electrical Engineering with emphasis on embedded systems, automation, and software development. Honor Roll and Dean's List multiple semesters.",
       tags: ["Computer Engineering", "Electrical Engineering", "GPA: 3.4/4.0"],
+      style: gradients.blue.default,
     },
   ],
   certifications = [
@@ -468,6 +516,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
       year: "2022",
       icon: FaAws,
       gradient: "from-blue-500 to-cyan-500",
+      style: gradients.blue.default,
     },
     // {
     //   title: "HubSpot Email Marketing",
@@ -563,7 +612,9 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
         }}
       >
         {/* Icon Circle */}
-        <div className="w-[70px] h-[70px] bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white shadow-lg transition-transform group-hover:scale-110">
+        <div
+          className={`w-[70px] h-[70px] ${skill.style || "bg-gradient-to-br from-purple-600 to-pink-600 "} rounded-full flex items-center justify-center ${skill.color || "text-white"} shadow-lg transition-transform group-hover:scale-110`}
+        >
           <Icon size={28} className="flex-shrink-0" />
         </div>
 
@@ -589,7 +640,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
             {skill.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded text-xs"
+                className={`px-2 py-1 bg-[#8B1538] dark:bg-[#B8336A]  text-white  rounded text-xs`}
               >
                 {tag}
               </span>
@@ -630,7 +681,9 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
         <div className="text-center mb-16 animate-fade-in-up">
           <h2 className="text-4xl sm:text-5xl font-bold font-space-grotesk text-gray-900 dark:text-white mb-4">
             Skills &{" "}
-            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span
+              className={` ${brandGradients.primary || "bg-gradient-to-r from-purple-600 to-pink-600"} bg-gradient-to-r bg-clip-text text-transparent`}
+            >
               Education
             </span>
           </h2>
@@ -650,7 +703,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
               onClick={() => setActiveTab("email")}
               className={`inline-flex items-center px-8 py-4 rounded-2xl font-semibold transition-all gap-2 duration-300 ${
                 activeTab === "email"
-                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30"
+                  ? "bg-gradient-to-r from-[#8B1538] to-[#B8336A] text-white shadow-lg shadow-purple-500/30"
                   : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-600 dark:hover:border-purple-400"
               }`}
             >
@@ -661,7 +714,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
               onClick={() => setActiveTab("web")}
               className={`inline-flex items-center px-8 py-4 rounded-2xl font-semibold transition-all duration-300 gap-2 ${
                 activeTab === "web"
-                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30"
+                  ? "bg-gradient-to-r from-[#8B1538] to-[#B8336A] text-white shadow-lg shadow-purple-500/30"
                   : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-600 dark:hover:border-purple-400"
               }`}
             >
@@ -672,7 +725,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
               onClick={() => setActiveTab("engineering")}
               className={`inline-flex items-center px-8 py-4 rounded-2xl font-semibold transition-all duration-300 gap-2 ${
                 activeTab === "engineering"
-                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30"
+                  ? "bg-gradient-to-r from-[#8B1538] to-[#B8336A] text-white shadow-lg shadow-purple-500/30"
                   : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-600 dark:hover:border-purple-400"
               }`}
             >
@@ -683,7 +736,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
               onClick={() => setActiveTab("education")}
               className={`inline-flex items-center px-8 py-4 rounded-2xl font-semibold transition-all duration-300 gap-2 ${
                 activeTab === "education"
-                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30"
+                  ? "bg-gradient-to-r from-[#8B1538] to-[#B8336A] text-white shadow-lg shadow-purple-500/30"
                   : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-600 dark:hover:border-purple-400"
               }`}
             >
@@ -715,7 +768,9 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
               >
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="flex-shrink-0">
-                    <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white">
+                    <div
+                      className={`w-24 h-24 ${brand.brandCard || " bg-gradient-to-br from-purple-500 to-pink-500"} rounded-2xl flex items-center justify-center text-white`}
+                    >
                       <FaGraduationCap size={48} />
                     </div>
                   </div>
@@ -724,11 +779,15 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
                       <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                         {edu.degree}
                       </h3>
-                      <span className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-semibold">
+                      <span
+                        className={`${brand.brandBadge || " bg-gradient-to-r from-purple-600 to-pink-600"} px-4 py-2 text-white rounded-full text-sm font-semibold"`}
+                      >
                         {edu.period}
                       </span>
                     </div>
-                    <p className="text-xl text-purple-600 dark:text-purple-400 font-semibold mb-3">
+                    <p
+                      className={`text-xl ${classUpdates.textAccent || " text-purple-600 dark:text-purple-400"} font-semibold mb-3`}
+                    >
                       {edu.institution}
                     </p>
                     <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -738,7 +797,7 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
                       {edu.tags.map((tag, tagIndex) => (
                         <span
                           key={tagIndex}
-                          className="px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-700 dark:text-purple-300 rounded-xl text-sm font-semibold"
+                          className={`px-4 py-2 ${brand.brandButton || "bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-700 dark:text-purple-300"} rounded-xl text-sm font-semibold1`}
                         >
                           {tag}
                         </span>
@@ -753,7 +812,9 @@ const SkillsEducationClean: React.FC<SkillsEducationProps> = ({
             <div className="mt-12">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
                 Certifications &{" "}
-                <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <span
+                  className={` ${brandGradients.primary || "bg-gradient-to-r from-purple-600 to-pink-600"} bg-gradient-to-r bg-clip-text text-transparent`}
+                >
                   Training
                 </span>
               </h3>

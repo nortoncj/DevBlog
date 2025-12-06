@@ -14,6 +14,7 @@ import {
 } from "react-icons/fi";
 import { getFeaturedBlogPosts } from "@/data/sanity-data";
 import { BlogPost } from "@/types/sanity";
+import { brand, brandGradients, colors } from "../ui/BrandColors";
 
 interface BlogSectionProps {
   initialPosts?: BlogPost[];
@@ -293,16 +294,20 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="inline-block mb-4"
           >
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 backdrop-blur-xl">
-              <FiBookOpen className="w-4 h-4 text-purple-400" />
-              <span className="text-sm font-semibold text-purple-600 dark:text-purple-300">
+            <span
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${brand.accentHighlight || "bg-gradient-to-r from-purple-500/20 to-pink-500/20"} border border-rose-500/30 backdrop-blur-xl`}
+            >
+              <FiBookOpen className="w-4 h-4 text-white" />
+              <span className="text-white">
                 Latest Insights
               </span>
             </span>
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-gray-900 via-purple-600 to-pink-600 dark:from-white dark:via-purple-200 dark:to-pink-200 bg-clip-text text-transparent">
+            <span
+              className={` ${brandGradients.primary || "bg-gradient-to-r from-purple-600 to-pink-600"} bg-gradient-to-r bg-clip-text text-transparent`}
+            >
               Deep Technical Insights
             </span>
           </h2>
@@ -374,7 +379,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
         >
           <Link
             href="/blog"
-            className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold text-lg shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70 hover:scale-105 transition-all duration-300"
+            className={`group inline-flex items-center gap-3 px-8 py-4 rounded-2xl ${ brand.brandButton || "bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold text-lg shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70"} hover:scale-105 transition-all duration-300`}
           >
             <span>Explore All Articles</span>
             <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -390,7 +395,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
         >
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-gray-900 via-purple-600 to-pink-600 dark:from-white dark:via-purple-200 dark:to-pink-200 bg-clip-text text-transparent">
+              <span className={` ${brandGradients.primary || "bg-gradient-to-r from-purple-600 to-pink-600"} bg-gradient-to-r bg-clip-text text-transparent`}>
                 Popular Topics
               </span>
             </h3>
@@ -414,7 +419,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
           className="relative mt-24 rounded-3xl overflow-hidden"
         >
           {/* Gradient Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500" />
+          <div className={`absolute inset-0 ${ brand.brandCard || "bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500"}`} />
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-20" />
 
           <div className="relative px-8 py-16 md:px-16 md:py-20 text-center">

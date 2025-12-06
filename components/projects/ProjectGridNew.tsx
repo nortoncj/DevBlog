@@ -153,7 +153,7 @@ const ProjectCard = memo<{
       </div>
 
       {/* Hover Overlay - Interactive State */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/97 to-pink-600/97 backdrop-blur-sm p-6 sm:p-8 opacity-0 translate-y-5 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto flex flex-col justify-center">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#8B1538]/97 to-[#B8336A]/97 backdrop-blur-sm p-6 sm:p-8 opacity-0 translate-y-5 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto flex flex-col justify-center">
         <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-3 sm:mb-4 leading-tight line-clamp-2">
           {project.title}
         </h3>
@@ -182,7 +182,7 @@ const ProjectCard = memo<{
 
         <div>
           <button
-            className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-white text-purple-600 rounded-xl text-xs sm:text-sm font-bold shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl hover:bg-purple-50"
+            className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-white text-[#8B1538] rounded-xl text-xs sm:text-sm font-bold shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl hover:bg-purple-50"
             aria-label={`View ${project.title} project details`}
           >
             <svg

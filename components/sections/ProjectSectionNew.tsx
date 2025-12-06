@@ -8,6 +8,7 @@ import { ProjectFilters } from "@/components/projects/ProjectFiltersNew";
 import { ProjectModal } from "@/components/projects/ProjectModal";
 import { Project, SanityCategory } from "@/types/sanity";
 import { getProjectsData, getProjectCategories } from "@/data/sanity-data";
+import { brand, brandGradients, classUpdates } from "../ui/BrandColors";
 
 // Animation variants
 const containerVariants: Variants = {
@@ -174,7 +175,9 @@ export function ProjectsSection({
           <motion.div variants={itemVariants} className="text-center">
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Featured{" "}
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span
+                className={` ${brandGradients.primary || "bg-gradient-to-r from-purple-600 to-pink-600"} bg-gradient-to-r bg-clip-text text-transparent`}
+              >
                 Projects
               </span>
             </h2>
@@ -232,7 +235,7 @@ export function ProjectsSection({
                     .getElementById("contact")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
+                className={`${brand.brandCard || "bg-gradient-to-r from-purple-600 to-pink-600 "} "inline-flex items-center justify-center px-8 py-4  text-white rounded-xl font-semibold hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"`}
               >
                 Discuss Your Project
               </button>

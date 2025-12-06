@@ -12,6 +12,7 @@ import {
   Code2,
   Sparkles,
 } from "lucide-react";
+import { BsTwitterX } from "react-icons/bs";
 
 // Types
 interface FooterLink {
@@ -31,26 +32,26 @@ const socialLinks: SocialLink[] = [
   {
     name: "GitHub",
     icon: Github,
-    href: "https://github.com/yourusername",
-    username: "@yourusername",
+    href: "https://github.com/nortoncj",
+    username: "@nortoncj",
   },
   {
     name: "LinkedIn",
     icon: Linkedin,
-    href: "https://linkedin.com/in/yourusername",
+    href: "https://linkedin.com/in/chrisnortonjr",
     username: "Chris Norton Jr",
   },
   {
     name: "Twitter",
-    icon: Twitter,
-    href: "https://twitter.com/yourusername",
+    icon: BsTwitterX,
+    href: "https://twitter.com/chrisnortonjr",
     username: "@yourusername",
   },
   {
     name: "Email",
     icon: Mail,
-    href: "mailto:your.email@example.com",
-    username: "your.email@example.com",
+    href: "mailto:chrisnortonjr.com",
+    username: "chrisnortonjr.com",
   },
 ];
 
@@ -242,7 +243,7 @@ export function Footer() {
                   style={{ color: "#E8B4B8" }}
                 >
                   <Sparkles size={16} style={{ color: "#B8336A" }} />
-                  The System Architect
+                  The Engineer
                 </p>
                 <p
                   className="italic text-base leading-relaxed"

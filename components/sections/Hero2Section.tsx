@@ -254,11 +254,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 </span>
               </h1>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-space-grotesk text-gray-800 dark:text-gray-100 mt-4 leading-tight">
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-gray-600 dark:text-gray-200">
                   I Build
                 </span>{" "}
                 <span
-                  className={`inline-block text-pink-600 dark:text-rose-400 min-w-[300px] transition-all duration-500 ${
+                  className={`inline-block text-pink-600 dark:text-pink-400 min-w-[300px] transition-all duration-500 ${
                     isVisible
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-5"

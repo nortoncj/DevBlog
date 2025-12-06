@@ -154,7 +154,7 @@ export function BlogCard({ post, index = 0 }: BlogCardProps) {
           </div>
 
           {/* Hover Popover (Full Details) */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/97 to-pink-600/97 backdrop-blur-sm p-6 opacity-0 translate-y-5 pointer-events-none transition-all duration-400 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto flex flex-col justify-center">
+          <div className="absolute inset-0 bg-gradient-to-br  from-[#8B1538]/97 to-[#B8336A]/97 backdrop-blur-sm p-6 opacity-0 translate-y-5 pointer-events-none transition-all duration-400 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto flex flex-col justify-center">
             {/* Category at top */}
             <div className="mb-4">
               <span className="inline-block px-3 py-1.5 bg-white/20 border border-white/30 text-white text-xs font-bold rounded-full backdrop-blur-md">

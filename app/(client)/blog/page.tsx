@@ -29,6 +29,7 @@ import {
   calculateReadingTimeFromBlocks,
   urlFor,
 } from "@/lib/sanity";
+import Link from "next/link";
 
 // Types
 interface Category {
@@ -98,120 +99,125 @@ const BlogCard = memo(
     const isLarge = size === "large";
 
     return (
-      <article
-        className={`group relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-[#F8F6F7] dark:border-gray-800 hover:border-[#E8B4B8] dark:hover:border-[#E8B4B8] transition-all duration-300 hover:-translate-y-1 ${
-          isLarge ? "h-full" : ""
-        }`}
-        style={{
-          boxShadow: "0 4px 20px rgba(139, 21, 56, 0.08)",
-        }}
-      >
-        {/* Thumbnail */}
-        {post.thumbnail && (
-          <div
-            className={`relative overflow-hidden ${isLarge ? "h-80" : "h-48"}`}
-          >
-            <img
-              src={post.thumbnail}
-              alt={post.title}
-              loading="lazy"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#2C2C2C]/60 to-transparent" />
-
-            {/* Featured Badge */}
-            {post.featured && (
-              <div className="absolute top-4 right-4">
-                <span
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white"
-                  style={{
-                    background: "linear-gradient(135deg, #8B1538, #B8336A)",
-                  }}
-                >
-                  <Zap size={12} />
-                  Featured
-                </span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Content */}
-        <div className="p-6">
-          {/* Categories */}
-          <div className="flex flex-wrap gap-2 mb-3">
-            {post.categories.slice(0, 2).map((cat, idx) => (
-              <span
-                key={idx}
-                className="px-3 py-1 text-xs font-medium rounded-full"
-                style={{
-                  background: "rgba(139, 21, 56, 0.1)",
-                  color: "#8B1538",
-                  border: "1px solid rgba(139, 21, 56, 0.2)",
-                }}
-              >
-                {cat.title}
-              </span>
-            ))}
-          </div>
-
-          {/* Title */}
-          <h3
-            className={`font-semibold text-[#2C2C2C] dark:text-white mb-3 line-clamp-2 group-hover:text-[#8B1538] dark:group-hover:text-[#E8B4B8] transition-colors ${
-              isLarge ? "text-2xl" : "text-xl"
-            }`}
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            {post.title}
-          </h3>
-
-          {/* Excerpt */}
-          {showExcerpt && post.excerpt && (
-            <p
-              className="text-[#A8A8A8] dark:text-gray-400 mb-4 line-clamp-2"
-              style={{ fontFamily: "Inter, sans-serif", fontSize: "0.9375rem" }}
+      <Link href={`/blog/${post.slug}`} passHref>
+        <article
+          className={`group relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-[#F8F6F7] dark:border-gray-800 hover:border-[#E8B4B8] dark:hover:border-[#E8B4B8] transition-all duration-300 hover:-translate-y-1 ${
+            isLarge ? "h-full" : ""
+          }`}
+          style={{
+            boxShadow: "0 4px 20px rgba(139, 21, 56, 0.08)",
+          }}
+        >
+          {/* Thumbnail */}
+          {post.thumbnail && (
+            <div
+              className={`relative overflow-hidden ${isLarge ? "h-80" : "h-48"}`}
             >
-              {post.excerpt}
-            </p>
+              <img
+                src={post.thumbnail}
+                alt={post.title}
+                loading="lazy"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2C2C2C]/60 to-transparent" />
+
+              {/* Featured Badge */}
+              {post.featured && (
+                <div className="absolute top-4 right-4">
+                  <span
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white"
+                    style={{
+                      background: "linear-gradient(135deg, #8B1538, #B8336A)",
+                    }}
+                  >
+                    <Zap size={12} />
+                    Featured
+                  </span>
+                </div>
+              )}
+            </div>
           )}
 
-          {/* Meta */}
-          <div className="flex items-center justify-between text-sm text-[#A8A8A8] dark:text-gray-400">
-            <div className="flex items-center gap-4">
+          {/* Content */}
+          <div className="p-6">
+            {/* Categories */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              {post.categories.slice(0, 2).map((cat, idx) => (
+                <span
+                  key={idx}
+                  className="px-3 py-1 text-xs font-medium rounded-full"
+                  style={{
+                    background: "rgba(139, 21, 56, 0.1)",
+                    color: "#8B1538",
+                    border: "1px solid rgba(139, 21, 56, 0.2)",
+                  }}
+                >
+                  {cat.title}
+                </span>
+              ))}
+            </div>
+
+            {/* Title */}
+            <h3
+              className={`font-semibold text-[#2C2C2C] dark:text-white mb-3 line-clamp-2 group-hover:text-[#8B1538] dark:group-hover:text-[#E8B4B8] transition-colors ${
+                isLarge ? "text-2xl" : "text-xl"
+              }`}
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              {post.title}
+            </h3>
+
+            {/* Excerpt */}
+            {showExcerpt && post.excerpt && (
+              <p
+                className="text-[#A8A8A8] dark:text-gray-400 mb-4 line-clamp-2"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "0.9375rem",
+                }}
+              >
+                {post.excerpt}
+              </p>
+            )}
+
+            {/* Meta */}
+            <div className="flex items-center justify-between text-sm text-[#A8A8A8] dark:text-gray-400">
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1.5">
+                  <Clock size={14} />
+                  {post.readTime}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Eye size={14} />
+                  {post.views?.toLocaleString() || 0}
+                </span>
+              </div>
               <span className="flex items-center gap-1.5">
-                <Clock size={14} />
-                {post.readTime}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Eye size={14} />
-                {post.views?.toLocaleString() || 0}
+                <Calendar size={14} />
+                {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
               </span>
             </div>
-            <span className="flex items-center gap-1.5">
-              <Calendar size={14} />
-              {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </span>
-          </div>
 
-          {/* Read More Link */}
-          <div className="mt-4 pt-4 border-t border-[#F8F6F7] dark:border-gray-800">
-            <span
-              className="inline-flex items-center gap-2 text-sm font-medium group-hover:gap-3 transition-all"
-              style={{ color: "#8B1538" }}
-            >
-              Read Article
-              <ArrowRight
-                size={16}
-                className="group-hover:translate-x-1 transition-transform"
-              />
-            </span>
+            {/* Read More Link */}
+            <div className="mt-4 pt-4 border-t border-[#F8F6F7] dark:border-gray-800">
+              <span
+                className="inline-flex items-center gap-2 text-sm font-medium group-hover:gap-3 transition-all"
+                style={{ color: "#8B1538" }}
+              >
+                Read Article
+                <ArrowRight
+                  size={16}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </span>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
+      </Link>
     );
   }
 );

@@ -34,7 +34,7 @@ const containerVariants = {
   },
 };
 
-// Memoized FilterButton component to prevent unnecessary re-renders
+// Memoized FilterButton component with brand theme
 const FilterButton = memo(
   ({
     category,
@@ -62,11 +62,11 @@ const FilterButton = memo(
           whileTap={{ scale: 0.98 }}
           onClick={onClick}
           className={cn(
-            "relative px-6 py-3.5 lg:px-8 lg:py-4 rounded-2xl font-semibold text-sm lg:text-base transition-all duration-500 overflow-hidden",
-            "focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900",
+            "relative px-6 py-3.5 lg:px-8 lg:py-4 rounded-lg font-semibold text-sm lg:text-base transition-all duration-500 overflow-hidden",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8336A] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#2C2C2C]",
             isActive
-              ? "text-white shadow-2xl shadow-purple-500/50"
-              : "text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-300"
+              ? "text-white shadow-2xl shadow-[#8B1538]/50"
+              : "text-[#2C2C2C] dark:text-[#F8F6F7] hover:text-[#8B1538] dark:hover:text-[#E8B4B8]"
           )}
           aria-pressed={isActive}
           title={category.description}
@@ -74,10 +74,10 @@ const FilterButton = memo(
           {/* Background layers */}
           {isActive ? (
             <>
-              {/* Gradient background for active state */}
+              {/* Brand gradient background for active state */}
               <motion.div
                 layoutId="activeFilterGradient"
-                className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500"
+                className="absolute inset-0 bg-gradient-to-r from-[#8B1538] to-[#B8336A]"
                 initial={false}
                 transition={{
                   type: "spring",
@@ -86,36 +86,50 @@ const FilterButton = memo(
                 }}
               />
 
-              {/* Simplified shine effect - reduced animation frequency */}
+              {/* Subtle shine effect with reduced frequency */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
                 animate={{
                   x: ["-200%", "200%"],
                 }}
                 transition={{
-                  duration: 3, // Increased from 2 to reduce CPU usage
+                  duration: 3,
                   repeat: Infinity,
                   ease: "linear",
-                  repeatDelay: 1, // Add delay between repeats
+                  repeatDelay: 1,
                 }}
               />
 
-              {/* Grid pattern overlay - using CSS instead of inline SVG for better caching */}
-              <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+              {/* Blueprint grid pattern overlay */}
+              <div 
+                className="absolute inset-0 opacity-20"
+                style={{
+                  backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
+                  backgroundSize: '16px 16px'
+                }}
+              />
             </>
           ) : (
             <>
               {/* Glassmorphic background for inactive state */}
-              <div className="absolute inset-0 bg-gray-100/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl transition-all duration-500 group-hover:bg-gray-200/80 dark:group-hover:bg-white/10 group-hover:border-purple-500/50" />
+              <div className="absolute inset-0 bg-[#FEFCFC]/80 dark:bg-white/5 backdrop-blur-xl border border-[#F8F6F7] dark:border-white/10 rounded-lg transition-all duration-500 group-hover:bg-[#F8F6F7]/80 dark:group-hover:bg-white/10 group-hover:border-[#E8B4B8]/50" />
 
-              {/* Hover gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100" />
+              {/* Hover gradient overlay with brand colors */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8B1538]/0 to-[#E8B4B8]/0 group-hover:from-[#8B1538]/10 group-hover:to-[#E8B4B8]/10 rounded-lg transition-all duration-500 opacity-0 group-hover:opacity-100" />
+
+              {/* Subtle schematic pattern on hover */}
+              <div 
+                className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-500"
+                style={{
+                  backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 21, 56, 0.1) 10px, rgba(139, 21, 56, 0.1) 11px)'
+                }}
+              />
             </>
           )}
 
           {/* Label text */}
           <span className="relative z-10 flex items-center gap-2">
-            {/* Icon indicator */}
+            {/* Icon indicator - brand accent */}
             {isActive && (
               <motion.span
                 initial={{ scale: 0, rotate: -180 }}
@@ -126,33 +140,35 @@ const FilterButton = memo(
                   stiffness: 500,
                   damping: 25,
                 }}
-                className="w-2 h-2 rounded-full bg-white"
+                className="w-2 h-2 rounded-full bg-white shadow-sm"
               />
             )}
             {category.label}
           </span>
 
-          {/* Hover glow effect */}
+          {/* Hover glow effect with brand color */}
           {!isActive && (
-            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl bg-purple-500/20 -z-10" />
+            <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl bg-[#8B1538]/20 -z-10" />
           )}
         </motion.button>
 
-        {/* Tooltip on hover */}
+        {/* Tooltip with brand styling */}
         <motion.div
           initial={{ opacity: 0, y: 10, scale: 0.9 }}
           whileHover={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.2 }}
-          className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-3 py-2 rounded-lg bg-gray-900 dark:bg-gray-800 text-white text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 shadow-xl z-50 border border-gray-700"
+          className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-3 py-2 rounded-lg bg-[#2C2C2C] dark:bg-[#1a1a1a] text-[#FEFCFC] text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 shadow-xl z-50 border border-[#7B4B94]/30"
         >
           {category.description}
-          {/* Tooltip arrow */}
-          <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 bg-gray-900 dark:bg-gray-800 border-l border-t border-gray-700 rotate-45" />
+          {/* Tooltip arrow with brand accent */}
+          <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 bg-[#2C2C2C] dark:bg-[#1a1a1a] border-l border-t border-[#7B4B94]/30 rotate-45" />
         </motion.div>
       </motion.div>
     );
   }
 );
+
+export default FilterButton;
 
 FilterButton.displayName = "FilterButton";
 

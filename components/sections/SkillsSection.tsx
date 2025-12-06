@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SkillCategory, TechBadgeGrid } from "@/components/ui/TechBadge";
+import { brandGradients, classUpdates,brand, gradients } from "../ui/BrandColors";
 
 interface Skill {
   name: string;
@@ -22,6 +23,7 @@ interface Skill {
   icon: string; // We'll use text-based icons for now, easily replaceable with real logos
   color: string;
   description: string;
+  style: string;
 }
 
 interface Education {
@@ -41,32 +43,38 @@ const skillCategories = {
       {
         name: 'React',
         level: 'expert' as const,
-        description: 'Modern React with hooks, context, and performance optimization'
+        description: 'Modern React with hooks, context, and performance optimization',
+        style:gradients.skyBlue
       },
       {
         name: 'Next.js',
         level: 'expert' as const,
-        description: 'Full-stack React framework with SSR and static generation'
+        description: 'Full-stack React framework with SSR and static generation',
+        style:gradients.slate
       },
       {
         name: 'JavaScript',
         level: 'expert' as const,
-        description: 'ES6+, async/await, functional programming patterns'
+        description: 'ES6+, async/await, functional programming patterns',
+        style:gradients.yellow
       },
       {
         name: 'TypeScript',
         level: 'expert' as const,
-        description: 'Type-safe development, advanced types, generics'
+        description: 'Type-safe development, advanced types, generics',
+        style:gradients.blue
       },
       {
         name: 'HTML5',
         level: 'expert' as const,
-        description: 'Semantic markup, accessibility, modern standards'
+        description: 'Semantic markup, accessibility, modern standards',
+        style:gradients.orange
       },
       {
         name: 'CSS3',
         level: 'expert' as const,
-        description: 'Grid, Flexbox, animations, responsive design'
+        description: 'Grid, Flexbox, animations, responsive design',
+        style:gradients.purple
       }
     ]
   },
@@ -77,27 +85,32 @@ const skillCategories = {
       {
         name: 'PHP',
         level: 'expert' as const,
-        description: 'Modern PHP, Laravel, API development, optimization'
+        description: 'Modern PHP, Laravel, API development, optimization',
+        style:gradients.fuschia
       },
       {
         name: 'Laravel',
         level: 'expert' as const,
-        description: 'Eloquent ORM, Artisan, API resources, queues'
+        description: 'Eloquent ORM, Artisan, API resources, queues',
+        style:gradients.red
       },
       {
         name: 'Python',
         level: 'advanced' as const,
-        description: 'Django, Flask, data processing, automation scripts'
+        description: 'Django, Flask, data processing, automation scripts',
+        style:gradients.green
       },
       {
         name: 'C#',
         level: 'advanced' as const,
-        description: '.NET Core, ASP.NET, enterprise applications'
+        description: '.NET Core, ASP.NET, enterprise applications',
+        style:gradients.purple
       },
       {
         name: 'Node.js',
         level: 'advanced' as const,
-        description: 'Express, API development, microservices'
+        description: 'Express, API development, microservices',
+        style:gradients.green
       }
     ]
   },
@@ -108,17 +121,20 @@ const skillCategories = {
       {
         name: 'AWS',
         level: 'expert' as const,
-        description: 'EC2, Lambda, S3, RDS, CloudFormation, DevOps'
+        description: 'EC2, Lambda, S3, RDS, CloudFormation, DevOps',
+        style:gradients.slate
       },
       {
         name: 'Azure',
         level: 'advanced' as const,
-        description: 'App Services, Functions, Storage, Active Directory'
+        description: 'App Services, Functions, Storage, Active Directory',
+        style:gradients.blue
       },
       {
         name: 'Docker',
         level: 'advanced' as const,
-        description: 'Containerization, orchestration, deployment'
+        description: 'Containerization, orchestration, deployment',
+        style:gradients.blue
       }
     ]
   },
@@ -129,7 +145,8 @@ const skillCategories = {
       {
         name: 'WordPress',
         level: 'expert' as const,
-        description: 'Custom themes, plugins, headless CMS, optimization'
+        description: 'Custom themes, plugins, headless CMS, optimization',
+        style:gradients.blue
       }
     ]
   }
@@ -220,7 +237,8 @@ export function SkillsEducationSection() {
                   key={key}
                   title={category.title}
                   icon={category.icon}
-                  skills={category.skills}
+                  skills={category?.skills}
+                
                 />
               ))}
             </div>

@@ -11,6 +11,7 @@ interface TechBadgeProps {
   description: string;
   delay?: number;
   className?: string;
+  style?: string;
 }
 
 // Tech logos from shields.io and devicons
@@ -116,8 +117,10 @@ export function TechBadge({
   description,
   delay = 0,
   className,
+  style,
 }: TechBadgeProps) {
-  const logo = techLogos[name];
+  // const logo = techLogos[name];
+  const logo = style ? techLogos[style] : undefined;
   const dots = levelDots[level];
 
   return (
@@ -228,6 +231,7 @@ interface TechBadgeGridProps {
     name: string;
     level: "expert" | "advanced" | "intermediate";
     description: string;
+    style: string;
   }>;
   className?: string;
   columns?: 2 | 3 | 4;
@@ -251,6 +255,7 @@ export function TechBadgeGrid({
           key={skill.name}
           name={skill.name}
           level={skill.level}
+          style={skill.style}
           description={skill.description}
           delay={index * 0.1}
         />
@@ -269,6 +274,7 @@ interface SkillCategoryProps {
     name: string;
     level: "expert" | "advanced" | "intermediate";
     description: string;
+    style: any;
   }>;
   className?: string;
 }
@@ -298,9 +304,6 @@ export function SkillCategory({
     </motion.div>
   );
 }
-
-
-
 
 /**
  * Education Timeline Component
