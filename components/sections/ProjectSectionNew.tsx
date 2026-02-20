@@ -57,16 +57,16 @@ export function ProjectsSection({
 
   // Load projects and categories ONLY if not provided as initial props
   useEffect(() => {
+    // Skip fetching if we already have both data sets
+    if (initialProjects.length > 0 && initialCategories.length > 0) {
+      setLoading(false);
+      return;
+    }
+
     async function loadData() {
-      // Only fetch if we don't have data
-      const needsProjects = !initialProjects.length;
-      const needsCategories = !initialCategories.length;
-      if (!needsProjects && !needsCategories) {
-        // We have all data, no need to fetch
-        return;
-      }
       try {
-        if (needsProjects && needsCategories) {
+        // Only fetch what we're missing
+        if (initialProjects.length === 0 && initialCategories.length === 0) {
           // Fetch both in parallel
           const [projectsData, categoriesData] = await Promise.all([
             getProjectsData(),
@@ -74,11 +74,11 @@ export function ProjectsSection({
           ]);
           setProjects(projectsData);
           setCategories(categoriesData as any[]);
-        } else if (needsProjects) {
+        } else if (initialProjects.length === 0) {
           // Only fetch projects
           const projectsData = await getProjectsData();
           setProjects(projectsData);
-        } else if (needsCategories) {
+        } else if (initialCategories.length === 0) {
           // Only fetch categories
           const categoriesData = await getProjectCategories();
           setCategories(categoriesData as any[]);
@@ -89,8 +89,9 @@ export function ProjectsSection({
         setLoading(false);
       }
     }
+    
     loadData();
-  }, [initialProjects, initialCategories]);
+  }, []); // Remove dependencies to prevent re-fetching
 
   // Filter projects based on active filter
   const filteredProjects = useMemo(() => {

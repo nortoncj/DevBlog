@@ -34,7 +34,7 @@ export function urlFor(source: SanityImageSource) {
 
 // GROQ queries for fetching data
 export const queries = {
-  // Get all posts with categories and tags
+  // Get all posts with categories and tags - OPTIMIZED (removed body for list view)
   posts: `
     *[_type == "post"] | order(publishedAt desc) {
       _id,
@@ -43,8 +43,6 @@ export const queries = {
       publishedAt,
       excerpt,
       image,
-      video,
-      body,
       featured,
       categories[]-> {
         _id,
@@ -53,31 +51,28 @@ export const queries = {
       },
       tags[]-> {
         _id,
-        title,
-        slug
+        title
       }
     }
   `,
 
-  // Get featured posts
+  // Get featured posts - OPTIMIZED (removed video, reduced fields)
   featuredPosts: `
-    *[_type == "post" && featured == true] | order(publishedAt desc)[0...3] {
+    *[_type == "post" && featured == true] | order(publishedAt desc)[0...5] {
       _id,
       title,
       slug,
       publishedAt,
       excerpt,
       image,
-      video,
+      featured,
       categories[]-> {
         _id,
-        title,
-        slug
+        title
       },
       tags[]-> {
         _id,
-        title,
-        slug
+        title
       }
     }
   `,
@@ -106,7 +101,7 @@ export const queries = {
     }
   `,
 
-  // Get all projects with categories and tags
+  // Get all projects with categories and tags - OPTIMIZED (removed video, reduced fields)
   projects: `
     *[_type == "project"] | order(_createdAt desc) {
       _id,
@@ -114,25 +109,18 @@ export const queries = {
       link,
       github,
       image,
-      video,
       description,
       techStack,
       modal,
       featured,
       categories[]-> {
         _id,
-        _type,
         title,
-        slug,
-        color,
-        description
+        slug
       },
       tags[]-> {
         _id,
-        _type,
-        title,
-        slug,
-        description
+        title
       }
     }
   `,
@@ -187,7 +175,8 @@ export const queries = {
   `,
 };
 
-export const revalidate = 14400; // 4 hours
+// Revalidate time for Next.js caching (4 hours = 14400 seconds)
+export const revalidate = 14400;
 
 // ============================================================================
 // OPTIMIZED DATA FETCHING WITH WEBHOOK CACHE
@@ -422,11 +411,6 @@ export function logCacheStats() {
   console.log("📊 [Cache Stats]:", {
     totalCached: stats.size,
     keys: stats.keys,
-    entries: stats.entries.map((e) => ({
-      key: e.key,
-      source: e.source,
-      age: `${Math.round(e.age / 1000)}s`,
-    })),
   });
   return stats;
 }

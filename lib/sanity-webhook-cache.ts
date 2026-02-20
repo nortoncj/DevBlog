@@ -1,81 +1,76 @@
 /**
- * Sanity Webhook Cache System
+ * Sanity Webhook Cache System - OPTIMIZED FOR SERVERLESS
  *
- * This system uses 2 webhooks to cache the most frequently requested data:
- * 1. Blog Posts Webhook - Caches all posts + featured posts
- * 2. Projects Webhook - Caches all projects
+ * Uses Next.js built-in caching with 'unstable_cache' for:
+ * - Persistent cache across serverless invocations
+ * - Automatic revalidation
+ * - Request deduplication
  *
  * Data Priority:
- * 1. Webhook Cache (instant, 0 API calls)
- * 2. CDN Cache (fast, CDN requests)
- * 3. Direct API (fallback, API requests)
+ * 1. Next.js Cache (persistent, fast)
+ * 2. CDN (fast, lower cost)
+ * 3. Direct API (fallback)
  */
 
 import { createClient } from "@sanity/client";
+import { unstable_cache } from 'next/cache';
 
-// Webhook cache storage (in-memory for development, use Redis/KV for production)
+// Webhook cache storage - Using Next.js cache for serverless
 interface CacheEntry<T> {
   data: T;
   timestamp: number;
-  source: "webhook" | "cdn" | "api";
+  source: "cache" | "cdn" | "api";
 }
 
 class WebhookCache {
-  private cache: Map<string, CacheEntry<any>> = new Map();
-  private maxAge = 24 * 60 * 60 * 1000; // 24 hours (webhooks refresh this)
+  // Keep minimal in-memory cache for request deduplication within same request
+  private requestCache: Map<string, Promise<any>> = new Map();
+  private maxAge = 14400; // 4 hours in seconds (for Next.js revalidate)
 
-  set<T>(key: string, data: T, source: "webhook" | "cdn" | "api" = "webhook") {
-    this.cache.set(key, {
-      data,
-      timestamp: Date.now(),
-      source,
-    });
-
-    console.log(`📦 [Cache] Set "${key}" from ${source}`);
+  // In-memory cache disabled for serverless - using Next.js cache instead
+  set<T>(key: string, data: T, source: "cache" | "cdn" | "api" = "cache") {
+    // No-op for serverless - Next.js handles caching
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`📦 [Cache] Data fetched for "${key}" from ${source}`);
+    }
   }
 
   get<T>(key: string): { data: T; source: string } | null {
-    const entry = this.cache.get(key);
-
-    if (!entry) {
-      console.log(`❌ [Cache] Miss for "${key}"`);
-      return null;
-    }
-
-    // Check if cache is stale (only for non-webhook sources)
-    if (
-      entry.source !== "webhook" &&
-      Date.now() - entry.timestamp > this.maxAge
-    ) {
-      console.log(`⏰ [Cache] Stale for "${key}"`);
-      this.cache.delete(key);
-      return null;
-    }
-
-    console.log(`✅ [Cache] Hit for "${key}" (source: ${entry.source})`);
-    return { data: entry.data as T, source: entry.source };
+    // Always return null to force Next.js cache lookup
+    return null;
   }
 
   clear(key?: string) {
+    // Clear request-level cache
     if (key) {
-      this.cache.delete(key);
-      console.log(`🗑️  [Cache] Cleared "${key}"`);
+      this.requestCache.delete(key);
     } else {
-      this.cache.clear();
-      console.log(`🗑️  [Cache] Cleared all`);
+      this.requestCache.clear();
     }
   }
 
   getStats() {
     return {
-      size: this.cache.size,
-      keys: Array.from(this.cache.keys()),
-      entries: Array.from(this.cache.entries()).map(([key, entry]) => ({
-        key,
-        source: entry.source,
-        age: Date.now() - entry.timestamp,
-      })),
+      size: this.requestCache.size,
+      keys: Array.from(this.requestCache.keys()),
+      entries: [],
     };
+  }
+  
+  // Request deduplication - prevent multiple identical requests in same render
+  async dedupe<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
+    const existing = this.requestCache.get(key);
+    if (existing) {
+      return existing as Promise<T>;
+    }
+    
+    const promise = fetcher().finally(() => {
+      // Clean up after request completes
+      this.requestCache.delete(key);
+    });
+    
+    this.requestCache.set(key, promise);
+    return promise;
   }
 }
 
@@ -113,79 +108,76 @@ export const apiClient = createClient({
 });
 
 /**
- * Fetch with 3-tier priority:
- * 1. Webhook cache (instant)
- * 2. CDN (fast)
- * 3. API (fallback)
- */
-/**
- * Fetch with 3-tier priority:
- * 1. Webhook cache (instant)
- * 2. CDN (fast)
- * 3. API (fallback)
+ * Fetch with Next.js cache + request deduplication
+ * Optimized for serverless with persistent caching
  */
 export async function fetchWithCache<T>(
   cacheKey: string,
   query: string,
   params?: Record<string, unknown>
-): Promise<{ data: T; source: 'webhook' | 'cdn' | 'api' }> {
-  // Priority 1: Check webhook cache
-  const cached = webhookCache.get<T>(cacheKey);
-  if (cached) {
-    return { data: cached.data, source: cached.source as 'webhook' | 'cdn' | 'api' };
-  }
-
-  try {
-    // Priority 2: Try CDN (fast, lower cost)
-    console.log(`🌐 [Fetch] Trying CDN for "${cacheKey}"`);
-    const data = params 
-      ? await cdnClient.fetch<T>(query, params)
-      : await cdnClient.fetch<T>(query);
+): Promise<{ data: T; source: 'cache' | 'cdn' | 'api' }> {
+  // Use request deduplication to prevent multiple identical requests
+  return webhookCache.dedupe(cacheKey, async () => {
+    // Use Next.js unstable_cache for persistent caching
+    const cachedFetcher = unstable_cache(
+      async () => {
+        try {
+          // Priority 1: Try CDN (fast, lower cost)
+          const data = params 
+            ? await cdnClient.fetch<T>(query, params)
+            : await cdnClient.fetch<T>(query);
+          
+          return { data, source: 'cdn' as const };
+        } catch (cdnError) {
+          // Priority 2: Fallback to direct API
+          try {
+            const data = params
+              ? await apiClient.fetch<T>(query, params)
+              : await apiClient.fetch<T>(query);
+            
+            return { data, source: 'api' as const };
+          } catch (apiError) {
+            console.error(`❌ [Fetch] Failed for "${cacheKey}":`, apiError);
+            throw apiError;
+          }
+        }
+      },
+      [cacheKey], // Cache key
+      {
+        revalidate: 14400, // 4 hours
+        tags: [cacheKey], // For cache invalidation
+      }
+    );
     
-    // Cache for future use
-    webhookCache.set(cacheKey, data, 'cdn');
-    
-    return { data, source: 'cdn' };
-  } catch (cdnError) {
-    console.warn(`⚠️  [Fetch] CDN failed for "${cacheKey}", trying API:`, cdnError);
-    
-    try {
-      // Priority 3: Fallback to direct API
-      console.log(`🔌 [Fetch] Trying API for "${cacheKey}"`);
-      const data = params
-        ? await apiClient.fetch<T>(query, params)
-        : await apiClient.fetch<T>(query);
-      
-      // Cache for future use
-      webhookCache.set(cacheKey, data, 'api');
-      
-      return { data, source: 'api' };
-    } catch (apiError) {
-      console.error(`❌ [Fetch] API failed for "${cacheKey}":`, apiError);
-      throw apiError;
-    }
-  }
+    return cachedFetcher();
+  });
 }
 
 /**
- * Pre-warm cache with webhook data
- * Call this from your webhook endpoints
+ * Pre-warm cache with webhook data (No-op for serverless)
+ * Use Next.js revalidatePath/revalidateTag instead
  */
 export function warmCache(key: string, data: any) {
-  webhookCache.set(key, data, "webhook");
+  // No-op for serverless - Next.js handles caching
   console.log(
-    `🔥 [Webhook] Cache warmed for "${key}" with ${Array.isArray(data) ? data.length : 1} items`
+    `🔥 [Webhook] Data updated for "${key}" - use revalidateTag to refresh`
   );
 }
 
 /**
  * Invalidate specific cache keys
- * Call this when you know data has changed
+ * Use Next.js revalidateTag in production
  */
 export function invalidateCache(keys: string | string[]) {
   const keyArray = Array.isArray(keys) ? keys : [keys];
+  
+  // Clear request-level cache
   keyArray.forEach((key) => webhookCache.clear(key));
+  
   console.log(`🔄 [Cache] Invalidated ${keyArray.length} keys`);
+  
+  // Note: In production, use revalidateTag from server actions/route handlers
+  // This function is for client-side cache clearing only
 }
 
 /**

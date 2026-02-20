@@ -196,22 +196,26 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
-    if (!initialPosts.length) {
-      const loadPosts = async () => {
-        try {
-          const { getFeaturedBlogPosts } = await import("@/data/sanity-data");
-          const fetchedPosts = await getFeaturedBlogPosts(5); // Load 5 posts: 1 hero + 4 grid
-          setPosts(fetchedPosts);
-        } catch (error) {
-          console.error("Failed to load blog posts:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      loadPosts();
+    // Skip fetching if we already have posts
+    if (initialPosts.length > 0) {
+      setLoading(false);
+      return;
     }
-  }, [initialPosts.length]);
+
+    const loadPosts = async () => {
+      try {
+        const { getFeaturedBlogPosts } = await import("@/data/sanity-data");
+        const fetchedPosts = await getFeaturedBlogPosts(5); // Load 5 posts: 1 hero + 4 grid
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error("Failed to load blog posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPosts();
+  }, []); // Remove dependency to prevent re-fetching
 
   // Split posts: first one is hero, rest are grid
   const heroPosts = useMemo(() => posts.slice(0, 1), [posts]);

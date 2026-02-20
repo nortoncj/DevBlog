@@ -236,27 +236,19 @@ export default function BlogIndexPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All Posts");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Fetch data from Sanity on mount
+  // Fetch data from Sanity on mount ONCE
   useEffect(() => {
+    let isMounted = true; // Prevent state updates after unmount
+
     async function fetchData() {
       setIsLoading(true);
 
       try {
-        // console.log("🔍 [Client] Fetching blog data from Sanity...");
-
         // Fetch all data in parallel
         const [sanityPosts, sanityFeaturedPosts, sanityCategories] =
           await Promise.all([getPosts(), getFeaturedPosts(), getCategories()]);
 
-        // console.log("✅ [Client] Raw posts:", sanityPosts?.length || 0);
-        // console.log(
-        //   "✅ [Client] Raw featured:",
-        //   sanityFeaturedPosts?.length || 0
-        // );
-        // console.log(
-        //   "✅ [Client] Raw categories:",
-        //   sanityCategories?.length || 0
-        // );
+        if (!isMounted) return; // Don't update if component unmounted
 
         // Transform Sanity data to BlogCard format
         const transformedPosts = Array.isArray(sanityPosts)
@@ -272,34 +264,31 @@ export default function BlogIndexPage() {
           ? sanityCategories.map((cat: any) => cat.title || cat).filter(Boolean)
           : [];
 
-        // console.log("🎯 [Client] Transformed posts:", transformedPosts.length);
-
-        // DEBUG: Log first post structure
-        // if (transformedPosts.length > 0) {
-        //   console.log("🔍 [Client] First post structure:", {
-        //     _id: transformedPosts[0]._id,
-        //     title: transformedPosts[0].title,
-        //     categories: transformedPosts[0].categories,
-        //     excerpt: transformedPosts[0].excerpt?.substring(0, 50),
-        //   });
-        // }
-
         // Update state
         setAllPosts(transformedPosts);
         setFeaturedPosts(transformedFeatured);
         setCategoryList(categoryTitles);
       } catch (error) {
         console.error("❌ [Client] Error fetching blog data:", error);
-        setAllPosts([]);
-        setFeaturedPosts([]);
-        setCategoryList([]);
+        if (isMounted) {
+          setAllPosts([]);
+          setFeaturedPosts([]);
+          setCategoryList([]);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     }
 
     fetchData();
-  }, []);
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, []); // Empty dependency array - fetch only once on mount
 
   // Memoized categories list
   const categories = useMemo(() => {
