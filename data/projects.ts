@@ -8,10 +8,10 @@ import { Project } from "@/types";
 export const projectsData: Project[] = [
   {
     id: 1,
-    title: "E-Commerce Automation Suite",
-    category: "automation",
+    title: "Veterans of Foreign Wars E-commerce Automation",
+    category: "web-apps",
     description:
-      "Complete order processing, inventory management, and customer communication automation system that scales with business growth.",
+      "Custom Wordpress Website with complete order processing, inventory management, and customer communication automation system that scales with business growth.",
     thumbnail:
       "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop&crop=entropy&auto=format",
     technologies: [
@@ -32,15 +32,15 @@ export const projectsData: Project[] = [
       "Analytics",
     ],
     timeline: {
-      duration: "6 weeks",
-      startDate: "10-3-24",
-      endDate: "11-4-24",
+      duration: "Ongoing",
+      startDate: "06-3-25",
+      endDate: "Present",
     },
-    liveUrl: "https://example.com/ecommerce-demo",
-    githubUrl: "https://github.com/christopher/ecommerce-automation",
+    liveUrl: "https://vfwpost6827.org",
+    githubUrl: "#",
     details: {
       overview:
-        "Built a comprehensive automation system that handles the entire e-commerce workflow from order processing to customer follow-up. The system integrates with multiple sales channels and provides real-time analytics for business intelligence.",
+        "Built a comprehensive automation system that handles the entire e-commerce workflow from order processing to customer follow-up. The system integrates with multiple sales channels and provides real-time analytics for business intelligence. Custom CRM features enhance customer engagement and retention.",
       challenges:
         "Managing complex inventory synchronization across multiple sales channels while maintaining real-time accuracy. Handling high-volume order processing during peak seasons without system degradation.",
       solution:
@@ -58,29 +58,30 @@ export const projectsData: Project[] = [
         "Automated supplier communications",
       ],
       timeline: {
-        duration: "6 weeks",
-        startDate: "10-3-24",
-        endDate: "11-4-24",
+        duration: "2 weeks",
+        startDate: "6-3-24",
+        endDate: "present",
       },
-      client: "Mid-size retail company (50M+ annual revenue)",
+      client: "National Association for Veterans (10K+ annual revenue)",
     },
   },
   {
     id: 2,
-    title: "Smart Analytics Dashboard",
-    category: "web-apps",
+    title: "Digital Marketing Dashboard & Analytics Platform",
+    category: "dashboards",
     description:
       "Real-time business intelligence platform with predictive analytics, automated reporting, and interactive data visualizations.",
     thumbnail:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=200&fit=crop&crop=entropy&auto=format",
+    modal: true,
     technologies: [
-      "React",
-      "Node.js",
-      "MongoDB",
-      "D3.js",
-      "AWS",
-      "Python",
-      "TensorFlow",
+      "Machine Learning",
+      "Data Analytics",
+      "Tableau",
+      "Power BI",
+      "Dashboard",
+      "Marketing",
+      "Data Visualization",
     ],
     featured: true,
     tags: [
@@ -91,12 +92,13 @@ export const projectsData: Project[] = [
       "Business Intelligence",
     ],
     timeline: {
-      duration: "8 weeks",
+      duration: "1 weeks",
       startDate: "09-1-24",
       endDate: "10-26-24",
     },
-    liveUrl: "https://example.com/analytics-demo",
-    githubUrl: "https://github.com/christopher/smart-analytics",
+    liveUrl: "#",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    githubUrl: "#",
     details: {
       overview:
         "Developed a comprehensive analytics platform that transforms raw business data into actionable insights with predictive capabilities. The system processes data from multiple sources and provides real-time dashboards for strategic decision-making.",
@@ -117,43 +119,30 @@ export const projectsData: Project[] = [
         "Scheduled data exports and API access",
       ],
       timeline: {
-        duration: "8 weeks",
+        duration: "1 day",
         startDate: "09-1-24",
-        endDate: "10-26-24",
+        endDate: "09-1-24",
       },
-      client: "Fortune 500 company",
+      client: "Digital marketing agency",
     },
   },
   {
     id: 3,
-    title: "API Integration Platform",
-    category: "integrations",
+    title: "Lachelle's Travels & Advdentures",
+    category: "web-apps",
     description:
       "Unified API gateway connecting 15+ third-party services with intelligent routing, monitoring, and automated failover.",
     thumbnail:
       "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=200&fit=crop&crop=entropy&auto=format",
-    technologies: [
-      "Node.js",
-      "Express",
-      "Docker",
-      "Kubernetes",
-      "GraphQL",
-      "Redis",
-      "MongoDB",
-    ],
-    featured: false,
-    tags: [
-      "API Gateway",
-      "Microservices",
-      "Integration",
-      "GraphQL",
-      "Monitoring",
-    ],
+    technologies: ["wordpress", "WooCommerce", "Shopify", "Zapier"],
+    featured: true,
+    tags: ["wordpress", "WooCommerce", "Shopify", "Zapier", "Monitoring"],
     timeline: {
-      duration: "10 weeks",
+      duration: "1 week",
       startDate: "07-15-24",
-      endDate: "09-23-24",
+      endDate: "0-23-24",
     },
+    liveUrl: "https://lachelletravels.com",
     githubUrl: "https://github.com/christopher/api-integration-platform",
     details: {
       overview:
@@ -184,20 +173,19 @@ export const projectsData: Project[] = [
   },
   {
     id: 4,
-    title: "AI Customer Support System",
-    category: "automation",
+    title: "Walmart Transactional Email",
+    category: "email",
     description:
-      "Intelligent support automation handling 80% of customer inquiries with natural language processing and seamless human handoff.",
+      "Purchase Reciept email system with dynamic content generation, personalized recommendations, and automated follow-up sequences.",
     thumbnail:
       "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=400&h=200&fit=crop&crop=entropy&auto=format",
     technologies: [
-      "Python",
-      "TensorFlow",
-      "FastAPI",
-      "PostgreSQL",
-      "WebSocket",
-      "React",
-      "OpenAI",
+      "email",
+      "Transactional Emails",
+      "Automation",
+      "Ecommerce",
+      "Personalization",
+      "Marketing",
     ],
     featured: true,
     tags: [
@@ -224,53 +212,57 @@ export const projectsData: Project[] = [
       results:
         "Reduced support response time by 90%, customer satisfaction increased to 4.8/5 stars, and support costs decreased by 60%. Human agents now focus on complex issues requiring expertise.",
       features: [
-        "Natural language processing with context awareness",
-        "Multi-channel support (chat, email, SMS, social)",
-        "Intelligent escalation based on confidence scores",
-        "Real-time analytics and conversation insights",
-        "Seamless human agent handoff with full context",
-        "Sentiment analysis and priority routing",
-        "Knowledge base integration and management",
-        "Automated follow-up and satisfaction surveys",
+        "Ecommerce transactional email automation",
+        "Dynamic content generation based on user behavior",
+        "Personalized product recommendations",
+        "Automated follow-up email sequences",
+        "A/B testing and performance analytics",
       ],
       timeline: {
-        duration: "12 weeks",
+        duration: "1 week",
         startDate: "05-1-24",
-        endDate: "07-26-24",
+        endDate: "05-08-24",
       },
-      client: "SaaS company (10,000+ customers)",
+      client: "Walmart (10,000+ customers)",
     },
   },
   {
     id: 5,
-    title: "Enterprise Data Pipeline",
+    title: "Prolific Traders",
     category: "data",
     description:
-      "Scalable ETL system processing 10TB+ daily with automated quality checks, monitoring, and real-time analytics.",
+      "Stock Trading community with team collaboration, real-time market data, and strategy sharing features.",
     thumbnail:
       "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=200&fit=crop&crop=entropy&auto=format",
     technologies: [
-      "Apache Airflow",
-      "Spark",
-      "Kafka",
-      "Elasticsearch",
-      "Docker",
-      "Python",
-      "AWS",
+      "ClickFunnels",
+      "LeadPages",
+      "ActiveCampaign",
+      "ConvertKit",
+      "Mailchimp",
+      "AWeber",
+      "GetResponse",
     ],
     featured: true,
     tags: [
       "Big Data",
-      "ETL",
+      "Finance",
       "Data Pipeline",
       "Real-time Processing",
       "Quality Assurance",
+      "Marketing",
+      "High-Frequency Trading",
+      "Financial Technology",
+      "Low Latency",
+      "Risk Management",
+      "Algorithmic Trading",
     ],
     timeline: {
-      duration: "14 weeks",
-      startDate: "02-1-24",
-      endDate: "05-10-24",
+      duration: "3 months",
+      startDate: "08-1-24",
+      endDate: "11-10-24",
     },
+    liveUrl: "https://prolifictraders.com/thank-you-630845091742956259996",
     githubUrl: "https://github.com/christopher/enterprise-data-pipeline",
     caseStudyUrl: "https://example.com/data-pipeline-case-study",
     details: {
@@ -293,19 +285,19 @@ export const projectsData: Project[] = [
         "Automated data cataloging and documentation",
       ],
       timeline: {
-        duration: "14 weeks",
-        startDate: "02-1-24",
-        endDate: "05-10-24",
+        duration: "12 weeks",
+        startDate: "08-1-24",
+        endDate: "11-10-24",
       },
       client: "Financial services firm",
     },
   },
   {
     id: 6,
-    title: "Cloud Infrastructure Manager",
+    title: "Transact Payment Systems",
     category: "web-apps",
     description:
-      "Infrastructure-as-Code platform with automated deployment, scaling, cost optimization, and security compliance.",
+      "Financial cloud infrastructure management platform with automated deployment, monitoring, and cost optimization features.",
     thumbnail:
       "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=200&fit=crop&crop=entropy&auto=format",
     technologies: [
@@ -317,19 +309,24 @@ export const projectsData: Project[] = [
       "Go",
       "React",
     ],
-    featured: false,
+    featured: true,
     tags: [
       "Infrastructure as Code",
       "DevOps",
       "Cloud Management",
       "Cost Optimization",
       "Security",
+      ".NET",
+      "Microservices",
+      "Azure",
+      "Cyber Security",
     ],
     timeline: {
       duration: "16 weeks",
       startDate: "10-1-23",
       endDate: "01-19-24",
     },
+    liveUrl: "https://tranact.com/",
     githubUrl: "https://github.com/christopher/cloud-infrastructure-manager",
     details: {
       overview:
@@ -355,15 +352,15 @@ export const projectsData: Project[] = [
         startDate: "10-1-23",
         endDate: "01-19-24",
       },
-      client: "Enterprise corporation (500+ developers)",
+      client: "Tranact Payment Systems (50+ developers)",
     },
   },
   {
     id: 7,
-    title: "Financial Trading Algorithm",
-    category: "automation",
+    title: "Valentines Day Promotional Email",
+    category: "email",
     description:
-      "High-frequency trading system with real-time market analysis, risk management, and automated execution strategies.",
+      "Valentines Day promotional email campaign with personalized offers, dynamic content, and automated follow-up sequences.",
     thumbnail:
       "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop&crop=entropy&auto=format",
     technologies: [
@@ -375,18 +372,18 @@ export const projectsData: Project[] = [
       "Docker",
       "Kubernetes",
     ],
-    featured: false,
+    featured: true,
     tags: [
-      "High-Frequency Trading",
-      "Financial Technology",
-      "Low Latency",
-      "Risk Management",
-      "Algorithmic Trading",
+      "Holiday Campaign",
+      "Email Marketing",
+      "Personalization",
+      "Automation",
+      "Ecommerce",
     ],
     timeline: {
-      duration: "20 weeks",
+      duration: "1 weeks",
       startDate: "05-1-23",
-      endDate: "09-22-23",
+      endDate: "05-22-23",
     },
     details: {
       overview:
@@ -408,11 +405,11 @@ export const projectsData: Project[] = [
         "Integration with multiple brokers and exchanges",
       ],
       timeline: {
-        duration: "20 weeks",
+        duration: "1 weeks",
         startDate: "05-1-23",
-        endDate: "09-22-23",
+        endDate: "05-22-23",
       },
-      client: "Hedge fund",
+      client: "Digital marketing agency",
     },
   },
   {
@@ -474,6 +471,73 @@ export const projectsData: Project[] = [
       client: "Healthcare practice group",
     },
   },
+  {
+    id: 9,
+    title: "Point North Contracting",
+    category: "web-apps",
+    description:
+      "Construction management platform with project tracking, resource allocation, and client communication features.",
+    thumbnail:
+      "https://images.unsplash.com/photo-1504624058921-7a98c3b7d0e8?w=400&h=200&fit=crop&crop=entropy&auto=format",
+    technologies: [
+      "Laravel",
+      "Livewire",
+      "MySQL",
+      "AWS",
+    ],
+    featured: true,
+    tags: [
+      "Construction",
+      "Project Management",
+      "Resource Allocation",
+      "Client Communication",
+      "Collaboration",
+    ],
+    timeline: {
+      duration: "2 weeks",
+      startDate: "04-1-23",
+      endDate: "04-15-23",
+    },
+    liveUrl: "https://pointnorthcontracting.com/",
+    githubUrl: "https://github.com/christopher/point-north-contracting",
+  },
+  {
+    id: 10,
+    title: "Power Pulse Energy Monitoring",
+    category: "Embedded Systems",
+    description:
+      "IoT-based energy monitoring system with real-time data visualization, alerts, and usage analytics.",
+    thumbnail:
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=200&fit=crop&crop=entropy&auto=format",
+    technologies: [
+      "C",
+      "C++",
+      "Microcontrollers",
+      "IoT",
+      "MQTT",
+      "AWS IoT",
+      "Data Visualization",
+      "React Native",
+      "Azure IoT",
+      "Azure Functions",
+      "Azure Cosmos DB",
+    ],
+    featured: true,
+    tags: [
+      "Embedded Systems",
+      "IoT",
+      "Energy Monitoring",
+      "Real-time Data",
+      "Analytics",
+    ],
+    timeline: {
+      duration: "14 weeks",
+      startDate: "02-1-23",
+      endDate: "05-10-23",
+    },
+    liveUrl: "https://example.com/energy-monitoring-demo",
+    githubUrl: "",
+  }
 ];
 
 /**
