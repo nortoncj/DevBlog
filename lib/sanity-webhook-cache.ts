@@ -14,6 +14,7 @@
 
 import { createClient } from "@sanity/client";
 import { unstable_cache } from 'next/cache';
+import { cache as reactCache } from 'react';
 
 // Webhook cache storage - Using Next.js cache for serverless
 interface CacheEntry<T> {
@@ -25,7 +26,7 @@ interface CacheEntry<T> {
 class WebhookCache {
   // Keep minimal in-memory cache for request deduplication within same request
   private requestCache: Map<string, Promise<any>> = new Map();
-  private maxAge = 14400; // 4 hours in seconds (for Next.js revalidate)
+  private maxAge = 43200; // 12 hours in seconds (optimized for Sanity free tier)
 
   // In-memory cache disabled for serverless - using Next.js cache instead
   set<T>(key: string, data: T, source: "cache" | "cdn" | "api" = "cache") {
@@ -90,7 +91,7 @@ export const CACHE_KEYS = {
 
 // Sanity client with CDN enabled
 export const cdnClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2024-01-01",
   useCdn: true, // Always use CDN
@@ -99,7 +100,7 @@ export const cdnClient = createClient({
 
 // Sanity client without CDN (for real-time data)
 export const apiClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2024-01-01",
   useCdn: false, // Direct API
@@ -144,7 +145,7 @@ export async function fetchWithCache<T>(
       },
       [cacheKey], // Cache key
       {
-        revalidate: 14400, // 4 hours
+        revalidate: 43200, // 12 hours (optimized for Sanity free tier)
         tags: [cacheKey], // For cache invalidation
       }
     );

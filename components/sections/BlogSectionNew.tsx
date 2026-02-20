@@ -202,8 +202,10 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
       return;
     }
 
+    // If no initial posts, fetch them (fallback - should be avoided)
     const loadPosts = async () => {
       try {
+        console.warn('⚠️ BlogSection: Missing initialPosts prop, fetching data client-side. This is not optimal.');
         const { getFeaturedBlogPosts } = await import("@/data/sanity-data");
         const fetchedPosts = await getFeaturedBlogPosts(5); // Load 5 posts: 1 hero + 4 grid
         setPosts(fetchedPosts);
@@ -215,7 +217,7 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
     };
 
     loadPosts();
-  }, []); // Remove dependency to prevent re-fetching
+  }, []); // Empty dependency - fetch only once if needed
 
   // Split posts: first one is hero, rest are grid
   const heroPosts = useMemo(() => posts.slice(0, 1), [posts]);

@@ -63,8 +63,12 @@ export function ProjectsSection({
       return;
     }
 
+    // If data is missing, we need to fetch it
+    // However, this should be avoided - parent should provide data
     async function loadData() {
       try {
+        console.warn('⚠️ ProjectSection: Missing props, fetching data client-side. This is not optimal.');
+        
         // Only fetch what we're missing
         if (initialProjects.length === 0 && initialCategories.length === 0) {
           // Fetch both in parallel
@@ -91,7 +95,7 @@ export function ProjectsSection({
     }
     
     loadData();
-  }, []); // Remove dependencies to prevent re-fetching
+  }, []); // Empty dependency - fetch only once if needed
 
   // Filter projects based on active filter
   const filteredProjects = useMemo(() => {

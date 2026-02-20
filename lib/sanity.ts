@@ -10,6 +10,7 @@
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { cache as reactCache } from 'react';
 import {
   fetchWithCache,
   CACHE_KEYS,
@@ -18,7 +19,7 @@ import {
 
 // Main Sanity client (keeps existing client for compatibility)
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2024-01-01",
   useCdn: true, // Always prefer CDN
@@ -175,8 +176,8 @@ export const queries = {
   `,
 };
 
-// Revalidate time for Next.js caching (4 hours = 14400 seconds)
-export const revalidate = 14400;
+// Revalidate time for Next.js caching (12 hours = 43200 seconds - optimized for Sanity free tier)
+export const revalidate = 43200;
 
 // ============================================================================
 // OPTIMIZED DATA FETCHING WITH WEBHOOK CACHE
@@ -185,8 +186,9 @@ export const revalidate = 14400;
 /**
  * Get all posts
  * Priority: Webhook cache > CDN > API
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getPosts() {
+export const getPosts = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.POSTS,
@@ -199,13 +201,14 @@ export async function getPosts() {
     console.error("Error fetching posts:", error);
     return [];
   }
-}
+});
 
 /**
  * Get featured posts
  * Priority: Webhook cache > CDN > API
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getFeaturedPosts() {
+export const getFeaturedPosts = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.FEATURED_POSTS,
@@ -220,11 +223,12 @@ export async function getFeaturedPosts() {
     console.error("Error fetching featured posts:", error);
     return [];
   }
-}
+});
 
 /**
  * Get post by slug
  * Priority: Webhook cache > CDN > API
+ * Note: Cannot use React.cache() directly due to parameters
  */
 export async function getPostBySlug(slug: string) {
   try {
@@ -234,7 +238,9 @@ export async function getPostBySlug(slug: string) {
       { slug }
     );
 
-    console.log(`📄 [getPostBySlug] Fetched post "${slug}" from ${source}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`📄 [getPostBySlug] Fetched post "${slug}" from ${source}`);
+    }
     return data;
   } catch (error) {
     console.error("Error fetching post by slug:", error);
@@ -245,8 +251,9 @@ export async function getPostBySlug(slug: string) {
 /**
  * Get all projects
  * Priority: Webhook cache > CDN > API
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getProjects() {
+export const getProjects = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.PROJECTS,
@@ -261,11 +268,12 @@ export async function getProjects() {
     console.error("Error fetching projects:", error);
     return [];
   }
-}
+});
 
 /**
  * Get project by ID
  * Priority: Webhook cache > CDN > API
+ * Note: Cannot use React.cache() directly due to parameters
  */
 export async function getProjectById(id: string) {
   try {
@@ -275,7 +283,9 @@ export async function getProjectById(id: string) {
       { id }
     );
 
-    console.log(`🎯 [getProjectById] Fetched project "${id}" from ${source}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🎯 [getProjectById] Fetched project "${id}" from ${source}`);
+    }
     return data;
   } catch (error) {
     console.error("Error fetching project by ID:", error);
@@ -286,8 +296,9 @@ export async function getProjectById(id: string) {
 /**
  * Get categories
  * Uses CDN client directly (less frequently updated)
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getCategories() {
+export const getCategories = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.CATEGORIES,
@@ -302,13 +313,14 @@ export async function getCategories() {
     console.error("Error fetching categories:", error);
     return [];
   }
-}
+});
 
 /**
  * Get tags
  * Uses CDN client directly (less frequently updated)
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getTags() {
+export const getTags = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.TAGS,
@@ -321,7 +333,7 @@ export async function getTags() {
     console.error("Error fetching tags:", error);
     return [];
   }
-}
+});
 
 // ============================================================================
 // HELPER FUNCTIONS (Keep existing)
@@ -385,17 +397,21 @@ export function validateSanityConfig() {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 
-  if (!projectId || projectId.trim() === "") {
-    console.warn("❌ NEXT_PUBLIC_SANITY_PROJECT_ID is missing or empty");
+  // During build without env vars, use fallback data
+  if (!projectId || projectId.trim() === "" || projectId === "placeholder") {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn("⚠️ NEXT_PUBLIC_SANITY_PROJECT_ID is missing - using static fallback data");
+    }
     return false;
   }
 
   if (!dataset || dataset.trim() === "") {
-    console.warn("❌ NEXT_PUBLIC_SANITY_DATASET is missing or empty");
+    if (process.env.NODE_ENV === 'development') {
+      console.warn("⚠️ NEXT_PUBLIC_SANITY_DATASET is missing - using static fallback data");
+    }
     return false;
   }
 
-  console.log("✅ Sanity configuration is valid");
   return true;
 }
 
