@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { BsTwitterX } from "react-icons/bs";
 
+
 // Types
 interface FooterLink {
   label: string;
@@ -96,7 +97,7 @@ function FloatingParticles() {
         top: Math.random() * 100,
         delay: Math.random() * 2,
         duration: 3 + Math.random() * 2,
-      }))
+      })),
     );
   }, []);
 
@@ -122,7 +123,7 @@ function FloatingParticles() {
   );
 }
 
-export function  Footer() {
+export function Footer() {
   const [inView, setInView] = useState(false);
   const footerRef = useRef<HTMLElement>(null);
   const currentYear = new Date().getFullYear();
@@ -135,7 +136,7 @@ export function  Footer() {
           setInView(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (footerRef.current) {
@@ -540,6 +541,18 @@ export function  Footer() {
                 <span style={{ color: "#7B4B94" }}>and</span>
                 <Code2 size={14} style={{ color: "#8B1538" }} />
               </div>
+              <p className="flex items-center gap-2">
+                <span className="hidden sm:inline" style={{ color: "#7B4B94" }}>
+                  •
+                </span>
+                <Link
+                  href="/sitemap.xml"
+                  className="hover:underline"
+                  style={{ color: "#A8A8A8" }}
+                >
+                  Sitemap
+                </Link>
+              </p>
             </div>
 
             {/* Scroll to Top */}
