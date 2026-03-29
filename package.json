@@ -11,6 +11,7 @@
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
     "@sanity/image-url": "^1.2.0",
+    "@sanity/table": "^2.0.1",
     "@sanity/vision": "^4.10.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
