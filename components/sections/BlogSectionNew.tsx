@@ -196,22 +196,28 @@ export function BlogSection({ initialPosts = [] }: BlogSectionProps) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
-    if (!initialPosts.length) {
-      const loadPosts = async () => {
-        try {
-          const { getFeaturedBlogPosts } = await import("@/data/sanity-data");
-          const fetchedPosts = await getFeaturedBlogPosts(5); // Load 5 posts: 1 hero + 4 grid
-          setPosts(fetchedPosts);
-        } catch (error) {
-          console.error("Failed to load blog posts:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      loadPosts();
+    // Skip fetching if we already have posts
+    if (initialPosts.length > 0) {
+      setLoading(false);
+      return;
     }
-  }, [initialPosts.length]);
+
+    // If no initial posts, fetch them (fallback - should be avoided)
+    const loadPosts = async () => {
+      try {
+        console.warn('⚠️ BlogSection: Missing initialPosts prop, fetching data client-side. This is not optimal.');
+        const { getFeaturedBlogPosts } = await import("@/data/sanity-data");
+        const fetchedPosts = await getFeaturedBlogPosts(5); // Load 5 posts: 1 hero + 4 grid
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error("Failed to load blog posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPosts();
+  }, []); // Empty dependency - fetch only once if needed
 
   // Split posts: first one is hero, rest are grid
   const heroPosts = useMemo(() => posts.slice(0, 1), [posts]);

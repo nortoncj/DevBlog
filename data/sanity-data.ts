@@ -1,6 +1,7 @@
 /**
  * Sanity CMS Data Integration
  * Fetch and transform data from Sanity CMS with fallback to static data
+ * Optimized with React.cache() for request deduplication
  */
 
 import {
@@ -20,6 +21,7 @@ import {
 } from "@/lib/sanity-transform";
 import { BlogPost, Project } from "@/types/sanity";
 import { Project as StaticProject } from "@/types";
+import { cache as reactCache } from 'react';
 
 // Fallback to static data if Sanity is not configured
 import { blogPosts as staticBlogPostsRaw } from "./blog";
@@ -102,8 +104,9 @@ function transformStaticProjectsToSanity(projects: StaticProject[]): Project[] {
 
 /**
  * Get all blog posts from Sanity CMS with fallback
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getBlogPosts(): Promise<BlogPost[]> {
+export const getBlogPosts = reactCache(async (): Promise<BlogPost[]> => {
   if (!validateSanityConfig()) {
     console.warn("Sanity not configured, using static blog data");
     return staticBlogPosts;
@@ -119,10 +122,11 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     );
     return staticBlogPosts;
   }
-}
+});
 
 /**
  * Get featured blog posts from Sanity CMS
+ * Wrapped with React.cache() - but needs limit param handling
  */
 export async function getFeaturedBlogPosts(
   limit?: number
@@ -242,8 +246,9 @@ export async function getBlogCategories() {
 
 /**
  * Get all projects from Sanity CMS with fallback
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getProjectsData(): Promise<Project[]> {
+export const getProjectsData = reactCache(async (): Promise<Project[]> => {
   // console.log('🚀 === PROJECTS DATA FETCHING START ===');
   // console.log('🔧 Sanity validation result:', validateSanityConfig());
   
@@ -275,7 +280,7 @@ export async function getProjectsData(): Promise<Project[]> {
     console.log('📋 Returning fallback static projects:', fallbackStatic.length);
     return fallbackStatic;
   }
-}
+});
 
 /**
  * Get projects by category from Sanity CMS
@@ -422,7 +427,7 @@ export async function getProjectCategories() {
           id: "all",
           label: "Featured",
           description: "Complete portfolio",
-          count: getProjects
+          count: projects.length // Fixed: Use projects length instead of function
         },
         ...extractedCategories.map((cat) => ({
           id: cat.slug || cat.id,
@@ -481,7 +486,7 @@ export async function getProjectCategories() {
           id: "all",
           label: "All",
           description: "Complete portfolio",
-          count: getProjects,
+          count: projects.length // Fixed: Use projects length instead of function
         },
         ...extractedCategories.map((cat) => ({
           id: cat.slug || cat.id,
@@ -736,14 +741,16 @@ export async function getRelatedProjects(
  * Preload critical data for homepage
  */
 export async function preloadHomepageData() {
-  const [featuredPosts, projects] = await Promise.all([
+  const [featuredPosts, projects, projectCategories] = await Promise.all([
     getFeaturedBlogPosts(4),
     getProjectsData(),
+    getProjectCategories(),
   ]);
 
   return {
     featuredPosts,
-    projects: projects, // Limit for homepage
+    projects: projects, // All projects for homepage
+    projectCategories, // Categories for filtering
   };
 }
 

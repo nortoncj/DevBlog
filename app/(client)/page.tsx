@@ -22,9 +22,9 @@ export const metadata: Metadata = {
   description:
     "Build systems that scale. Results with precision. Strategic systems designing scalable tools, automations, and products for businesses.",
 };
-// export const revalidate = 3600;
+export const revalidate = 43200; // Revalidate every 12 <hours></hours>
 export default async function Home() {
-  const { featuredPosts, projects } = await preloadHomepageData();
+  const { featuredPosts, projects, projectCategories } = await preloadHomepageData();
 
   return (
     <div className="">
@@ -42,10 +42,11 @@ export default async function Home() {
         {/* Projects Showcase - Pass preloaded data */}
         {/* <ProjectsSection initialProjects={projects} /> */}
         {/* <ProjectsSection  /> */}
+        <ProjectsSection initialProjects={projects} projectCategories={projectCategories} />
 
         {/* Blog Insights - Pass preloaded data */}
         {/* <BlogSection initialPosts={featuredPosts} /> */}
-        {/* <BlogSection initialPosts={featuredPosts} /> */}
+        <BlogSection initialPosts={featuredPosts} />
 
         {/* Contact */}
         {/* <ContactSection /> */}

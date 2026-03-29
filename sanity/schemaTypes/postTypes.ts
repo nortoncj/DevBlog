@@ -163,6 +163,12 @@ export const postType = defineType({
             },
           ],
         },
+        {
+          name: "table",
+          title: "Table",
+          type: "table",
+          description: "Add a table to your content",
+        },
       ],
     }),
      defineField({

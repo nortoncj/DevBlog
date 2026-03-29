@@ -10,6 +10,7 @@
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { cache as reactCache } from 'react';
 import {
   fetchWithCache,
   CACHE_KEYS,
@@ -18,7 +19,7 @@ import {
 
 // Main Sanity client (keeps existing client for compatibility)
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2024-01-01",
   useCdn: true, // Always prefer CDN
@@ -34,7 +35,7 @@ export function urlFor(source: SanityImageSource) {
 
 // GROQ queries for fetching data
 export const queries = {
-  // Get all posts with categories and tags
+  // Get all posts with categories and tags - OPTIMIZED (removed body for list view)
   posts: `
     *[_type == "post"] | order(publishedAt desc) {
       _id,
@@ -43,8 +44,6 @@ export const queries = {
       publishedAt,
       excerpt,
       image,
-      video,
-      body,
       featured,
       categories[]-> {
         _id,
@@ -53,31 +52,28 @@ export const queries = {
       },
       tags[]-> {
         _id,
-        title,
-        slug
+        title
       }
     }
   `,
 
-  // Get featured posts
+  // Get featured posts - OPTIMIZED (removed video, reduced fields)
   featuredPosts: `
-    *[_type == "post" && featured == true] | order(publishedAt desc)[0...3] {
+    *[_type == "post" && featured == true] | order(publishedAt desc)[0...5] {
       _id,
       title,
       slug,
       publishedAt,
       excerpt,
       image,
-      video,
+      featured,
       categories[]-> {
         _id,
-        title,
-        slug
+        title
       },
       tags[]-> {
         _id,
-        title,
-        slug
+        title
       }
     }
   `,
@@ -106,7 +102,7 @@ export const queries = {
     }
   `,
 
-  // Get all projects with categories and tags
+  // Get all projects with categories and tags - OPTIMIZED (removed video, reduced fields)
   projects: `
     *[_type == "project"] | order(_createdAt desc) {
       _id,
@@ -114,25 +110,18 @@ export const queries = {
       link,
       github,
       image,
-      video,
       description,
       techStack,
       modal,
       featured,
       categories[]-> {
         _id,
-        _type,
         title,
-        slug,
-        color,
-        description
+        slug
       },
       tags[]-> {
         _id,
-        _type,
-        title,
-        slug,
-        description
+        title
       }
     }
   `,
@@ -187,7 +176,8 @@ export const queries = {
   `,
 };
 
-export const revalidate = 14400; // 4 hours
+// Revalidate time for Next.js caching (12 hours = 43200 seconds - optimized for Sanity free tier)
+export const revalidate = 43200;
 
 // ============================================================================
 // OPTIMIZED DATA FETCHING WITH WEBHOOK CACHE
@@ -196,8 +186,9 @@ export const revalidate = 14400; // 4 hours
 /**
  * Get all posts
  * Priority: Webhook cache > CDN > API
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getPosts() {
+export const getPosts = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.POSTS,
@@ -210,13 +201,14 @@ export async function getPosts() {
     console.error("Error fetching posts:", error);
     return [];
   }
-}
+});
 
 /**
  * Get featured posts
  * Priority: Webhook cache > CDN > API
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getFeaturedPosts() {
+export const getFeaturedPosts = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.FEATURED_POSTS,
@@ -231,11 +223,12 @@ export async function getFeaturedPosts() {
     console.error("Error fetching featured posts:", error);
     return [];
   }
-}
+});
 
 /**
  * Get post by slug
  * Priority: Webhook cache > CDN > API
+ * Note: Cannot use React.cache() directly due to parameters
  */
 export async function getPostBySlug(slug: string) {
   try {
@@ -245,7 +238,9 @@ export async function getPostBySlug(slug: string) {
       { slug }
     );
 
-    console.log(`📄 [getPostBySlug] Fetched post "${slug}" from ${source}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`📄 [getPostBySlug] Fetched post "${slug}" from ${source}`);
+    }
     return data;
   } catch (error) {
     console.error("Error fetching post by slug:", error);
@@ -256,8 +251,9 @@ export async function getPostBySlug(slug: string) {
 /**
  * Get all projects
  * Priority: Webhook cache > CDN > API
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getProjects() {
+export const getProjects = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.PROJECTS,
@@ -272,11 +268,12 @@ export async function getProjects() {
     console.error("Error fetching projects:", error);
     return [];
   }
-}
+});
 
 /**
  * Get project by ID
  * Priority: Webhook cache > CDN > API
+ * Note: Cannot use React.cache() directly due to parameters
  */
 export async function getProjectById(id: string) {
   try {
@@ -286,7 +283,9 @@ export async function getProjectById(id: string) {
       { id }
     );
 
-    console.log(`🎯 [getProjectById] Fetched project "${id}" from ${source}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🎯 [getProjectById] Fetched project "${id}" from ${source}`);
+    }
     return data;
   } catch (error) {
     console.error("Error fetching project by ID:", error);
@@ -297,8 +296,9 @@ export async function getProjectById(id: string) {
 /**
  * Get categories
  * Uses CDN client directly (less frequently updated)
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getCategories() {
+export const getCategories = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.CATEGORIES,
@@ -313,13 +313,14 @@ export async function getCategories() {
     console.error("Error fetching categories:", error);
     return [];
   }
-}
+});
 
 /**
  * Get tags
  * Uses CDN client directly (less frequently updated)
+ * Wrapped with React.cache() for request deduplication
  */
-export async function getTags() {
+export const getTags = reactCache(async () => {
   try {
     const { data, source } = await fetchWithCache<any[]>(
       CACHE_KEYS.TAGS,
@@ -332,7 +333,7 @@ export async function getTags() {
     console.error("Error fetching tags:", error);
     return [];
   }
-}
+});
 
 // ============================================================================
 // HELPER FUNCTIONS (Keep existing)
@@ -396,17 +397,21 @@ export function validateSanityConfig() {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 
-  if (!projectId || projectId.trim() === "") {
-    console.warn("❌ NEXT_PUBLIC_SANITY_PROJECT_ID is missing or empty");
+  // During build without env vars, use fallback data
+  if (!projectId || projectId.trim() === "" || projectId === "placeholder") {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn("⚠️ NEXT_PUBLIC_SANITY_PROJECT_ID is missing - using static fallback data");
+    }
     return false;
   }
 
   if (!dataset || dataset.trim() === "") {
-    console.warn("❌ NEXT_PUBLIC_SANITY_DATASET is missing or empty");
+    if (process.env.NODE_ENV === 'development') {
+      console.warn("⚠️ NEXT_PUBLIC_SANITY_DATASET is missing - using static fallback data");
+    }
     return false;
   }
 
-  console.log("✅ Sanity configuration is valid");
   return true;
 }
 
@@ -422,11 +427,6 @@ export function logCacheStats() {
   console.log("📊 [Cache Stats]:", {
     totalCached: stats.size,
     keys: stats.keys,
-    entries: stats.entries.map((e) => ({
-      key: e.key,
-      source: e.source,
-      age: `${Math.round(e.age / 1000)}s`,
-    })),
   });
   return stats;
 }
